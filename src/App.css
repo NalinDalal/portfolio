@@ -1,0 +1,66 @@
+/* App.css */
+
+.github-calendar-container {
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #2d3748; /* Dark background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  text-align: center;
+}
+
+.github-calendar-container .calendar {
+  color: white;
+}
+
+.github-calendar-container .calendar .contrib-footer {
+  display: none; /* Hide the footer if you don't want it */
+}
+
+.github-calendar-container .calendar svg {
+  width: 100% !important; /* Make the SVG responsive */
+  height: auto;
+}
+
+.github-calendar-container .calendar .day {
+  stroke: #1a202c; /* Match the background */
+  shape-rendering: geometricPrecision;
+}
+
+.github-calendar-container .calendar .day:hover {
+  stroke: #fff; /* Change the stroke color on hover */
+  stroke-width: 2px;
+}
+
+.github-calendar-container .calendar .legend {
+  fill: #a0aec0; /* Legend color */
+}
+
+.github-calendar-container .calendar .legend rect {
+  stroke: #1a202c; /* Match the background */
+}
+
+.github-calendar-container .calendar .legend text {
+  fill: #a0aec0;
+}
+
+.github-calendar-container .calendar .contrib-number {
+  color: white; /* Change text color to white */
+}
+
+.calendar {
+  background-color: #333; /* Dark background color */
+  color: #fff; /* Light text color */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding around the calendar */
+}
+
+a {
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #007bff;
+}
