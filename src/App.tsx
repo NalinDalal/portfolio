@@ -24,13 +24,12 @@ function App() {
               Software Engineer
             </div>
             <a
-              href="https://www.linkedin.com/in/nalin-dalal-815617271/"
-              className="block mt-1 text-lg leading-tight font-medium text-indigo-600 hover:underline"
+              href="https://orange-ginnifer-5.tiiny.site"
               target="_blank"
+              className="block mt-1 text-lg leading-tight font-medium text-indigo-600 hover:underline"
             >
-              My LinkedIn
+              My Resume
             </a>
-
             <br />
             <h3 className="text-gray-900 dark:text-white text-lg font-medium">
               Introduction
@@ -188,49 +187,10 @@ function App() {
         </p>
         <Project />
       </div>
-      <div className="w-full text-center mb-6">
-        <a href="https://orange-ginnifer-5.tiiny.site" target="_blank">
-          <h2 className="block mt-1 text-lg leading-tight font-medium text-indigo-600 hover:underline">
-            My Resume
-          </h2>
-        </a>
-        <br />
-        <br />
-        <br />
-        <div
-          style={{ display: "flex", justifyContent: "center" }}
-          className="w-full text-center mb-6 text-white"
-        >
-          <p className="text-xl font-semibold text-gray-900 dark:text-white mb-2 text-center">
-            <b>GitHub Stats</b>
-          </p>
-          <div>
-            <img
-              src="https://github-readme-stats.vercel.app/api?username=nalindalal&show_icons=true&theme=dark"
-              alt="GitHub Stats"
-              className="w-full mb-4"
-              style={{ height: 500, width: 500 }}
-            />
-          </div>
-          <div>
-            <img
-              src="https://github-readme-stats.vercel.app/api/top-langs/?username=nalindalal&layout=compact&theme=dark"
-              alt="Top Languages"
-              className="w-full"
-              style={{ height: 500, width: 500 }}
-            />
-          </div>
-        </div>
-      </div>
+
+      {/* GitHub Stats section*/}
 
       <GitHubCalendar />
-      <div>
-        <div>
-          <ReactMarkdown>
-            ![trophy](https://github-profile-trophy.vercel.app/?username=nalindalal)
-          </ReactMarkdown>
-        </div>
-      </div>
       <div className="w-full text-center mb-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
           My LeetCode Stats:
