@@ -195,6 +195,8 @@ function App() {
           </h2>
         </a>
         <br />
+        <br />
+        <br />
         <div
           style={{ display: "flex", justifyContent: "center" }}
           className="w-full text-center mb-6 text-white"
