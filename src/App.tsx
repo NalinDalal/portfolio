@@ -75,6 +75,12 @@ function App() {
           such internships providing value and growth.
         </p>
       </div>
+      {/* spotify added */}
+      <div className="w-full text-center mb-6 text-center flex justify-center">
+        <ReactMarkdown>
+          [![spotify-github-profile](https://spotify-github-profile.kittinanx.com/api/view?uid=31pinfjvqph5onxeensf4ugzbjpu&cover_image=true&theme=novatorem&show_offline=true&background_color=121212&interchange=false&bar_color=53b14f&bar_color_cover=false)](https://github.com/kittinan/spotify-github-profile)
+        </ReactMarkdown>
+      </div>
       <br />
       <br />
       <div className="w-full text-center mb-6">
