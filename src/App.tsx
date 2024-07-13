@@ -208,9 +208,6 @@ function App() {
         </div>
       </div>
       <div>
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-          Contact Me
-        </h1>
         <ContactForm />
       </div>
 
