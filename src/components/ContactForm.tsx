@@ -28,12 +28,10 @@ const ContactForm = () => {
     <form
       ref={form}
       onSubmit={sendEmail}
-      className="border-2 border-white p-6 rounded-md max-w-md mx-auto bg-gray-800 text-white"
+      className="border-2 border-white p-6 rounded-md md:w-[600px] max-w-md mx-auto bg-gray-800 text-white"
     >
       <fieldset>
-        <legend className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-          Contact Me:
-        </legend>
+        <legend className="text-xl font-semibold mb-2">Contact Me:</legend>
         <label className="block mb-2">Name</label>
         <input
           type="text"
@@ -54,7 +52,7 @@ const ContactForm = () => {
         <input
           type="submit"
           value="Send"
-          className="bg-gray-700 text-white p-2 rounded-md cursor-pointer hover:bg-gray-600"
+          className="bg-gray-700 text-white p-4 rounded-md cursor-pointer hover:bg-gray-600 block mx-auto md:w-full w-auto"
         />
       </fieldset>
     </form>

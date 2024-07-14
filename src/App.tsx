@@ -201,10 +201,12 @@ function App() {
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
           My LeetCode Stats:
         </h2>
-        <div className="mx-auto max-w-2xl">
-          <ReactMarkdown>
-            ![LeetCodeStats](https://leetcard.jacoblin.cool/Nalindalal2004?theme=dark&font=Noto%20Sans%20Kannada&ext=heatmap)
-          </ReactMarkdown>
+        <div className="flex justify-center">
+          <div className="mx-auto max-w-2xl">
+            <ReactMarkdown>
+              ![LeetCodeStats](https://leetcard.jacoblin.cool/Nalindalal2004?theme=dark&font=Noto%20Sans%20Kannada&ext=heatmap)
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
       <div>

@@ -27,12 +27,10 @@ const GitHubCalendar: React.FC = () => {
         typeof window.GitHubCalendar === "function" //@ts-ignore
       ) {
         //@ts-ignore
-        window.GitHubCalendar(calendarRef.current, username);
-        // or enable responsive functionality
-        // @ts-ignore
         window.GitHubCalendar(calendarRef.current, username, {
-          responsive: true,
+          reponsive: true,
         });
+        // or enable responsive functionality
       }
     };
 
@@ -47,47 +45,43 @@ const GitHubCalendar: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <div className="w-full text-center mb-6">
-        <br />
-        <br />
-        <br />
-        <div className="w-full text-center mb-6 text-white flex flex-col items-center">
-          <p className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            <b>GitHub Stats</b>
-          </p>
-          <div className="mb-4">
+    <div className="p-4">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          GitHub Stats
+        </h2>
+        <div className="flex justify-center space-x-4">
+          <div>
             <img
               src="https://github-readme-stats.vercel.app/api?username=nalindalal&show_icons=true&theme=dark"
               alt="GitHub Stats"
-              className="w-full"
-              style={{ height: 500, width: 500 }}
+              className="w-64"
             />
           </div>
           <div>
             <img
               src="https://github-readme-stats.vercel.app/api/top-langs/?username=nalindalal&layout=compact&theme=dark"
               alt="Top Languages"
-              className="w-full"
-              style={{ height: 500, width: 500 }}
+              className="w-64"
             />
           </div>
         </div>
       </div>
-      <div className="github-calendar-container">
+
+      <div className="github-calendar-container mb-8">
         <div ref={calendarRef} className="calendar">
-          Loading the data just for you...
+          Loading GitHub contributions...
         </div>
       </div>
 
-      <div>
+      <div className="text-center">
         <ReactMarkdown>
-          ![trophy](https://github-profile-trophy.vercel.app/?username=nalindalal)
+          ![GitHub
+          Trophy](https://github-profile-trophy.vercel.app/?username=nalindalal)
         </ReactMarkdown>
       </div>
     </div>
-  ); // This component doesn't render anything visible
+  );
 };
 
 export default GitHubCalendar;
-//find a way to utilise this into main app.tsx
