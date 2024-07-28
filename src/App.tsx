@@ -46,9 +46,9 @@ function App() {
               </h3>
               <p className="list-disc list-inside text-gray-500 dark:text-gray-400">
                 <p>
-                  C++, bash, shell scripting, HTML, CSS, JavaScript, Node.js,
-                  Git, GitHub, NoSql, Mongo DB, DOM, React.js, TypeScript,
-                  Prisma, Postgres, AWS, Docker, Next.js, JWT, NextAuth,
+                  C++, HTML, CSS, JavaScript, MERN Stack, Git, GitHub,
+                  TypeScript, Prisma, Postgres, AWS, Docker, Next.js,
+                  WebSockets, WebRTC
                 </p>
               </p>
             </div>
