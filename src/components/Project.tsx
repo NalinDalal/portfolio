@@ -32,7 +32,22 @@ export const Project = () => {
       description: "A Medium-like blogging platform with user authentication.",
       date: "February 2023",
       techStack: ["React", "TypeScript", "Vercel", "cloudflare"],
+    }, {
+      href: "https://github.com/NalinDalal/Cohort_Code/tree/main/week-18/18.1.1",
+      label: "PayTM",
+      emoji: "💰",
+      description: "A payment gateway for merchants to accept payments.",
+      date: "April 2024",
+      techStack: ["Next.js", "TypeScript", "Vercel", "cloudflare", "Firebase"]
     },
+    {
+      href: "https://github.com/NalinDalal/modheshwari",
+      label: "Modheshwari",
+      emoji: "🛕",
+      description: "A website for a community to perform interactions and digitalise the custom events.",
+      date: "August 2024",
+      techStack: ["Next.js", "TypeScript", "AWS", "PostgreSQL"]
+    }
   ];
 
   return (
