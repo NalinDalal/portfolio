@@ -88,8 +88,6 @@ function App() {
           My Services
         </h2>
         <p className="dark:text-white">
-          Competitive Coder - I can help you become a competitive coder and
-          problem solver. <br />
           Web Developer - I can help you build a beautiful and scalable
           websites.
         </p>
