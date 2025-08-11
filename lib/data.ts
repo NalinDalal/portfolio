@@ -1,11 +1,9 @@
-'use server';
-
 import { GitHubUser, GitHubRepository, GitHubPullRequest } from '@/types/github';
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN!;
-const headers = {
-  Authorization: `Bearer ${GITHUB_TOKEN}`,
-};
+const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN || ''; // Public-safe token if you want
+const headers: HeadersInit = GITHUB_TOKEN
+  ? { Authorization: `Bearer ${GITHUB_TOKEN}` }
+  : {};
 
 const GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql';
 const GITHUB_REST_BASE = 'https://api.github.com';
@@ -18,27 +16,21 @@ export async function getGitHubData(): Promise<{
   const username = 'NalinDalal';
 
   // 1. Fetch user profile
-  const userRes = await fetch(`${GITHUB_REST_BASE}/users/${username}`, {
-    headers,
-    next: { revalidate: 7200 },
-  });
-
+  const userRes = await fetch(`${GITHUB_REST_BASE}/users/${username}`, { headers });
   if (!userRes.ok) throw new Error('Failed to fetch user data');
-
   const user = await userRes.json();
 
   // 2. Fetch repositories
   const reposRes = await fetch(`${GITHUB_REST_BASE}/users/${username}/repos?per_page=100`, {
     headers: {
-    Authorization: `Bearer ${GITHUB_TOKEN}`, // optional if using auth
-    Accept: 'application/vnd.github.mercy-preview+json' // ✅ THIS IS CRUCIAL
-  },
-    next: { revalidate: 7200 },
+      ...headers,
+      Accept: 'application/vnd.github.mercy-preview+json',
+    },
   });
-
+  if (!reposRes.ok) throw new Error('Failed to fetch repositories');
   const repos = await reposRes.json();
 
-  const filteredRepos = repos
+  const filteredRepos: GitHubRepository[] = repos
     .filter((r: any) => !r.fork && !r.private)
     .map((r: any) => ({
       id: r.id,
@@ -61,10 +53,10 @@ export async function getGitHubData(): Promise<{
             id
             number
             title
-            html_url: url
+            url
             state
-            created_at: createdAt
-            merged_at: mergedAt
+            createdAt
+            mergedAt
             body
             labels(first: 5) {
               nodes {
@@ -88,19 +80,18 @@ export async function getGitHubData(): Promise<{
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query: prQuery }),
-    next: { revalidate: 7200 },
   });
-
+  if (!prRes.ok) throw new Error('Failed to fetch pull requests');
   const { data } = await prRes.json();
 
   const pullRequests: GitHubPullRequest[] = data?.search.nodes.map((pr: any) => ({
     id: pr.id,
     number: pr.number,
     title: pr.title,
-    html_url: pr.html_url,
+    html_url: pr.url,
     state: pr.state.toLowerCase(),
-    created_at: pr.created_at,
-    merged_at: pr.merged_at,
+    created_at: pr.createdAt,
+    merged_at: pr.mergedAt,
     body: pr.body || '',
     labels: pr.labels.nodes,
     base: {
@@ -115,10 +106,10 @@ export async function getGitHubData(): Promise<{
       login: user.login,
       name: user.name,
       avatar_url: user.avatar_url,
-            html_url: user.html_url,
-  public_repos: user.public_repos,
-  followers: user.followers,
-  following: user.following,
+      html_url: user.html_url,
+      public_repos: user.public_repos,
+      followers: user.followers,
+      following: user.following,
       bio: user.bio,
       location: user.location,
     },
