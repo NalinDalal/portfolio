@@ -1,6 +1,9 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
+
+'use client'
+import { MDXRemote } from "next-mdx-remote";
 
 export default function MDXContent({ mdxSource }: { mdxSource: any }) {
-  return <MDXRemote {...mdxSource} />;
+  return <MDXRemote {...mdxSource} components={{}} />;
 }
+
 

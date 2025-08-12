@@ -4,10 +4,6 @@ import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
 import MDXContent from './MDXContent';
 
-interface PageProps {
-  params: Promise<{ folder: string; doc: string }>;
-}
-
 export async function generateStaticParams() {
   const blogsDir = path.join(process.cwd(), 'blogs');
   const prFolders = fs.readdirSync(blogsDir).filter(f => f.endsWith('-pr'));
@@ -42,10 +38,10 @@ export default async function PRDocPage(props: PageProps) {
   const mdxSource = await serialize(content);
 
   return (
-    <main className="container mx-auto py-8">
+  <main className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-4">{data.title || params.doc}</h1>
       <MDXContent mdxSource={mdxSource} />
-    </main>
-  );
+    </main>);
 }
+
 
