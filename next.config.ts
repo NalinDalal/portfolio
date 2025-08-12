@@ -7,5 +7,11 @@ const nextConfig: NextConfig = {
   },
     output: 'export' 
 };
+const withMDX = require('@next/mdx')();
+
+module.exports = withMDX({
+  // Any other Next.js config here
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+});
 
 export default nextConfig;

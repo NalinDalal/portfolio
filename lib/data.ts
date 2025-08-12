@@ -1,6 +1,7 @@
 import { GitHubUser, GitHubRepository, GitHubPullRequest } from '@/types/github';
 
-const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN || ''; // Public-safe token if you want
+const GITHUB_TOKEN = process.env.NEXT_PUBLIC_GITHUB_TOKEN || process.env.GITHUB_TOKEN || '';
+console.log('DEBUG: GITHUB_TOKEN value:', GITHUB_TOKEN);
 const headers: HeadersInit = GITHUB_TOKEN
   ? { Authorization: `Bearer ${GITHUB_TOKEN}` }
   : {};
@@ -8,11 +9,21 @@ const headers: HeadersInit = GITHUB_TOKEN
 const GITHUB_GRAPHQL_URL = 'https://api.github.com/graphql';
 const GITHUB_REST_BASE = 'https://api.github.com';
 
+// --- Simple in-memory cache ---
+let cachedData: any = null;
+let lastFetch = 0;
+const CACHE_TTL = 60 * 5 * 1000; // 5 minutes
+
 export async function getGitHubData(): Promise<{
   user: GitHubUser;
   repositories: GitHubRepository[];
   pullRequests: GitHubPullRequest[];
 }> {
+  const now = Date.now();
+  if (cachedData && now - lastFetch < CACHE_TTL) {
+    return cachedData;
+  }
+
   const username = 'NalinDalal';
 
   // 1. Fetch user profile
@@ -73,6 +84,7 @@ export async function getGitHubData(): Promise<{
     }
   `;
 
+
   const prRes = await fetch(GITHUB_GRAPHQL_URL, {
     method: 'POST',
     headers: {
@@ -82,7 +94,13 @@ export async function getGitHubData(): Promise<{
     body: JSON.stringify({ query: prQuery }),
   });
   if (!prRes.ok) throw new Error('Failed to fetch pull requests');
-  const { data } = await prRes.json();
+  const prJson = await prRes.json();
+  console.log('DEBUG: GitHub PR API response:', JSON.stringify(prJson, null, 2));
+  const { data, errors, message } = prJson;
+  if (errors || message) {
+    console.error('GitHub API returned errors:', errors || message);
+    throw new Error('GitHub API error: ' + (message || JSON.stringify(errors)));
+  }
 
   const pullRequests: GitHubPullRequest[] = data?.search.nodes.map((pr: any) => ({
     id: pr.id,
@@ -101,7 +119,7 @@ export async function getGitHubData(): Promise<{
     },
   }));
 
-  return {
+  const result = {
     user: {
       login: user.login,
       name: user.name,
@@ -116,5 +134,8 @@ export async function getGitHubData(): Promise<{
     repositories: filteredRepos,
     pullRequests,
   };
-}
 
+  cachedData = result;
+  lastFetch = now;
+  return result;
+}
