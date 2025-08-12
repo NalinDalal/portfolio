@@ -1,0 +1,101 @@
+11.08.2025
+
+![added feature for endorsement similar to linkedin #187](https://github.com/ossdotnow/ossdotnow/pull/187)
+## Description
+
+This PR introduces a new feature allowing users to leave accolades (endorsements/comments) for each other on their profile pages, similar to LinkedIn's Endorsements. Users can optionally link a project or launch they collaborated on.
+
+## Features
+- Users can leave an accolade/comment for another user.
+- Accolades can optionally reference a project or launch.
+- Accolades are displayed on the recipient's profile, showing sender name, message, and linked items.
+- Only authenticated users can submit accolades.
+
+## Backend Changes
+- Added `accolades` table via Drizzle migration.
+- Drizzle model for accolades.
+- API endpoints for creating and fetching accolades.
+- TRPC router for accolades operations.
+
+## Frontend Changes
+- Accolades section added to user profile page.
+- "Endorse" button opens a modal with a form to submit an accolade.
+- Accolade form supports message, project, and launch linking.
+- Sender is automatically set from session.
+- Accolades list displays sender name, message, and linked items.
+
+## Type of Change
+
+- [ ] 🐛 Bug fix
+- [X] ✨ New feature
+- [ ] 📝 Documentation update
+- [ ] 🎨 Style/UI update
+- [ ] ⚡ Performance improvement
+- [ ] Other (please describe)
+
+## Testing
+
+- [X] I have tested my changes locally
+
+## Checklist
+
+- [X] My code follows the project style
+- [X] I've updated relevant documentation
+
+<!-- This is an auto-generated comment: release notes by coderabbit.ai -->
+## Summary by CodeRabbit
+
+* **New Features**
+  * Accolades on user profiles: view messages with sender name, timestamp, optional project/launch links, loading skeleton and empty state.
+  * Endorse button opens an accolade submission modal with validation, login checks, disabled/processing states, and success/error feedback.
+  * Sender profiles fetched in parallel to populate displays.
+
+* **Back-end**
+  * Server APIs to create and fetch accolades with self-endorsement protection.
+
+* **Database**
+  * New accolades table with foreign keys and indexes; exported in DB schema.
+<!-- end of auto-generated comment: release notes by coderabbit.ai -->
+
+
+# Update as per code review
+
+## 1. TanStack Query v5 Migration
+- **Updated all TanStack Query hooks** (`useQuery`, `useMutation`, etc.) in `apps/web/components/user/profile.tsx` to use the new object form signature.
+- Example change:
+  ```tsx
+  // Old (array/positional form)
+  useQuery(['key', value], fn, options);
+
+  // New (object form)
+  useQuery({ queryKey: ['key', value], queryFn: fn, ...options });
+  ```
+- This resolved runtime errors related to "Bad argument type" and ensured compatibility with TanStack Query v5.
+
+## 2. Linting & Formatting Guidance
+- Provided instructions for formatting and linting code using Prettier and ESLint:
+  - Format all files: `npx prettier --write .`
+  - Lint and fix: `npx eslint --fix apps/web/components/user/profile.tsx`
+- Explained how to format code in VS Code using the editor's built-in commands.
+
+## 3. TypeScript Configuration Advice
+- Identified missing TypeScript config options (`lib`, `jsx`) that caused errors with ES2015+ features and JSX.
+- Provided a recommended `tsconfig.json` snippet:
+  ```json
+  {
+    "compilerOptions": {
+      "lib": ["DOM", "ES2015", "ESNext"],
+      "jsx": "react-jsx"
+    }
+  }
+  ```
+
+## 4. Image Preview
+- Provided instructions and commands to open private GitHub image links in the host's default browser using the `$BROWSER` environment variable.
+
+## 5. Database Schema Update
+- Modified `packages/db/src/schema/accolades.ts`:
+  - 3 insertions, 3 deletions.
+  - Updated the `accolades` table definition and/or its dependencies.
+- Change committed with message: `components dependency update`.
+

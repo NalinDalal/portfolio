@@ -114,6 +114,14 @@ export default function Home() {
   <Mail className="h-6 w-6" />
 </a>
 
+                        <a
+    aria-label="Pull Request Docs"
+    className="text-gray-400 hover:text-purple-400 transition-colors"
+    title="Pull Request Docs"
+  >
+    <GitPullRequest className="h-6 w-6" />
+  </a>
+
           </div>
         </div>
       </nav>

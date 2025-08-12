@@ -28,3 +28,7 @@ export default function BlogsIndex() {
     </main>
   );
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> dd310232c679c45a1a6826e3d64123625a905230
