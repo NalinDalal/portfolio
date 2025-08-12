@@ -9,28 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@mdx-js/react": "^3.1.0",
-=======
-    "@mdx-js/loader": "^3.1.0",
->>>>>>> dd310232c679c45a1a6826e3d64123625a905230
+  "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.4.6",
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/typography": "^0.5.16",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-<<<<<<< HEAD
-    "fs": "^0.0.1-security",
-=======
->>>>>>> dd310232c679c45a1a6826e3d64123625a905230
+    
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.536.0",
     "next": "15.4.5",
     "next-mdx-remote": "^5.0.0",
-<<<<<<< HEAD
-    "path": "^0.12.7",
-=======
->>>>>>> dd310232c679c45a1a6826e3d64123625a905230
+    
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.3.1"
