@@ -1,9 +1,6 @@
 import fs from "fs";
 import path from "path";
-
-interface PRDocsProps {
-  params: { folder: string };
-}
+// No PageProps import needed
 
 // This function tells Next.js all possible `folder` params to statically generate
 export async function generateStaticParams() {
@@ -20,7 +17,7 @@ export async function generateStaticParams() {
   return blogFolders;
 }
 
-export default async function PRDocs({ params }: PRDocsProps) {
+export default async function PRDocs({ params }: { params: { folder: string } }) {
   const { folder } = params;
   const prFolder = `${folder}-pr`;
   const folderPath = path.join(process.cwd(), "blogs", prFolder);
@@ -45,4 +42,5 @@ export default async function PRDocs({ params }: PRDocsProps) {
     </main>
   );
 }
+
 
