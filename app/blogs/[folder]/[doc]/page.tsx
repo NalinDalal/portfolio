@@ -1,12 +1,11 @@
-// Moved to /workspaces/portfolio/app/blogs/[folder]/[doc]/page.tsx
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
-import { MDXRemote } from 'next-mdx-remote';
+import MDXContent from './MDXContent';
 
 interface PageProps {
-  params: { folder: string; doc: string };
+  params: Promise<{ folder: string; doc: string }>;
 }
 
 export async function generateStaticParams() {
@@ -28,7 +27,8 @@ export async function generateStaticParams() {
   return paths;
 }
 
-export default async function PRDocPage({ params }: PageProps) {
+export default async function PRDocPage(props: PageProps) {
+  const params = await props.params; // 👈 Important
   const blogsDir = path.join(process.cwd(), 'blogs');
   const prFolder = `${params.folder}-pr`;
   const filePath = path.join(blogsDir, prFolder, `${params.doc}.mdx`);
@@ -44,7 +44,8 @@ export default async function PRDocPage({ params }: PageProps) {
   return (
     <main className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-4">{data.title || params.doc}</h1>
-      <MDXRemote {...mdxSource} />
+      <MDXContent mdxSource={mdxSource} />
     </main>
   );
 }
+
