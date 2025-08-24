@@ -33,7 +33,7 @@ export default function GithubCal() {
         transformData={processContributions}
         totalCount={totalCount}
         colorScheme="dark"
-        className="github-calendar-large"
+        // className removed, not supported by GitHubCalendar
       />
     </div>
   );

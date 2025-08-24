@@ -1,25 +1,18 @@
 import fs from "fs";
 import path from "path";
-// No PageProps import needed
 
-// This function tells Next.js all possible `folder` params to statically generate
-export async function generateStaticParams() {
+export function generateStaticParams() {
   const blogsDir = path.join(process.cwd(), "blogs");
-
-  // Read all folder names ending with '-pr' inside blogs
   const blogFolders = fs
     .readdirSync(blogsDir)
     .filter((name) => name.endsWith("-pr"))
-    .map((name) => ({
-      folder: name.replace(/-pr$/, ""),
-    }));
-
+    .map((name) => ({ slug: name.replace(/-pr$/, "") }));
   return blogFolders;
 }
-
-export default async function PRDocs({ params }: { params: { folder: string } }) {
-  const { folder } = params;
-  const prFolder = `${folder}-pr`;
+// @ts-ignore
+export default async function Page({ params }) {
+  const { slug } = params;
+  const prFolder = `${slug}-pr`;
   const folderPath = path.join(process.cwd(), "blogs", prFolder);
 
   const docs = fs
@@ -29,11 +22,11 @@ export default async function PRDocs({ params }: { params: { folder: string } })
 
   return (
     <main className="px-6 py-12">
-      <h1 className="text-2xl font-bold mb-6">{folder} Docs</h1>
+      <h1 className="text-2xl font-bold mb-6">{slug} Docs</h1>
       <ul>
         {docs.map((doc) => (
           <li key={doc}>
-            <a href={`/blogs/${folder}/${doc}`} className="text-blue-500">
+            <a href={`/blogs/${slug}/${doc}`} className="text-blue-500">
               {doc}
             </a>
           </li>
@@ -42,5 +35,3 @@ export default async function PRDocs({ params }: { params: { folder: string } })
     </main>
   );
 }
-
-

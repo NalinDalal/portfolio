@@ -53,9 +53,9 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-400 mx-auto mb-4"></div>
         </div>
       </div>
     );
@@ -63,12 +63,12 @@ export default function Home() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">Error: {error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
+            className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-600 transition-colors"
           >
             Retry
           </button>
@@ -78,28 +78,30 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900/80 via-green-900/60 to-cyan-900/80 text-white relative">
+    <div className="min-h-screen bg-slate-900 text-white relative">
       <SpaceBackground />
       <main className="container mx-auto px-4 py-8 relative z-10">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <div className="mb-8 rounded-2xl border-2 border-purple-500/60 bg-sargam-card-bg/80 backdrop-blur-xl shadow-lg p-8 max-w-2xl mx-auto">
+          <div className="mb-8 rounded-2xl border-2 border-slate-700 bg-slate-800/80 backdrop-blur-xl shadow-lg p-8 max-w-2xl mx-auto">
             <Image
-              src={user?.avatar_url}
+              src={user?.avatar_url || "/default-avatar.png"}
               alt={user?.name || "Profile"}
               width={128}
               height={128}
-              className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-purple-500/50 shadow-lg"
+              className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-slate-400 shadow-lg"
             />
             <h1 className="text-5xl font-extrabold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg mb-4">
-              {user?.name || "Nalin Dalal"}
+              <span className="text-slate-200">
+                {user?.name || "Nalin Dalal"}
+              </span>
             </h1>
-            <p className="text-xl text-green-400 mb-2 drop-shadow">Engineer</p>
+            <p className="text-xl text-slate-400 mb-2 drop-shadow">Engineer</p>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-2 drop-shadow">
               {user?.bio || "I like to build stuff"}
             </p>
             {user?.location && (
-              <div className="flex items-center justify-center gap-2 mt-4 text-gray-400">
+              <div className="flex items-center justify-center gap-2 mt-4 text-slate-400">
                 <MapPin className="h-4 w-4" />
                 <span>{user.location}</span>
               </div>
@@ -120,7 +122,7 @@ export default function Home() {
         {/* Stats Section */}
         {stats && (
           <section className="mb-16">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg mb-8 text-center">
+            <h2 className="text-3xl font-bold text-slate-200 mb-8 text-center">
               GitHub Stats
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -143,7 +145,7 @@ export default function Home() {
         {/* Featured Projects */}
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg">
+            <h2 className="text-3xl font-bold text-slate-200 drop-shadow-lg">
               Featured Projects
             </h2>
           </div>
@@ -158,7 +160,7 @@ export default function Home() {
 
         {/* Pull Requests Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg mb-8">
+          <h2 className="text-3xl font-bold text-slate-200 drop-shadow-lg mb-8">
             Recent Pull Requests
           </h2>
           {pullRequests && pullRequests.length > 0 ? (
@@ -178,10 +180,10 @@ export default function Home() {
       {/* Footer */}
       <footer className="relative z-10 border-t border-purple-500/40 bg-sargam-card-bg/80 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-8 text-center">
-          <p className="text-gray-400 mb-4">
+          <p className="text-slate-400 mb-4">
             © 2025 Nalin Dalal. Built with Next.js and Tailwind CSS.
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-slate-500 text-sm">
             Data automatically updated daily via GitHub Actions.
           </p>
         </div>
