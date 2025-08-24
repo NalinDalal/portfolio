@@ -1,0 +1,43 @@
+.react-github-calendar .contrib-level-0 {
+  fill: #0f172a !important;
+}
+.react-github-calendar .contrib-level-1 {
+  fill: #334155 !important;
+}
+.react-github-calendar .contrib-level-2 {
+  fill: #64748b !important;
+}
+.react-github-calendar .contrib-level-3 {
+  fill: #cbd5e1 !important;
+}
+.react-github-calendar .contrib-level-4 {
+  fill: #fff !important;
+}
+.react-github-calendar rect.ContributionCalendar-day[data-level="0"] {
+  fill: #0f172a !important;
+}
+.react-github-calendar rect.ContributionCalendar-day[data-level="1"] {
+  fill: #334155 !important;
+}
+.react-github-calendar rect.ContributionCalendar-day[data-level="2"] {
+  fill: #64748b !important;
+}
+.react-github-calendar rect.ContributionCalendar-day[data-level="3"] {
+  fill: #cbd5e1 !important;
+}
+.react-github-calendar rect.ContributionCalendar-day[data-level="4"] {
+  fill: #fff !important;
+}
+.react-github-calendar .ContributionCalendar-label {
+  fill: #64748b !important;
+  color: #64748b !important;
+}
+.react-github-calendar .ContributionCalendar-legend {
+  color: #64748b !important;
+}
+.react-github-calendar .ContributionCalendar-month {
+  color: #64748b !important;
+}
+.react-github-calendar .ContributionCalendar-weekday {
+  color: #64748b !important;
+}

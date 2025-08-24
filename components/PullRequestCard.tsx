@@ -27,9 +27,9 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
   const isMerged = pullRequest.merged_at !== null;
 
   const getStatusColor = () => {
-    if (isMerged) return "text-purple-400 border-purple-400";
-    if (pullRequest.state === "open") return "text-green-400 border-green-400";
-    return "text-gray-400 border-gray-400"; // For closed but not merged
+    if (isMerged) return "text-white border-white";
+    if (pullRequest.state === "open") return "text-gray-300 border-gray-300";
+    return "text-gray-500 border-gray-500"; // For closed but not merged
   };
 
   const getStatusIcon = () => {
@@ -44,10 +44,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
   };
 
   return (
-    <Card
-      className="group hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10 transition-transform transform hover:scale-[1.05]
-"
-    >
+    <Card className="group hover:border-white/40 transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/10 transition-transform transform hover:scale-[1.05]">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -71,7 +68,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
                 className="flex items-start gap-2 hover:underline"
               >
                 <span className="flex-1">{pullRequest.title}</span>
-                <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity mt-1 flex-shrink-0" />
+                <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity mt-1 flex-shrink-0 text-white" />
               </a>
             </CardTitle>
 

@@ -78,25 +78,24 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-purple-900/80 via-green-900/60 to-cyan-900/80 text-white relative">
       <SpaceBackground />
-
       <main className="container mx-auto px-4 py-8 relative z-10">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <div className="mb-8">
+          <div className="mb-8 rounded-2xl border-2 border-purple-500/60 bg-sargam-card-bg/80 backdrop-blur-xl shadow-lg p-8 max-w-2xl mx-auto">
             <Image
               src={user?.avatar_url}
               alt={user?.name || "Profile"}
               width={128}
               height={128}
-              className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-purple-500/50"
+              className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-purple-500/50 shadow-lg"
             />
-            <h1 className="text-5xl font-bold text-white mb-4">
+            <h1 className="text-5xl font-extrabold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg mb-4">
               {user?.name || "Nalin Dalal"}
             </h1>
-            <p className="text-xl text-gray-300 mb-2">Engineer</p>
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-green-400 mb-2 drop-shadow">Engineer</p>
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-2 drop-shadow">
               {user?.bio || "I like to build stuff"}
             </p>
             {user?.location && (
@@ -109,18 +108,19 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <AboutSection />
+        <section className="mb-16">
+          <AboutSection />
+        </section>
 
         {/* GitHub Contribution Graph */}
         <section className="mb-16">
           <GithubCal />
-          {/*<GitHubContributionGraph username="nalindalal" />*/}
         </section>
 
         {/* Stats Section */}
         {stats && (
           <section className="mb-16">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg mb-8 text-center">
               GitHub Stats
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -141,30 +141,24 @@ export default function Home() {
         )}
 
         {/* Featured Projects */}
-        {repositories && repositories.length > 0 ? (
-          <section className="mb-16">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-white">
-                Featured Projects
-              </h2>
-            </div>
-            <ProjectTabs repositories={repositories} />
-          </section>
-        ) : (
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-white mb-8">
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg">
               Featured Projects
             </h2>
+          </div>
+          {repositories && repositories.length > 0 ? (
+            <ProjectTabs repositories={repositories} />
+          ) : (
             <p className="text-gray-400 text-center py-8">
               No featured projects found.
             </p>
-          </section>
-        )}
+          )}
+        </section>
 
         {/* Pull Requests Section */}
-        {/* Local PRs Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-white mb-8">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-green-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-lg mb-8">
             Recent Pull Requests
           </h2>
           {pullRequests && pullRequests.length > 0 ? (
@@ -182,7 +176,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-gray-800 bg-black/50 backdrop-blur-sm">
+      <footer className="relative z-10 border-t border-purple-500/40 bg-sargam-card-bg/80 backdrop-blur-xl">
         <div className="container mx-auto px-4 py-8 text-center">
           <p className="text-gray-400 mb-4">
             © 2025 Nalin Dalal. Built with Next.js and Tailwind CSS.

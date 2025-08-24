@@ -9,11 +9,11 @@ function BlogCard({ post }: { post: BlogPost }) {
   return (
     <Link
       href={`/${post.slug}`}
-      className="group dark:hover:bg-zinc-800/70 dark:border-zinc-800 border-2 border-zinc-100 hover:border-zinc-200 dark:hover:border-zinc-700 rounded-md py-3 w-full hover:bg-gray-50 transition-all duration-200 flex flex-col px-3"
+      className="group border-2 border-gray-800 hover:border-white rounded-md py-3 w-full hover:bg-gray-900 transition-all duration-200 flex flex-col px-3"
     >
       <div className="flex flex-row items-center gap-2">
-        <BookIcon className="text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
-        <span className="font-bold group-hover:text-black dark:group-hover:text-white">
+        <BookIcon className="text-gray-400 group-hover:text-white transition-colors" />
+        <span className="font-bold text-white group-hover:text-gray-300">
           {post.title}
         </span>
       </div>
@@ -23,10 +23,12 @@ function BlogCard({ post }: { post: BlogPost }) {
 
 export default function BlogSection() {
   return (
-    <section className="flex flex-col gap-y-2 text-black dark:text-white w-full">
+    <section className="flex flex-col gap-y-2 text-white w-full">
       <div className="mb-2">
-        <h2 className="font-bold text-2xl md:text-4xl tracking-tight">Blogs</h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <h2 className="font-bold text-2xl md:text-4xl tracking-tight text-white">
+          Blogs
+        </h2>
+        <p className="text-gray-400 mt-1">
           My thoughts, ideas, and insights about development, design, and more
         </p>
       </div>
@@ -38,7 +40,7 @@ export default function BlogSection() {
           ))}
         </div>
       ) : (
-        <div className="text-gray-600 dark:text-gray-400 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-md p-6 text-center">
+        <div className="text-gray-400 border-2 border-dashed border-gray-800 rounded-md p-6 text-center">
           I haven&apos;t written any blogs yet but I do plan to write some
           soon...
         </div>

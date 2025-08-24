@@ -1,0 +1,14 @@
+.react-github-calendar .ContributionCalendar-day,
+.react-github-calendar rect.ContributionCalendar-day {
+  width: 16px !important;
+  height: 16px !important;
+}
+.react-github-calendar .react-github-calendar {
+  margin: 0 auto !important;
+}
+.react-github-calendar .ContributionCalendar-legend,
+.react-github-calendar .ContributionCalendar-label,
+.react-github-calendar .ContributionCalendar-month,
+.react-github-calendar .ContributionCalendar-weekday {
+  font-size: 1rem !important;
+}

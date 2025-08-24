@@ -2,6 +2,8 @@
 import dynamic from "next/dynamic";
 import { useCallback, useState } from "react";
 import { Activity } from "react-github-calendar";
+import "@/app/github-calendar-large.css";
+import "@/app/github-calendar-slate.css";
 
 const GitHubCalendar = dynamic(() => import("react-github-calendar"), {
   ssr: false,
@@ -25,10 +27,14 @@ export default function GithubCal() {
   }, []);
 
   return (
-    <GitHubCalendar
-      username="nalindalal"
-      transformData={processContributions}
-      totalCount={totalCount}
-    />
+    <div className="p-8 rounded-2xl border border-slate-800 bg-black/70 backdrop-blur-xl shadow-lg flex flex-col items-center justify-center min-w-[400px] max-w-full mx-auto">
+      <GitHubCalendar
+        username="nalindalal"
+        transformData={processContributions}
+        totalCount={totalCount}
+        colorScheme="dark"
+        className="github-calendar-large"
+      />
+    </div>
   );
 }
