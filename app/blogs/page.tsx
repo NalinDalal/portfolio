@@ -1,38 +1,25 @@
-import fs from "fs";
-import path from "path";
-import Link from "next/link";
+import { BlogNavigation } from "@/components/blog-navigation";
+import BlogSection from "@/components/blog-section";
 
-export default function BlogsIndex() {
-  const blogsDir = path.join(process.cwd(), "blogs");
-  const prFolders = fs.readdirSync(blogsDir).filter((f) => f.endsWith("-pr"));
-
+export default function Blogs() {
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10">
-      <h1 className="text-4xl font-bold text-center mb-10">
-        Pull Request Docs
-      </h1>
+    <div className="min-h-screen bg-gray-900 text-white">
+      <main className="container mx-auto px-4 py-10">
+        {/* Navigation */}
+        <BlogNavigation />
 
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-        {prFolders.map((folder) => {
-          const displayName = folder.replace(/-pr$/, "");
-          return (
-            <Link
-              key={folder}
-              href={`/blogs/${displayName}`}
-              className="block p-6 bg-white rounded-xl shadow-md border border-gray-200 
-                         hover:shadow-lg hover:border-gray-300 transition-all duration-200"
-            >
-              <h2 className="text-lg font-semibold text-gray-800 capitalize">
-                {displayName}
-              </h2>
-              <p className="mt-2 text-sm text-gray-500">
-                Documentation for <span className="font-medium">{folder}</span>
-              </p>
-            </Link>
-          );
-        })}
-      </div>
-    </main>
+        {/* Blog Section */}
+        <BlogSection />
+      </main>
+
+      {/* Footer */}
+      <footer className="relative z-10 border-t border-gray-800 bg-black/50 backdrop-blur-sm mt-16">
+        <div className="container mx-auto px-4 py-8 text-center">
+          <p className="text-gray-400 mb-4">
+            © 2025 Nalin Dalal. Built with Next.js and Tailwind CSS.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }
-
