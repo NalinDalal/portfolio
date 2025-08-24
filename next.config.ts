@@ -8,9 +8,8 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  output: "export",
+  //output: "export",
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
 };
 
 module.exports = withMDX(nextConfig);
-
