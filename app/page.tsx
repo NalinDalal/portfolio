@@ -7,7 +7,7 @@ import { calculateGitHubStats, getRelevantRepositories } from "@/lib/github";
 import { PullRequestCard } from "@/components/PullRequestCard";
 import { StatsCard } from "@/components/StatsCard";
 import { ProjectTabs } from "@/components/ProjectTabs";
-import { GitHubContributionGraph } from "@/components/GitHubContributionGraph";
+import GithubCal from "@/components/gh-cal";
 import { AboutSection } from "@/components/AboutSection";
 import { SpaceBackground } from "@/components/SpaceBackground";
 import {
@@ -81,53 +81,6 @@ export default function Home() {
     <div className="min-h-screen bg-gray-900 text-white">
       <SpaceBackground />
 
-      {/* Navigation */}
-      <nav className="relative z-10 p-6">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Nalin Dalal</h1>
-          <div className="flex gap-4">
-            <a
-              href="https://github.com/nalindalal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <Github className="h-6 w-6" />
-            </a>
-            <a
-              href="https://linkedin.com/in/nalin-dalal-815617271"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <Linkedin className="h-6 w-6" />
-            </a>
-            <a
-              href="https://x.com/nalin82929"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <Twitter className="h-6 w-6" />
-            </a>
-            <a
-              href="mailto:nalindalal2004@gmail.com"
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <Mail className="h-6 w-6" />
-            </a>
-
-            <a
-              aria-label="Pull Request Docs"
-              className="text-gray-400 hover:text-purple-400 transition-colors"
-              title="Pull Request Docs"
-            >
-              <GitPullRequest className="h-6 w-6" />
-            </a>
-          </div>
-        </div>
-      </nav>
-
       <main className="container mx-auto px-4 py-8 relative z-10">
         {/* Hero Section */}
         <section className="text-center mb-16">
@@ -160,7 +113,8 @@ export default function Home() {
 
         {/* GitHub Contribution Graph */}
         <section className="mb-16">
-          <GitHubContributionGraph username="nalindalal" />
+          <GithubCal />
+          {/*<GitHubContributionGraph username="nalindalal" />*/}
         </section>
 
         {/* Stats Section */}
