@@ -1,7 +1,16 @@
 name: Deploy portfolio to nalindalal.github.io
+
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # required for pushing to external repo
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
@@ -14,6 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
