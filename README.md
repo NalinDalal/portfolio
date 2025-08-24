@@ -31,14 +31,6 @@ GITHUB_TOKEN=[ghp_something]
 
 > Only folders ending with `-pr` will be auto-populated as PR docs.
 
-well what to do next:
-when you run `npm run dev` and hit `/` so it spits out `Error: Failed to fetch pull requests`
-
-isko kahi se cache krna h
-
-and when you hit something like `/blogs/ossdotnow/endorsement-feature/` so it spits out
-literal md, not formatted one isko sahi krna h
-
 # to do
 
 just revamp ui to slate-black-white
