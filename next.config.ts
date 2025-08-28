@@ -1,15 +1,15 @@
-import type { NextConfig } from "next";
-const withMDX = require("@next/mdx")({
-  extension: /\.mdx?$/,
-});
+import createMDX from "@next/mdx";
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true,
   },
-  output: "export",
-  pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
+  output: "export" as const, // <-- literal assertion fixes the type error
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 
-module.exports = withMDX(nextConfig);
+const withMDX = createMDX({});
+
+export default withMDX(nextConfig);

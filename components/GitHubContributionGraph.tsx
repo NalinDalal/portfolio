@@ -62,17 +62,17 @@ export function GitHubContributionGraph({
   const getColorClass = (level: number) => {
     switch (level) {
       case 0:
-        return "bg-gray-900 border border-gray-800";
+        return "bg-slate-900 border border-slate-800";
       case 1:
-        return "bg-gray-800 border border-gray-700";
+        return "bg-slate-800 border border-slate-700";
       case 2:
-        return "bg-gray-700 border border-gray-600";
+        return "bg-slate-700 border border-slate-600";
       case 3:
-        return "bg-gray-500 border border-gray-400";
+        return "bg-slate-500 border border-slate-400";
       case 4:
-        return "bg-white border border-gray-300";
+        return "bg-white border border-slate-300";
       default:
-        return "bg-gray-900 border border-gray-800";
+        return "bg-slate-900 border border-slate-800";
     }
   };
 
@@ -107,7 +107,7 @@ export function GitHubContributionGraph({
   if (loading) {
     return (
       <div
-        className={`p-6 rounded-2xl border-2 border-purple-500/60 bg-sargam-card-bg/80 backdrop-blur-xl shadow-lg ${className}`}
+        className={`p-6 rounded-2xl border-2 border-purple-500/60 bg-slate-900/80 backdrop-blur-xl shadow-lg ${className}`}
       >
         <div className="animate-pulse">
           <div className="h-4 bg-purple-900/40 rounded w-48 mb-4"></div>
@@ -115,7 +115,7 @@ export function GitHubContributionGraph({
             {Array.from({ length: 371 }).map((_, i) => (
               <div
                 key={i}
-                className="w-3 h-3 bg-gray-800 rounded-sm border border-gray-700"
+                className="w-3 h-3 bg-slate-800 rounded-sm border border-slate-700"
               ></div>
             ))}
           </div>
@@ -156,21 +156,21 @@ export function GitHubContributionGraph({
 
   return (
     <div
-      className={`p-6 rounded-2xl border border-gray-800 bg-black/70 backdrop-blur-xl shadow-lg ${className}`}
+      className={`p-6 rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur-xl shadow-lg ${className}`}
     >
       <div className="mb-4">
         <h3 className="text-lg font-bold text-white mb-2">Proof of Work</h3>
-        <p className="text-gray-400 text-sm">
+        <p className="text-slate-400 text-sm">
           All the work I have done so far in public &amp;&amp; people&apos;s
           appreciation
         </p>
       </div>
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-gray-300 font-mono">
+          <span className="text-sm text-slate-300 font-mono">
             {totalContributions} contributions in the last year
           </span>
-          <div className="flex items-center gap-2 text-xs text-gray-500">
+          <div className="flex items-center gap-2 text-xs text-slate-500">
             <span>Less</span>
             <div className="flex gap-1">
               {[0, 1, 2, 3, 4].map((level) => (
@@ -192,7 +192,7 @@ export function GitHubContributionGraph({
             {getDayLabels().map((day, index) => (
               <div
                 key={day}
-                className={`h-3 text-xs text-gray-500 flex items-center ${index % 2 === 0 ? "" : "opacity-0"}`}
+                className={`h-3 text-xs text-slate-500 flex items-center ${index % 2 === 0 ? "" : "opacity-0"}`}
               >
                 {day}
               </div>
@@ -205,7 +205,7 @@ export function GitHubContributionGraph({
               {getMonthLabels().map((month, index) => (
                 <div
                   key={`${month}-${index}`}
-                  className="text-xs text-gray-500 w-12 text-center"
+                  className="text-xs text-slate-500 w-12 text-center"
                   style={{ marginLeft: index === 0 ? "0" : "40px" }}
                 >
                   {month}

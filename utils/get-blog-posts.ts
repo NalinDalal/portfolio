@@ -5,6 +5,7 @@ import { z } from "zod";
 
 export interface BlogPost {
   slug: string;
+  file: string; // main file name without extension
   title: string;
   description?: string;
   date: string;
@@ -36,9 +37,16 @@ export function getAllBlogPosts(): BlogPost[] {
         .readdirSync(folderPath)
         .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
 
-      // pick first .md/.mdx file as the entry point
-      if (files.length === 0) continue;
-      const filePath = path.join(folderPath, files[0]);
+      if (files.length === 0) {
+        console.warn(`No .md/.mdx files found in ${folderPath}`);
+        continue;
+      }
+      const mainFile = files[0];
+      if (!mainFile) {
+        console.warn(`No main file found for ${folderPath}`);
+        continue;
+      }
+      const filePath = path.join(folderPath, mainFile);
       const fileContent = fs.readFileSync(filePath, "utf8");
 
       const { data } = matter(fileContent);
@@ -49,9 +57,20 @@ export function getAllBlogPosts(): BlogPost[] {
         continue;
       }
 
+      const fileName = path.parse(mainFile).name;
+      if (!fileName) {
+        console.warn(
+          `File name could not be parsed for ${mainFile} in ${folderPath}`,
+        );
+        continue;
+      }
+      console.log(
+        `Blog: ${folder}, Main file: ${mainFile}, Slug: ${folder.replace(/-pr$/, "")}`,
+      );
       posts.push({
         ...parsed.data,
         slug: folder.replace(/-pr$/, ""), // remove `-pr` from slug
+        file: fileName, // main file name without extension
         description: parsed.data.description || "Read more about this topic...",
       });
     }

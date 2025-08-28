@@ -97,7 +97,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-xl text-slate-400 mb-2 drop-shadow">Engineer</p>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-2 drop-shadow">
+            <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-2 drop-shadow">
               {user?.bio || "I like to build stuff"}
             </p>
             {user?.location && (
@@ -152,7 +152,7 @@ export default function Home() {
           {repositories && repositories.length > 0 ? (
             <ProjectTabs repositories={repositories} />
           ) : (
-            <p className="text-gray-400 text-center py-8">
+            <p className="text-slate-400 text-center py-8">
               No featured projects found.
             </p>
           )}
@@ -170,7 +170,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-400 text-center py-8">
+            <p className="text-slate-400 text-center py-8">
               No pull requests found.
             </p>
           )}

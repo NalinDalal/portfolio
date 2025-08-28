@@ -8,12 +8,12 @@ const blogPosts = getAllBlogPosts();
 function BlogCard({ post }: { post: BlogPost }) {
   return (
     <Link
-      href={`/${post.slug}`}
-      className="group border-2 border-gray-800 hover:border-white rounded-md py-3 w-full hover:bg-gray-900 transition-all duration-200 flex flex-col px-3"
+      href={`/blogs/${post.slug}/${post.file}`}
+      className="group border-2 border-slate-800 hover:border-white rounded-md py-3 w-full hover:bg-slate-900 transition-all duration-200 flex flex-col px-3"
     >
       <div className="flex flex-row items-center gap-2">
-        <BookIcon className="text-gray-400 group-hover:text-white transition-colors" />
-        <span className="font-bold text-white group-hover:text-gray-300">
+        <BookIcon className="text-slate-400 group-hover:text-white transition-colors" />
+        <span className="font-bold text-white group-hover:text-slate-300">
           {post.title}
         </span>
       </div>
@@ -28,7 +28,7 @@ export default function BlogSection() {
         <h2 className="font-bold text-2xl md:text-4xl tracking-tight text-white">
           Blogs
         </h2>
-        <p className="text-gray-400 mt-1">
+        <p className="text-slate-400 mt-1">
           My thoughts, ideas, and insights about development, design, and more
         </p>
       </div>
@@ -40,7 +40,7 @@ export default function BlogSection() {
           ))}
         </div>
       ) : (
-        <div className="text-gray-400 border-2 border-dashed border-gray-800 rounded-md p-6 text-center">
+        <div className="text-slate-400 border-2 border-dashed border-slate-800 rounded-md p-6 text-center">
           I haven&apos;t written any blogs yet but I do plan to write some
           soon...
         </div>

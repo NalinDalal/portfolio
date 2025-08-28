@@ -5,43 +5,43 @@
 
 :root {
   --radius: 1.25rem;
-  --sargam-card-bg: #16161a;
-  --sargam-card-border: #222;
+  --sargam-card-bg: #0f172a; /* slate-900 */
+  --sargam-card-border: #334155; /* slate-700 */
   --sargam-radius: 1.25rem;
   --sargam-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-  --background: #16161a;
+  --background: #0f172a; /* slate-900 */
   --foreground: #fff;
-  --primary: #222;
+  --primary: #334155; /* slate-700 */
   --primary-foreground: #fff;
-  --secondary: #444;
+  --secondary: #64748b; /* slate-500 */
   --secondary-foreground: #fff;
-  --muted: #72757e;
+  --muted: #64748b; /* slate-500 */
   --muted-foreground: #fff;
-  --accent: #222;
+  --accent: #334155; /* slate-700 */
   --accent-foreground: #fff;
-  --border: #222;
-  --input: #444;
-  --ring: #222;
+  --border: #334155; /* slate-700 */
+  --input: #64748b; /* slate-500 */
+  --ring: #334155; /* slate-700 */
 
   .dark {
-    --background: #16161a;
+    --background: #0f172a;
     --foreground: #fff;
-    --primary: #222;
+    --primary: #334155;
     --primary-foreground: #fff;
-    --secondary: #444;
+    --secondary: #64748b;
     --secondary-foreground: #fff;
-    --muted: #72757e;
+    --muted: #64748b;
     --muted-foreground: #fff;
-    --accent: #222;
+    --accent: #334155;
     --accent-foreground: #fff;
-    --border: #222;
-    --input: #444;
-    --ring: #222;
+    --border: #334155;
+    --input: #64748b;
+    --ring: #334155;
   }
 
   @layer base {
     * {
-      @apply border border-gray-800 outline outline-1 outline-gray-700;
+      @apply border border-slate-800 outline outline-1 outline-slate-700;
     }
     body {
       background-color: var(--background);

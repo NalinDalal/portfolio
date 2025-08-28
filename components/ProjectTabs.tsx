@@ -112,7 +112,7 @@ export function ProjectTabs({ repositories }: ProjectTabsProps) {
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               activeTab === tab.id
                 ? "bg-white text-black shadow-lg"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
+                : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"
             }`}
           >
             {tab.label} ({tab.count})
@@ -133,10 +133,10 @@ export function ProjectTabs({ repositories }: ProjectTabsProps) {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-gray-400 text-lg">
+          <p className="text-slate-400 text-lg">
             No projects found in this category.
           </p>
-          <p className="text-gray-500 text-sm mt-2">
+          <p className="text-slate-500 text-sm mt-2">
             Try selecting a different tab.
           </p>
         </div>

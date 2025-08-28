@@ -5,12 +5,12 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="relative z-10 p-6 border-b border-gray-800 bg-black/40 backdrop-blur-sm">
+    <nav className="relative z-10 p-6 border-b border-slate-800 bg-slate-900/40 backdrop-blur-sm">
       <div className="container mx-auto flex justify-between items-center">
         {/* Brand */}
         <Link
           href="/"
-          className="text-2xl font-bold text-white hover:text-slate-300 transition-colors"
+          className="text-2xl font-bold text-white hover:text-slate-400 transition-colors"
         >
           Nalin Dalal
         </Link>

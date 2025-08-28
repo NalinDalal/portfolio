@@ -10,28 +10,28 @@ interface LanguageBadgeProps {
 
 const languageColors: Record<string, string> = {
   TypeScript: "text-white",
-  JavaScript: "text-gray-200",
-  Python: "text-gray-300",
-  Rust: "text-gray-400",
-  "C++": "text-gray-500",
-  Go: "text-gray-600",
-  Java: "text-gray-700",
-  Shell: "text-gray-300",
+  JavaScript: "text-slate-200",
+  Python: "text-slate-300",
+  Rust: "text-slate-400",
+  "C++": "text-slate-500",
+  Go: "text-slate-600",
+  Java: "text-slate-700",
+  Shell: "text-slate-300",
   HTML: "text-white",
-  CSS: "text-gray-400",
+  CSS: "text-slate-400",
 };
 
 export function LanguageBadge({
   language,
   className = "",
 }: LanguageBadgeProps) {
-  const colorClass = languageColors[language] || "text-gray-300";
+  const colorClass = languageColors[language] || "text-slate-300";
 
   return (
     <Badge
       variant="outline"
       className={cn(
-        "text-xs border-gray-600 bg-gray-800/50",
+        "text-xs border-slate-600 bg-slate-800/50",
         colorClass,
         className,
       )}

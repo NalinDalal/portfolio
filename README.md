@@ -33,4 +33,10 @@ GITHUB_TOKEN=[ghp_something]
 
 # to do
 
-just revamp ui to slate-black-white
+- just revamp ui to slate-black-white
+
+we have 1 domains for free:
+
+- `https://nerddev.cc.cc/`
+
+export to it

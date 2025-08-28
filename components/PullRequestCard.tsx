@@ -28,8 +28,8 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
 
   const getStatusColor = () => {
     if (isMerged) return "text-white border-white";
-    if (pullRequest.state === "open") return "text-gray-300 border-gray-300";
-    return "text-gray-500 border-gray-500"; // For closed but not merged
+    if (pullRequest.state === "open") return "text-slate-300 border-slate-300";
+    return "text-slate-500 border-slate-500"; // For closed but not merged
   };
 
   const getStatusIcon = () => {
@@ -44,7 +44,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
   };
 
   return (
-    <Card className="group hover:border-white/40 transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/10 transition-transform transform hover:scale-[1.05]">
+    <Card className="group hover:border-white/40 transition-all duration-300 hover:shadow-lg hover:shadow-slate-200/10 transition-transform transform hover:scale-[1.05]">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -55,7 +55,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
                   <span>{getStatusText()}</span>
                 </div>
               </Badge>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-slate-500">
                 #{pullRequest.number}
               </span>
             </div>
@@ -73,7 +73,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
             </CardTitle>
 
             <CardDescription className="mt-2">
-              <span className="font-medium text-gray-300">
+              <span className="font-medium text-slate-300">
                 {pullRequest.base?.repo?.full_name || "Unknown repository"}
               </span>
             </CardDescription>
@@ -83,7 +83,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
 
       <CardContent>
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-slate-400">
             <Calendar className="h-4 w-4" />
             <span>
               {isMerged
@@ -94,7 +94,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
         </div>
 
         {pullRequest.body && (
-          <p className="text-sm text-gray-400 line-clamp-2 mb-4">
+          <p className="text-sm text-slate-400 line-clamp-2 mb-4">
             {pullRequest.body.slice(0, 150)}
             {pullRequest.body.length > 150 && "..."}
           </p>

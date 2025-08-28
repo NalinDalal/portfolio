@@ -29,53 +29,53 @@ export function EnhancedProjectCard({
     });
   };
 
-  // Color schemes inspired by sarg.am
+  // Color schemes: strictly slate-black-white
   const colorSchemes = [
     {
-      bg: "bg-gradient-to-br from-black/80 to-gray-900/60",
-      border: "border-gray-800",
+      bg: "bg-gradient-to-br from-slate-900/80 to-slate-900/60",
+      border: "border-slate-800",
       accent: "text-white",
-      hover: "hover:border-white/40 hover:shadow-gray-200/10",
+      hover: "hover:border-white/40 hover:shadow-slate-200/10",
     },
     {
-      bg: "bg-gradient-to-br from-gray-900/80 to-gray-800/60",
-      border: "border-gray-700",
-      accent: "text-gray-200",
-      hover: "hover:border-gray-400/40 hover:shadow-gray-400/10",
+      bg: "bg-gradient-to-br from-slate-900/80 to-slate-800/60",
+      border: "border-slate-700",
+      accent: "text-slate-200",
+      hover: "hover:border-slate-400/40 hover:shadow-slate-400/10",
     },
     {
-      bg: "bg-gradient-to-br from-gray-800/80 to-gray-700/60",
-      border: "border-gray-700",
-      accent: "text-gray-300",
-      hover: "hover:border-gray-300/40 hover:shadow-gray-300/10",
+      bg: "bg-gradient-to-br from-slate-800/80 to-slate-700/60",
+      border: "border-slate-700",
+      accent: "text-slate-300",
+      hover: "hover:border-slate-300/40 hover:shadow-slate-300/10",
     },
     {
-      bg: "bg-gradient-to-br from-gray-700/80 to-gray-600/60",
-      border: "border-gray-600",
-      accent: "text-gray-400",
-      hover: "hover:border-gray-400/40 hover:shadow-gray-400/10",
+      bg: "bg-gradient-to-br from-slate-700/80 to-slate-600/60",
+      border: "border-slate-600",
+      accent: "text-slate-400",
+      hover: "hover:border-slate-400/40 hover:shadow-slate-400/10",
     },
     {
-      bg: "bg-gradient-to-br from-gray-600/80 to-gray-500/60",
-      border: "border-gray-500",
-      accent: "text-gray-500",
-      hover: "hover:border-gray-500/40 hover:shadow-gray-500/10",
+      bg: "bg-gradient-to-br from-slate-600/80 to-slate-500/60",
+      border: "border-slate-500",
+      accent: "text-slate-500",
+      hover: "hover:border-slate-500/40 hover:shadow-slate-500/10",
     },
     {
-      bg: "bg-gradient-to-br from-gray-500/80 to-gray-400/60",
-      border: "border-gray-400",
-      accent: "text-gray-400",
-      hover: "hover:border-gray-400/40 hover:shadow-gray-400/10",
+      bg: "bg-gradient-to-br from-slate-500/80 to-slate-400/60",
+      border: "border-slate-400",
+      accent: "text-slate-400",
+      hover: "hover:border-slate-400/40 hover:shadow-slate-400/10",
     },
     {
-      bg: "bg-gradient-to-br from-gray-400/80 to-gray-300/60",
-      border: "border-gray-300",
-      accent: "text-gray-300",
-      hover: "hover:border-gray-300/40 hover:shadow-gray-300/10",
+      bg: "bg-gradient-to-br from-slate-400/80 to-slate-300/60",
+      border: "border-slate-300",
+      accent: "text-slate-300",
+      hover: "hover:border-slate-300/40 hover:shadow-slate-300/10",
     },
     {
-      bg: "bg-gradient-to-br from-gray-300/80 to-white/60",
-      border: "border-gray-200",
+      bg: "bg-gradient-to-br from-slate-300/80 to-white/60",
+      border: "border-slate-200",
       accent: "text-white",
       hover: "hover:border-white/40 hover:shadow-white/10",
     },
@@ -104,7 +104,7 @@ export function EnhancedProjectCard({
               </a>
             </CardTitle>
 
-            <CardDescription className="mt-2 text-gray-300">
+            <CardDescription className="mt-2 text-slate-300">
               {repository.description || "No description available"}
             </CardDescription>
           </div>
@@ -113,7 +113,7 @@ export function EnhancedProjectCard({
 
       <CardContent>
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4 text-sm text-gray-400">
+          <div className="flex items-center gap-4 text-sm text-slate-400">
             {repository.language && (
               <LanguageBadge language={repository.language} />
             )}
@@ -136,7 +136,7 @@ export function EnhancedProjectCard({
               <Badge
                 key={topic}
                 variant="secondary"
-                className="text-xs bg-gray-700/50 text-gray-300 border-gray-600"
+                className="text-xs bg-slate-800/50 text-slate-300 border-slate-600"
               >
                 {topic}
               </Badge>
@@ -144,7 +144,7 @@ export function EnhancedProjectCard({
             {repository.topics.length > 4 && (
               <Badge
                 variant="outline"
-                className="text-xs text-gray-400 border-gray-600"
+                className="text-xs text-slate-400 border-slate-600"
               >
                 +{repository.topics.length - 4} more
               </Badge>
@@ -152,7 +152,7 @@ export function EnhancedProjectCard({
           </div>
         )}
 
-        <div className="flex items-center gap-2 text-xs text-gray-500">
+        <div className="flex items-center gap-2 text-xs text-slate-500">
           <Calendar className="h-3 w-3" />
           <span>Updated {formatDate(repository.updated_at)}</span>
         </div>
