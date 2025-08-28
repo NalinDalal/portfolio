@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
+
 export async function GET() {
   const userPath = path.join(process.cwd(), "data", "user.json");
   const reposPath = path.join(process.cwd(), "data", "repositories.json");
