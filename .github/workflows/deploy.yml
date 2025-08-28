@@ -29,7 +29,9 @@ jobs:
         run: npm install
 
       - name: Build static site
-        run: npm run build
+        run: |
+          npm run build
+          npm run export
 
       - name: Deploy to GitHub Pages repo
         uses: peaceiris/actions-gh-pages@v4
