@@ -31,6 +31,13 @@ GITHUB_TOKEN=[ghp_something]
 
 > Only folders ending with `-pr` will be auto-populated as PR docs.
 
+when you add a pr doc run 2 command after it:
+
+```bash
+npm run prebuild
+npm run build
+```
+
 # to do
 
 - just revamp ui to slate-black-white
