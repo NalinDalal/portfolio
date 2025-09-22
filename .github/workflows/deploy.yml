@@ -26,19 +26,16 @@ jobs:
 
       - name: PreBuild Step
         run: npm run prebuild
-        
+
       - name: Build Next.js app
         run: npm run build
         env:
           NODE_ENV: production
 
-      - name: Export static site
-        run: npm run export
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.FINE_GRAINED_PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out
           publish_branch: gh-pages
           force_orphan: true
