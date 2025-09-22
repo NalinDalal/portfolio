@@ -1,7 +1,7 @@
 import { getAllBlogPosts } from "@/utils/get-blog-posts";
 import BookIcon from "./ui/book-icon";
 import type { BlogPost } from "@/utils/get-blog-posts";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 
 const blogPosts = getAllBlogPosts();
 

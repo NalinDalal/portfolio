@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Home, Book } from "lucide-react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import React from "react";
 
 interface BlogLink {
