@@ -1,13 +1,12 @@
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
 const blogsDir = path.join(process.cwd(), "blogs");
 const manifestPath = path.join(process.cwd(), "blogs-manifest.ts");
 
 const folders = fs.readdirSync(blogsDir).filter((f) => f.endsWith("-pr"));
 
-const imports: string[] = [];
-const entries: string[] = [];
+const imports = [];
 
 for (const folder of folders) {
   const slug = folder.replace(/-pr$/, "");
@@ -19,18 +18,12 @@ for (const folder of folders) {
     const name = path.parse(file).name;
     const key = `${slug}/${name}`;
     const importPath = `@/blogs/${folder}/${file}`;
-    const varName = `${slug}_${name}`.replace(/[^a-zA-Z0-9_]/g, "_");
+    // Variable name is not used in the output, so we skip it
     imports.push(`"${key}": () => import("${importPath}"),`);
   }
 }
 
-const manifest = `// AUTO-GENERATED FILE. DO NOT EDIT.
-export const blogs: Record<string, () => Promise<any>> = {
-  ${imports.join("\n  ")}
-};
-`;
+const manifest = `// AUTO-GENERATED FILE. DO NOT EDIT.\nexport const blogs: Record<string, () => Promise<any>> = {\n  ${imports.join("\n  ")}\n};\n`;
 
 fs.writeFileSync(manifestPath, manifest);
-console.log(
-  `✅ Wrote manifest with ${imports.length} entries to blogs-manifest.ts`,
-);
+console.log(`Wrote manifest with ${imports.length} entries to blogs-manifest.ts`);
