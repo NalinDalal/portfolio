@@ -51,10 +51,7 @@ function ProofOfWorkList() {
             >
               {icon}
               {/* <el.icon className={clsx('h-5 w-5', el?.iconClass)} /> */}
-              <span
-                className="font-bold"
-                dangerouslySetInnerHTML={{ __html: el?.name }}
-              />
+              <span className="font-bold">{el?.name}</span>
             </a>
           );
         })}

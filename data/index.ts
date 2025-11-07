@@ -1,4 +1,11 @@
-import mergedPRs from "@/data/mergedPRs.json";
+interface PR {
+  title: string;
+  url: string;
+  repo: string;
+}
+
+import mergedPRsData from "@/data/mergedPRs.json";
+const mergedPRs = mergedPRsData as PR[];
 
 export type IconNameType = "pull-request" | "video" | "github";
 

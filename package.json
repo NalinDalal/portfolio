@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "node scripts/generate-manifest.js",
     "export": "next export",
     "build": "next build",
     "start": "next start",
