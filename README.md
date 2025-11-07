@@ -41,6 +41,8 @@ npm run build
 # to do
 
 - just revamp ui to slate-black-white
+  bro for once use your own brain, why rely on gpt
+  revamp this again but with clear mind and give only 1 hr daily
 
 we have 1 domains for free:
 
