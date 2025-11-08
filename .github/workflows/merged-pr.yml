@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch latest merged PRs
         run: |
-          node utils/getMergedPRs.js > data/mergedPRs.json
+          node scripts/updateMergedPRs.js > data/mergedPRs.json
       - name: Commit & push changes
         run: |
           git config user.name "GitHub Actions"
