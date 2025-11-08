@@ -38,11 +38,68 @@ npm run prebuild
 npm run build
 ```
 
+---
+
 # to do
 
-- just revamp ui to slate-black-white
-  bro for once use your own brain, why rely on gpt
-  revamp this again but with clear mind and give only 1 hr daily
+- put up your good projects, there links
+  and there case studies
+  so for that what i was thinking, i will manually populate the project name, description, link and link a case study to it
+  do like projects.json has like this:
+
+```json
+{
+    {
+    'projectName':'blind-app',
+    'liveLink':'https://blind-app-omega.vercel.app/',
+    'githubLink':'https://github.com/NalinDalal/blind-app','Summary':'Next.js applucation that serves local college community where student scan share stuff keeping themselves anonymous'
+    ,'caseStudy':'/link to case study, md file with everything'
+},{},{}
+}
+```
+
+So projects endpoint should be like, populate my 3-4 projects from a json,
+Json has like name, live link, GitHub link, summary to put into card, and some tags like nextjs, prisma etc
+
+Also a link to case study, is it like gr8?
+
+so for case study do like mkdir case-study, we will populate json manually, put like blind.mdx into that json, makes sense?
+
+am i thinking right?
+
+- put up your good projects, there links
+  and there case studies
+  so for that what i was thinking, i will manually populate the project name, description, link and link a case study to it
+  do like projects.json has like this:
+
+```json
+{
+    {
+    'projectName':'blind-app',
+    'liveLink':'https://blind-app-omega.vercel.app/',
+    'githubLink':'https://github.com/NalinDalal/blind-app','Summary':'Next.js applucation that serves local college community where student scan share stuff keeping themselves anonymous'
+    ,'caseStudy':'/link to case study, md file with everything'
+},{
+
+},{}
+}
+```
+
+Should I do this
+
+So projects endpoint should be like, populate my 3-4 projects from a json,
+
+Json has like name, live link, GitHub link, summary to put into card, and some tags like nextjs, prisma etc
+
+Also a link to case study, is it like gr8?
+
+now when i go to case study, it should be like, go to localhost:3000/projects/blind which renders a page from projects folder with name blind.mdx
+
+u know i want to keep it dynamic so i can easily link all this stuff in json
+
+do you get my point?
+
+---
 
 we have 1 domains for free:
 

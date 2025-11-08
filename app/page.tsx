@@ -15,6 +15,9 @@ export default function Home() {
       <WorkExperience />
       {/* Blogs Section */}
       <BlogSection />
+
+      {/*projects and case stdies */}
+
       {/* Footer Section */}
       <hr className="border-zinc-900 dark:border-zinc-800 border w-full" />
       <GetInTouch />

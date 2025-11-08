@@ -1,5 +1,5 @@
 ---
-title: "Optimize Directory Traversal in `check-edit-links` Script"
+title: "Optimize Directory Traversal in check-edit-links Script"
 date: "2025-05-25"
 tags: ["asyncapi", "github", "automation"]
 ---

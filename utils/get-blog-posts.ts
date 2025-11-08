@@ -27,7 +27,9 @@ export function getAllBlogPosts(): BlogPost[] {
     const blogsDir = path.join(process.cwd(), "blogs");
     const folders = fs
       .readdirSync(blogsDir)
-      .filter((folder) => folder.endsWith("-pr")); // only take *-pr folders
+      .filter((folder) =>
+        fs.statSync(path.join(blogsDir, folder)).isDirectory(),
+      );
 
     const posts: BlogPost[] = [];
 
@@ -37,45 +39,25 @@ export function getAllBlogPosts(): BlogPost[] {
         .readdirSync(folderPath)
         .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
 
-      if (files.length === 0) {
-        console.warn(`No .md/.mdx files found in ${folderPath}`);
-        continue;
-      }
+      if (files.length === 0) continue;
       const mainFile = files[0];
-      if (!mainFile) {
-        console.warn(`No main file found for ${folderPath}`);
-        continue;
-      }
       const filePath = path.join(folderPath, mainFile);
       const fileContent = fs.readFileSync(filePath, "utf8");
 
       const { data } = matter(fileContent);
       const parsed = blogSchema.safeParse(data);
-
-      if (!parsed.success) {
-        console.error(`Invalid frontmatter in ${filePath}`);
-        continue;
-      }
+      if (!parsed.success) continue;
 
       const fileName = path.parse(mainFile).name;
-      if (!fileName) {
-        console.warn(
-          `File name could not be parsed for ${mainFile} in ${folderPath}`,
-        );
-        continue;
-      }
-      console.log(
-        `Blog: ${folder}, Main file: ${mainFile}, Slug: ${folder.replace(/-pr$/, "")}`,
-      );
+
       posts.push({
         ...parsed.data,
-        slug: folder.replace(/-pr$/, ""), // remove `-pr` from slug
-        file: fileName, // main file name without extension
+        slug: folder,
+        file: fileName,
         description: parsed.data.description || "Read more about this topic...",
       });
     }
 
-    // Sort by date, newest first
     return posts.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );

@@ -86,3 +86,24 @@ html {
     outline 0.3s ease-in-out,
     outline-offset 0.3s ease-in-out;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* --- Custom dark prose style for MDX content --- */
+.prose-invert {
+  --tw-prose-body: #ffffff;
+  --tw-prose-headings: #ffffff;
+  --tw-prose-links: #60a5fa;
+  --tw-prose-bold: #ffffff;
+  --tw-prose-quotes: #ffffff;
+  --tw-prose-bullets: #ffffff;
+  --tw-prose-counters: #ffffff;
+  --tw-prose-code: #f472b6;
+  --tw-prose-pre-bg: #0f172a;
+  --tw-prose-hr: #334155;
+}
