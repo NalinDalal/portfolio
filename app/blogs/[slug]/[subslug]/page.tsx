@@ -8,7 +8,7 @@ import { ArrowLeft } from "lucide-react";
 import HashScrollHandler from "@/components/HashScrollHandler";
 
 // ------------------------------------------------------
-// ✅ 1. Generate Static Params
+//  1. Generate Static Params
 // ------------------------------------------------------
 export async function generateStaticParams() {
   const blogsDir = path.join(process.cwd(), "blogs");
@@ -31,7 +31,7 @@ export async function generateStaticParams() {
       }
     }
 
-    console.log("📘 Static paths generated:", paths);
+    console.log(" Static paths generated:", paths);
     return paths;
   } catch (err) {
     console.error("Error generating static params:", err);
@@ -40,7 +40,7 @@ export async function generateStaticParams() {
 }
 
 // ------------------------------------------------------
-// ✅ 2. Custom MDX Components
+//  2. Custom MDX Components
 // ------------------------------------------------------
 const Callout = ({
   children,
@@ -129,12 +129,12 @@ const mdxComponents = {
 };
 
 // ------------------------------------------------------
-// ✅ 3. Page Component
+// 3. Page Component
 // ------------------------------------------------------
 export default async function BlogPage({
   params,
 }: {
-  params: Awaited<{ slug: string; subslug: string }>;
+  params: { slug: string; subslug: string };
 }) {
   const { slug, subslug } = params;
 
@@ -224,13 +224,13 @@ export default async function BlogPage({
       </div>
     );
   } catch (err) {
-    console.error(`❌ Failed to load blog ${slug}/${subslug}:`, err);
+    console.error(` Failed to load blog ${slug}/${subslug}:`, err);
     return notFound();
   }
 }
 
 // ------------------------------------------------------
-// ✅ 4. Metadata
+//  4. Metadata
 // ------------------------------------------------------
 export async function generateMetadata({
   params,

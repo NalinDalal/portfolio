@@ -1,27 +1,32 @@
 [
   {
-    "title": "Fix '<ul>'✅ Updated /home/runner/work/portfolio/portfolio/data/mergedPRs.json with 5 PRs
-hub.com/processing/p5.js-website/pull/983",
-    "repo": "p5.js-website"
+    "title": "Improve Accessibility Guidance for 'describe()' Usage",
+    "url": "https://github.com/processing/p5.js/pull/8101",
+    "repo": "p5.js",
+    "mergedAt": "2025-11-09T18:10:30Z"
+  },
+  {
+    "title": "Fix '<ul>' and '<ol>' Direct Children for HTML Compliance on main",
+    "url": "https://github.com/processing/p5.js-website/pull/983",
+    "repo": "p5.js-website",
+    "mergedAt": "2025-10-02T14:57:11Z"
   },
   {
     "title": "Fix '<ul>' and '<ol>' Direct Children for HTML Compliance",
     "url": "https://github.com/processing/p5.js-website/pull/974",
-    "repo": "p5.js-website"
+    "repo": "p5.js-website",
+    "mergedAt": "2025-10-02T12:28:32Z"
   },
   {
     "title": "Auto-link / Close Issues for 2.0 PRs (p5.js & p5.js-website)",
     "url": "https://github.com/processing/p5.js-website/pull/919",
-    "repo": "p5.js-website"
+    "repo": "p5.js-website",
+    "mergedAt": "2025-09-15T21:01:31Z"
   },
   {
     "title": "Auto Close issues",
     "url": "https://github.com/processing/p5.js-website/pull/952",
-    "repo": "p5.js-website"
-  },
-  {
-    "title": "solves docs issue 837 for p5.js 2.x",
-    "url": "https://github.com/processing/p5.js-website/pull/879",
-    "repo": "p5.js-website"
+    "repo": "p5.js-website",
+    "mergedAt": "2025-09-09T09:04:45Z"
   }
 ]

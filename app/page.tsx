@@ -17,6 +17,11 @@ export default function Home() {
       <BlogSection />
 
       {/*projects and case stdies */}
+      <Link href="projects">
+        <h1 className="text-2xl font-semibold mb-6 hover:underline">
+          Projects \&nbsp; Case Studies
+        </h1>
+      </Link>
 
       {/* Footer Section */}
       <hr className="border-zinc-900 dark:border-zinc-800 border w-full" />

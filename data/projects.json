@@ -4,7 +4,7 @@
     "projectName": "Blind App",
     "description": "Anonymous community platform for college students to share items, thoughts, and resources without revealing their identity. Built with Next.js and modern web technologies.",
     "summary": "Next.js application serving local college community for anonymous sharing",
-    "liveLink": "https://blind-app-omega.vercel.app/",
+    "liveLink": "https://blind-app-cyan.vercel.app/",
     "githubLink": "https://github.com/NalinDalal/blind-app",
     "caseStudy": "/projects/blind-app",
     "tags": ["nextjs", "community", "anonymous", "fullstack"],

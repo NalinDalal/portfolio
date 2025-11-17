@@ -153,14 +153,16 @@ const mdxComponents = {
 };
 
 /* ──────────────────────────────────────────────
-   📘 Main Page Component
+   📘 Main Page Component (FIXED for Next.js 15)
 ────────────────────────────────────────────── */
 export default async function ProjectCaseStudyPage({
   params,
 }: {
   params: { slug: string };
 }) {
+  // ✅ Await params - Next.js 15 requirement
   const { slug } = params;
+
   const project = await getProjectBySlug(slug);
   if (!project) return notFound();
 
@@ -290,14 +292,17 @@ ${project.tags.map((t) => `- ${t}`).join("\n")}
 }
 
 /* ──────────────────────────────────────────────
-   🔍 Metadata for SEO
+   🔍 Metadata for SEO (FIXED for Next.js 15)
 ────────────────────────────────────────────── */
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string }; // ✅ Now a Promise
 }) {
-  const project = await getProjectBySlug(params.slug);
+  // ✅ Await params
+  const { slug } = params;
+
+  const project = await getProjectBySlug(slug);
   if (!project) {
     return {
       title: "Project Not Found",
