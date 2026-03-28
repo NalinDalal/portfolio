@@ -7,6 +7,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { getProjects, getProjectBySlug } from "@/lib/projects";
 import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 import HashScrollHandler from "@/components/HashScrollHandler";
 
 /* ──────────────────────────────────────────────
@@ -153,15 +154,15 @@ const mdxComponents = {
 };
 
 /* ──────────────────────────────────────────────
-   📘 Main Page Component (FIXED for Next.js 15)
+    📘 Main Page Component (FIXED for Next.js 15)
 ────────────────────────────────────────────── */
 export default async function ProjectCaseStudyPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   // ✅ Await params - Next.js 15 requirement
-  const { slug } = params;
+  const { slug } = await params;
 
   const project = await getProjectBySlug(slug);
   if (!project) return notFound();
@@ -205,7 +206,9 @@ ${project.tags.map((t) => `- ${t}`).join("\n")}
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 text-white">
-      <HashScrollHandler />
+      <Suspense fallback={null}>
+        <HashScrollHandler />
+      </Suspense>
 
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* 🔙 Back Button */}
@@ -292,15 +295,15 @@ ${project.tags.map((t) => `- ${t}`).join("\n")}
 }
 
 /* ──────────────────────────────────────────────
-   🔍 Metadata for SEO (FIXED for Next.js 15)
+    🔍 Metadata for SEO (FIXED for Next.js 15)
 ────────────────────────────────────────────── */
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }; // ✅ Now a Promise
+  params: Promise<{ slug: string }>;
 }) {
   // ✅ Await params
-  const { slug } = params;
+  const { slug } = await params;
 
   const project = await getProjectBySlug(slug);
   if (!project) {

@@ -1,31 +1,46 @@
 import React from "react";
-import { Briefcase } from "lucide-react";
+import { Briefcase, Calendar } from "lucide-react";
 import { experiences } from "@/data";
 
 function WorkExperience() {
   return (
-    <div className="flex flex-col gap-y-4 text-black dark:text-white w-full">
-      <h2 className="font-bold text-2xl md:text-4xl tracking-tight">
+    <section id="work-experience" className="py-6">
+      <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-1 text-zinc-900 dark:text-white">
         Work Experience
       </h2>
-      <p className="text-gray-600 dark:text-gray-400 mb-4">
-        All my professional experiences as a software engineer
+      <p className="text-zinc-600 dark:text-zinc-400 mb-8">
+        My professional journey
       </p>
-      <div className="space-y-4">
-        {experiences.map((exp, index) => (
-          <div key={index} className="flex items-center space-x-3">
-            <Briefcase className="w-5 h-5 mt-1 text-gray-400" />
-            <div>
-              <p className="font-semibold">{exp.company}</p>
-              <p className="text-gray-400">{exp.position}</p>
-              <p className="text-sm text-gray-500">
-                {exp.startDate} - {exp.endDate}
-              </p>
+
+      <div className="relative">
+        <div className="absolute left-4 top-0 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
+
+        <div className="space-y-8">
+          {experiences.map((exp, index) => (
+            <div key={index} className="relative pl-12">
+              <div className="absolute left-2.5 w-3 h-3 rounded-full bg-zinc-900 dark:bg-white border-2 border-zinc-900 dark:border-zinc-900" />
+              
+              <div className="bg-zinc-50 dark:bg-zinc-900/50 rounded-lg p-4 border border-zinc-100 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+                <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                  <div>
+                    <h3 className="font-semibold text-lg text-zinc-900 dark:text-white">
+                      {exp.position}
+                    </h3>
+                    <p className="text-zinc-600 dark:text-zinc-400 font-medium">
+                      {exp.company}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-500">
+                    <Calendar className="w-4 h-4" />
+                    {exp.startDate} — {exp.endDate}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -53,7 +53,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-zinc-900`}
       >
-        <main className="border-2 border-zinc-200 dark:border-zinc-800 min-h-screen max-w-2xl mx-auto my-1 px-4 py-4">
+        <Navbar />
+        <main className="min-h-screen max-w-2xl mx-auto px-4 py-6">
           {children}
           {/* Uncomment if you installed these */}
           {/* <SpeedInsights /> */}

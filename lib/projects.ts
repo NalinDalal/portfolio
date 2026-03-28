@@ -56,11 +56,7 @@ export async function getProjectsByTag(tag: string): Promise<Project[]> {
 /**
  * Convert Project to GitHubRepository format for display components
  */
-export function projectToRepository(project: Project): GitHubRepository & {
-  liveLink?: string;
-  caseStudy?: string;
-  githubLink: string;
-} {
+export function projectToRepository(project: Project) {
   return {
     id: project.slug,
     name: project.projectName,
@@ -73,14 +69,9 @@ export function projectToRepository(project: Project): GitHubRepository & {
     topics: project.tags || [],
     updated_at: project.updatedAt || new Date().toISOString(),
     created_at: project.createdAt || new Date().toISOString(),
-    // Extended properties
     liveLink: project.liveLink,
     caseStudy: project.caseStudy,
     githubLink: project.githubLink,
-  } as GitHubRepository & {
-    liveLink?: string;
-    caseStudy?: string;
-    githubLink: string;
   };
 }
 

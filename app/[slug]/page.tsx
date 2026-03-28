@@ -9,9 +9,9 @@ import { z } from "zod";
 import { beautifyDate } from "@/utils/beautify-date";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 const blogSchema = z.object({
@@ -59,7 +59,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(props: PageProps) {
-  const params = props.params;
+  const params = await props.params;
   const post = await getPost(params.slug);
 
   if (!post) {
@@ -80,7 +80,7 @@ export async function generateMetadata(props: PageProps) {
 }
 
 export default async function BlogPost(props: PageProps) {
-  const params = props.params;
+  const params = await props.params;
   const post = await getPost(params.slug);
 
   if (!post) {

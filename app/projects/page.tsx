@@ -49,10 +49,11 @@ export default async function Page() {
 
 import { ProjectTabs } from "@/components/ProjectTabs";
 import { getProjects, projectToRepository } from "@/lib/projects";
+import { GitHubRepository } from "@/types/github";
 
 export default async function ProjectsPage() {
   const projects = await getProjects();
-  const repositories = projects.map(projectToRepository);
+  const repositories = projects.map(projectToRepository) as unknown as GitHubRepository[];
 
   return (
     <main className="container mx-auto px-4 py-8">

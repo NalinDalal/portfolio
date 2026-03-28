@@ -12,11 +12,7 @@
     "mergedAt": "2025-10-02T14:57:11Z"
   },
   {
-    "title": "Fix '<ul>' and '<ol>' Direct Children for HTML ComplFile written and verified: /home/runner/work/portfolio/portfolio/data/mergedPRs.json
-
- Successfully updated /home/runner/work/portfolio/portfolio/data/mergedPRs.json
- Total PRs: 5
-ose Issues for 2.0 PRs (p5.js & p5.js-website)",
+    "title": "Fix '<ul>' and '<ol>' Direct Children for HTML Compliance Issues for 2.0 PRs",
     "url": "https://github.com/processing/p5.js-website/pull/919",
     "repo": "p5.js-website",
     "mergedAt": "2025-09-15T21:01:31Z"

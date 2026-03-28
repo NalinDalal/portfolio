@@ -1,8 +1,10 @@
+import Link from "next/link";
 import BlogSection from "@/components/blog-section";
 import GetInTouch from "@/components/get-in-touch";
 import Introduction from "@/components/introduction";
 import ProofOfWork from "@/components/proof-of-work";
 import WorkExperience from "@/components/work-experience";
+import Skills from "@/components/skills";
 
 export default function Home() {
   return (
@@ -16,7 +18,10 @@ export default function Home() {
       {/* Blogs Section */}
       <BlogSection />
 
-      {/*projects and case stdies */}
+      {/* Skills Section */}
+      <Skills />
+
+      {/*projects and case studies */}
       <Link href="projects">
         <h1 className="text-2xl font-semibold mb-6 hover:underline">
           Projects \&nbsp; Case Studies

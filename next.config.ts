@@ -6,7 +6,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  output: "export" as const, // <-- literal assertion fixes the type error
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 

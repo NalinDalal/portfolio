@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { Suspense } from "react";
 import HashScrollHandler from "@/components/HashScrollHandler";
 
 // ------------------------------------------------------
@@ -134,9 +135,9 @@ const mdxComponents = {
 export default async function BlogPage({
   params,
 }: {
-  params: { slug: string; subslug: string };
+  params: Promise<{ slug: string; subslug: string }>;
 }) {
-  const { slug, subslug } = params;
+  const { slug, subslug } = await params;
 
   const mdDir = path.join(process.cwd(), "blogs", slug);
   const possiblePaths = [
@@ -169,7 +170,9 @@ export default async function BlogPage({
 
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 text-white">
-        <HashScrollHandler />
+        <Suspense fallback={null}>
+          <HashScrollHandler />
+        </Suspense>
 
         <div className="container mx-auto px-4 py-12 max-w-4xl">
           <Link
@@ -235,19 +238,20 @@ export default async function BlogPage({
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string; subslug: string };
+  params: Promise<{ slug: string; subslug: string }>;
 }) {
+  const { slug, subslug } = await params;
   const mdPath = path.join(
     process.cwd(),
     "blogs",
-    params.slug,
-    `${params.subslug}.md`,
+    slug,
+    `${subslug}.md`,
   );
   try {
     const raw = await fs.readFile(mdPath, "utf8");
     const parsed = matter(raw);
     return {
-      title: parsed.data.title || params.subslug,
+      title: parsed.data.title || subslug,
       description: parsed.data.description || "",
     };
   } catch {

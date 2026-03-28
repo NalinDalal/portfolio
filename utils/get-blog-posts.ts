@@ -10,6 +10,7 @@ export interface BlogPost {
   description?: string;
   date: string;
   tags?: string[];
+  readingTime: number;
 }
 
 export const blogSchema = z.object({
@@ -44,17 +45,20 @@ export function getAllBlogPosts(): BlogPost[] {
       const filePath = path.join(folderPath, mainFile);
       const fileContent = fs.readFileSync(filePath, "utf8");
 
-      const { data } = matter(fileContent);
+      const { data, content } = matter(fileContent);
       const parsed = blogSchema.safeParse(data);
       if (!parsed.success) continue;
 
       const fileName = path.parse(mainFile).name;
+      const wordCount = content.split(/\s+/).length;
+      const readingTime = Math.ceil(wordCount / 200);
 
       posts.push({
         ...parsed.data,
         slug: folder,
         file: fileName,
         description: parsed.data.description || "Read more about this topic...",
+        readingTime,
       });
     }
 
