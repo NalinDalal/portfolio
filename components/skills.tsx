@@ -3,11 +3,10 @@
 import { useState } from "react";
 
 const skillCategories = {
-  "Languages": ["TypeScript", "JavaScript", "Python", "Go"],
-  "Frontend": ["React", "Next.js", "Tailwind CSS", "Vue.js"],
-  "Backend": ["Node.js", "Express", "PostgreSQL", "MongoDB"],
-  "Tools & Platforms": ["Git", "Docker", "AWS", "Vercel", "GitHub Actions"],
-  "Other": ["REST APIs", "GraphQL", "CI/CD", "Linux"],
+  "Languages": ["C++", "TypeScript", "JavaScript", "Rust", "Solidity", "SQL"],
+  "Frameworks": ["React", "Next.js", "Node.js", "Tailwind CSS", "Prisma"],
+  "DevOps": ["Docker", "Kubernetes", "AWS", "Vercel", "GitHub Actions"],
+  "Tools": ["Git", "Jest", "Bash/Zsh", "LazyGit", "Neovim"],
 };
 
 function Skills() {

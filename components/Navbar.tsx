@@ -1,12 +1,13 @@
 "use client";
 
-import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, Briefcase } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
+  { href: "/services", label: "Services" },
   { href: "/blogs", label: "Blog" },
   { href: "/resume", label: "Resume" },
 ];
@@ -61,7 +62,7 @@ export default function Navbar() {
               <Linkedin className="w-5 h-5" />
             </a>
             <a
-              href="mailto:nalindalal2004@gmail.com"
+              href="mailto:nalin@nerdev.in"
               className="text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
               aria-label="Email"
             >
