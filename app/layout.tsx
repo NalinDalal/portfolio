@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
@@ -9,28 +9,77 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-// Metadata
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#18181b" },
+  ],
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nalin.to"), // or your chosen domain
-  title: "Nalin Dalal",
+  metadataBase: new URL("https://nerdev.in"),
+  title: {
+    default: "Nalin Dalal | Full Stack Engineer & Developer",
+    template: "%s | Nalin Dalal",
+  },
   description:
-    "Software engineer, open-source contributor, and builder of things that matter.",
+    "Software engineer, open-source contributor, and builder of things that matter. Full-stack developer specializing in Next.js, Node.js, React Native, and AWS.",
+  keywords: [
+    "Nalin Dalal",
+    "full stack developer",
+    "software engineer",
+    "Next.js developer",
+    "React developer",
+    "Node.js developer",
+    "AWS developer",
+    "open source contributor",
+    "freelance developer",
+    "Bhopal developer",
+  ],
+  authors: [{ name: "Nalin Dalal", url: "https://nerdev.in" }],
+  creator: "Nalin Dalal",
+  publisher: "Nalin Dalal",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "Nalin Dalal",
+    title: "Nalin Dalal | Full Stack Engineer & Developer",
     description:
       "Software engineer, open-source contributor, and builder of things that matter.",
-    url: "https://nalin.to",
+    url: "https://nerdev.in",
     siteName: "Nalin Dalal",
-    images: [{ url: "/og-image.png" }],
+    images: [
+      {
+        url: "https://nerdev.in/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Nalin Dalal - Full Stack Developer",
+      },
+    ],
     locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nalin Dalal",
+    title: "Nalin Dalal | Full Stack Engineer & Developer",
     description:
       "Software engineer, open-source contributor, and builder of things that matter.",
-    images: [{ url: "/og-image.png" }],
+    images: [{ url: "https://nerdev.in/og-image.png" }],
+    creator: "@nalindalal",
+  },
+  verification: {
+    google: "google-site-verification-code",
+    yandex: "yandex-verification-code",
   },
 };
 
