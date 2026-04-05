@@ -1,7 +1,9 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { ArrowDown, Zap, Code, Server } from "lucide-react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 function Introduction() {
   const services = [
@@ -26,17 +28,37 @@ function Introduction() {
     <section className="py-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-2 mb-2"
+          >
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">Available for freelance work</span>
-          </div>
-          <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight mb-3 bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 dark:from-white dark:via-zinc-300 dark:to-white bg-clip-text text-transparent">
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">Available for freelance works</span>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight mb-3 bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-900 dark:from-white dark:via-zinc-300 dark:to-white bg-clip-text text-transparent"
+          >
             Nalin Dalal
-          </h1>
-          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mb-4 max-w-lg">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mb-4 max-w-lg"
+          >
             Software engineer building systems that matter. I turn complex problems into elegant solutions.
-          </p>
-          <div className="flex flex-wrap gap-3">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-wrap gap-3"
+          >
             <a
               href="#services"
               className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
@@ -50,9 +72,22 @@ function Introduction() {
             >
               View Work
             </a>
-          </div>
+            <a
+              href="https://cal.com/nalin-dalal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 border-2 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-lg font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            >
+              Book a Call
+            </a>
+          </motion.div>
         </div>
-        <div className="relative">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="relative"
+        >
           <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-2xl" />
           <Image
             src="https://avatars.githubusercontent.com/u/116961144?v=4"
@@ -61,23 +96,31 @@ function Introduction() {
             width={180}
             className="relative object-cover rounded-2xl border-4 border-zinc-200 dark:border-zinc-800 shadow-xl"
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* Services Preview */}
       <div id="services" className="mt-12">
-        <div className="flex items-center justify-between mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="flex items-center justify-between mb-6"
+        >
           <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-0 text-zinc-900 dark:text-white">
             Services
           </h2>
           <Link href="/services" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white">
             View all →
           </Link>
-        </div>
+        </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {services.map((service, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
               className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
             >
               <div className="flex items-center gap-2 mb-2 text-zinc-900 dark:text-white">
@@ -87,13 +130,18 @@ function Introduction() {
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 {service.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
 
       {/* Quick Stats */}
-      <div className="mt-8 flex flex-wrap gap-6 text-sm">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.9 }}
+        className="mt-8 flex flex-wrap gap-6 text-sm"
+      >
         <div>
           <span className="font-bold text-xl text-zinc-900 dark:text-white">550+</span>
           <span className="text-zinc-500 dark:text-zinc-400 ml-1">LeetCode</span>
@@ -110,7 +158,7 @@ function Introduction() {
           <span className="font-bold text-xl text-zinc-900 dark:text-white">GSSoC</span>
           <span className="text-zinc-500 dark:text-zinc-400 ml-1">Contributor</span>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
