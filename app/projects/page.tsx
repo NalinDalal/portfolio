@@ -73,15 +73,15 @@ export default async function ProjectsPage() {
   const repositories = projects.map(projectToRepository) as unknown as GitHubRepository[];
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold mb-2">Projects</h1>
+        <h1 className="text-2xl font-semibold mb-2 text-zinc-900 dark:text-white">Projects</h1>
         <p className="text-zinc-600 dark:text-zinc-400">
           A collection of my work spanning full-stack apps, tools, and challenges
         </p>
       </div>
 
       <ProjectTabs repositories={repositories} />
-    </main>
+    </>
   );
 }

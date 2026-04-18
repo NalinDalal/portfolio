@@ -104,14 +104,14 @@ export function ProjectTabs({ repositories }: ProjectTabsProps) {
   return (
     <div>
       {/* Tab Navigation */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-2 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
               activeTab === tab.id
-                ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 shadow-lg"
+                ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900"
                 : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
             }`}
           >
@@ -122,7 +122,7 @@ export function ProjectTabs({ repositories }: ProjectTabsProps) {
 
       {/* Project Grid */}
       {filteredRepos.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredRepos.slice(0, 9).map((repo, index) => (
             <EnhancedProjectCard
               key={`${activeTab}-${repo.id}`}
