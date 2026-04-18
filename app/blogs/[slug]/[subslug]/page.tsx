@@ -51,10 +51,10 @@ const Callout = ({
   type?: "info" | "warning" | "success" | "error";
 }) => {
   const styles = {
-    info: "border-blue-500/50 bg-blue-950/30 text-blue-200",
-    warning: "border-yellow-500/50 bg-yellow-950/30 text-yellow-200",
-    success: "border-green-500/50 bg-green-950/30 text-green-200",
-    error: "border-red-500/50 bg-red-950/30 text-red-200",
+    info: "border-blue-500/50 bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-200",
+    warning: "border-yellow-500/50 bg-yellow-50 dark:bg-yellow-950/30 text-yellow-700 dark:text-yellow-200",
+    success: "border-green-500/50 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-200",
+    error: "border-red-500/50 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-200",
   };
   return (
     <div className={`rounded-lg border-2 p-4 my-6 ${styles[type]}`}>
@@ -67,24 +67,24 @@ const mdxComponents = {
   h1: (props: any) => (
     <h1
       {...props}
-      className="text-4xl font-bold text-white mb-6 mt-8 scroll-mt-20"
+      className="text-4xl font-bold text-zinc-900 dark:text-white mb-6 mt-8 scroll-mt-20"
     />
   ),
   h2: (props: any) => (
     <h2
       {...props}
-      className="text-3xl font-bold text-white mb-4 mt-8 scroll-mt-20"
+      className="text-3xl font-bold text-zinc-900 dark:text-white mb-4 mt-8 scroll-mt-20"
     />
   ),
   p: (props: any) => (
-    <p {...props} className="text-white/90 mb-4 leading-relaxed text-base" />
+    <p {...props} className="text-zinc-700 dark:text-zinc-300 mb-4 leading-relaxed text-base" />
   ),
   a: (props: any) => {
     const isAnchor = props.href?.startsWith("#");
     return (
       <a
         {...props}
-        className={`text-blue-400 hover:text-blue-300 underline ${
+        className={`text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline ${
           isAnchor ? "cursor-pointer" : ""
         }`}
         target={isAnchor ? undefined : "_blank"}
@@ -95,21 +95,21 @@ const mdxComponents = {
   ul: (props: any) => (
     <ul
       {...props}
-      className="list-disc list-inside text-white mb-4 space-y-2 ml-4"
+      className="list-disc list-inside text-zinc-700 dark:text-zinc-300 mb-4 space-y-2 ml-4"
     />
   ),
-  li: (props: any) => <li {...props} className="text-white ml-2" />,
+  li: (props: any) => <li {...props} className="text-zinc-700 dark:text-zinc-300 ml-2" />,
   code: (props: any) => {
     const { className, children } = props;
     const isInline = !className;
     if (isInline)
       return (
-        <code className="bg-slate-800 text-pink-400 px-1.5 py-0.5 rounded text-sm font-mono">
+        <code className="bg-zinc-100 dark:bg-zinc-800 text-pink-600 dark:text-pink-400 px-1.5 py-0.5 rounded text-sm font-mono">
           {children}
         </code>
       );
     return (
-      <code className="block bg-slate-900 text-slate-200 p-4 rounded-lg overflow-x-auto text-sm font-mono leading-relaxed">
+      <code className="block bg-zinc-50 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 p-4 rounded-lg overflow-x-auto text-sm font-mono leading-relaxed">
         {children}
       </code>
     );
@@ -117,13 +117,13 @@ const mdxComponents = {
   pre: (props: any) => (
     <pre
       {...props}
-      className="bg-slate-900 rounded-lg overflow-x-auto mb-6 border border-slate-700"
+      className="bg-zinc-50 dark:bg-zinc-900 rounded-lg overflow-x-auto mb-6 border border-zinc-200 dark:border-zinc-800"
     />
   ),
   blockquote: (props: any) => (
     <blockquote
       {...props}
-      className="border-l-4 border-slate-500 pl-4 italic text-white/90 my-6 bg-slate-800/30 py-2"
+      className="border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 italic text-zinc-600 dark:text-zinc-400 my-6 bg-zinc-50 dark:bg-zinc-900/50 py-2"
     />
   ),
   Callout,
@@ -169,27 +169,27 @@ export default async function BlogPage({
       : null;
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 text-white">
+      <div className="min-h-screen bg-white dark:bg-zinc-900">
         <Suspense fallback={null}>
           <HashScrollHandler />
         </Suspense>
 
-        <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <div className="max-w-2xl mx-auto px-4 py-6">
           <Link
             href="/blogs"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-8 transition"
+            className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white mb-8 transition"
           >
             <ArrowLeft size={16} />
             Back to Blogs
           </Link>
 
-          <header className="mb-12 pb-8 border-b border-slate-800">
-            <h1 className="text-5xl font-bold mb-2 text-white">
+          <header className="mb-12 pb-8 border-b border-zinc-200 dark:border-zinc-800">
+            <h1 className="text-5xl font-bold mb-2 text-zinc-900 dark:text-white">
               {data.title || subslug}
             </h1>
 
             {formattedDate && (
-              <p className="text-slate-400 mb-2 text-sm">{formattedDate}</p>
+              <p className="text-zinc-500 dark:text-zinc-400 mb-2 text-sm">{formattedDate}</p>
             )}
 
             {data.tags && (
@@ -197,7 +197,7 @@ export default async function BlogPage({
                 {data.tags.map((tag: string) => (
                   <span
                     key={tag}
-                    className="bg-slate-800 text-slate-300 px-2 py-1 text-xs rounded-full"
+                    className="bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-2 py-1 text-xs rounded-full"
                   >
                     #{tag}
                   </span>
@@ -206,18 +206,18 @@ export default async function BlogPage({
             )}
 
             {data.description && (
-              <p className="text-lg text-slate-300 mt-2">{data.description}</p>
+              <p className="text-lg text-zinc-600 dark:text-zinc-300 mt-2">{data.description}</p>
             )}
           </header>
 
-          <article className="prose prose-invert prose-slate max-w-none">
+          <article className="prose prose-zinc dark:prose-invert max-w-none">
             <MDXRemote source={content} components={mdxComponents} />
           </article>
 
-          <footer className="mt-16 pt-8 border-t border-slate-800">
+          <footer className="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800">
             <Link
               href="/blogs"
-              className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition"
+              className="inline-flex items-center gap-2 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition"
             >
               <ArrowLeft size={16} />
               Back to all blogs
