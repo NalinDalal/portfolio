@@ -11,13 +11,13 @@ function GetInTouch() {
   ];
 
   return (
-    <footer className="py-8 border-t border-zinc-100 dark:border-zinc-800">
-      <div className="flex flex-wrap justify-center gap-4 sm:gap-6 px-4">
+    <footer className="py-10 border-t border-border">
+      <div className="flex flex-wrap justify-center gap-5 sm:gap-6 px-4">
         {socialLinks.map((link, index) => (
           <Link
             key={index}
             href={link.href}
-            className="text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors p-2"
+            className="text-text-secondary hover:text-accent transition-colors p-2"
             aria-label={link.label}
             target="_blank"
             rel="noopener noreferrer"
@@ -27,7 +27,7 @@ function GetInTouch() {
         ))}
       </div>
 
-      <div className="mt-6 text-center text-sm text-zinc-500 px-4">
+      <div className="mt-8 text-center text-sm text-text-secondary px-4">
         © {new Date().getFullYear()} Nalin Dalal. All rights reserved.
       </div>
     </footer>

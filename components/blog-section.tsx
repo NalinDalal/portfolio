@@ -10,41 +10,41 @@ function BlogCard({ post }: { post: BlogPost }) {
   return (
     <Link
       href={`/blogs/${post.slug}/${post.file}`}
-      className="group flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-zinc-100 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all"
+      className="group flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-300"
     >
       <div className="flex items-center gap-3">
-        <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-md">
-          <BookIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
+        <div className="p-2 bg-surface-light rounded-lg border border-border">
+          <BookIcon className="w-4 h-4 text-accent" />
         </div>
         <div>
-          <h3 className="font-medium text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+          <h3 className="font-medium text-text-primary group-hover:text-accent transition-colors">
             {post.title}
           </h3>
-          <p className="text-sm text-zinc-500 dark:text-zinc-500">
+          <p className="text-sm text-text-secondary">
             {post.readingTime} min read
           </p>
         </div>
       </div>
-      <ArrowRight className="w-4 h-4 text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition-colors" />
+      <ArrowRight className="w-4 h-4 text-border group-hover:text-accent transition-colors" />
     </Link>
   );
 }
 
 export default function BlogSection() {
   return (
-    <section className="py-6">
+    <section className="py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-1 text-zinc-900 dark:text-white">
+          <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight mb-2 text-text-primary">
             Blog
           </h2>
-          <p className="text-zinc-600 dark:text-zinc-400">
+          <p className="text-text-secondary">
             Thoughts on development and tech
           </p>
         </div>
         <Link
           href="/blogs"
-          className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
+          className="text-sm font-medium text-text-secondary hover:text-accent transition-colors accent-underline"
         >
           View all
         </Link>
@@ -57,7 +57,7 @@ export default function BlogSection() {
           ))}
         </div>
       ) : (
-        <div className="text-zinc-500 dark:text-zinc-500 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg p-6 text-center">
+        <div className="text-text-secondary border-2 border-dashed border-border rounded-xl p-8 text-center">
           No blog posts yet. Check back soon!
         </div>
       )}

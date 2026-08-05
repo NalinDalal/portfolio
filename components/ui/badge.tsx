@@ -7,17 +7,17 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-[var(--sargam-radius)] border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-white focus-visible:ring-white/50 focus-visible:ring-[3px] transition-[color,box-shadow] overflow-hidden bg-gradient-to-r from-black to-slate-800 text-white border-slate-700",
+  "inline-flex items-center justify-center rounded-lg border px-2.5 py-1 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-accent focus-visible:ring-accent/50 focus-visible:ring-[3px] transition-[color,box-shadow] overflow-hidden",
   {
     variants: {
       variant: {
-        default: "border-slate-700 bg-black text-white [a&]:hover:bg-slate-900",
+        default: "border-accent/20 bg-accent/10 text-accent",
         secondary:
-          "border-slate-600 bg-slate-800 text-slate-300 [a&]:hover:bg-slate-700",
+          "border-border bg-surface-light text-text-secondary",
         destructive:
-          "border-slate-800 bg-slate-900 text-white [a&]:hover:bg-slate-800 focus-visible:ring-white/20 dark:focus-visible:ring-white/40 dark:bg-slate-900/60",
+          "border-red-500/20 bg-red-500/10 text-red-400",
         outline:
-          "text-slate-300 [a&]:hover:bg-slate-800 [a&]:hover:text-white border-slate-700",
+          "text-text-secondary border-border hover:bg-surface hover:text-text-primary",
       },
     },
     defaultVariants: {

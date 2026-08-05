@@ -1,4 +1,4 @@
-import { Code, Server, Database, Zap, CheckCircle, ArrowRight, Star } from "lucide-react";
+import { Code, Server, Database, Zap, CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import GetInTouch from "@/components/get-in-touch";
 
@@ -27,13 +27,6 @@ const services = [
       "Week 2-3: Core features with optimized database queries",
       "Week 4: Polish, testing, CI/CD, production deployment",
     ],
-    deliverables: [
-      "Custom web applications",
-      "E-commerce platforms",
-      "SaaS dashboards",
-      "CMS & blog platforms",
-      "API development & integration",
-    ],
   },
   {
     icon: <Server className="w-8 h-8" />,
@@ -45,13 +38,6 @@ const services = [
       "Modular architecture with separation of concerns",
       "JWT auth with refresh tokens + role-based access",
       "Full test coverage before delivery",
-    ],
-    deliverables: [
-      "RESTful APIs",
-      "GraphQL APIs",
-      "Authentication systems",
-      "Database optimization",
-      "Microservices architecture",
     ],
   },
   {
@@ -65,13 +51,6 @@ const services = [
       "Optimize database queries and indexing",
       "Implement caching for frequently accessed data",
     ],
-    deliverables: [
-      "Speed optimization",
-      "Code refactoring",
-      "Database query optimization",
-      "Memory & runtime optimization",
-      "Load testing & benchmarking",
-    ],
   },
   {
     icon: <Database className="w-8 h-8" />,
@@ -84,16 +63,10 @@ const services = [
       "Database schema optimization",
       "Infrastructure setup with Docker/AWS",
     ],
-    deliverables: [
-      "System architecture documents",
-      "Database design & optimization",
-      "Docker containerization",
-      "CI/CD pipeline setup",
-    ],
   },
 ];
 
-const process = [
+const processSteps = [
   {
     step: "01",
     title: "Discovery",
@@ -141,46 +114,46 @@ export default function ServicesPage() {
       {/* Hero */}
       <section className="py-8">
         <div className="flex flex-wrap gap-2 mb-4">
-          <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm font-medium flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-green-500" />
+          <span className="px-3 py-1 bg-teal/10 text-teal rounded-full text-sm font-medium flex items-center gap-1 border border-teal/20">
+            <span className="w-2 h-2 rounded-full bg-teal animate-pulse" />
             Available for projects
           </span>
         </div>
-        <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight mb-4 text-zinc-900 dark:text-white">
+        <h1 className="font-display font-bold text-5xl md:text-6xl tracking-tight mb-4 text-text-primary">
           Full Stack Engineer
         </h1>
-        <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-6">
+        <p className="text-lg md:text-xl text-text-secondary max-w-2xl mb-6">
           Next.js • Node.js • React • AWS
         </p>
         
         {/* Quick Stats */}
         <div className="flex flex-wrap gap-6 mb-8 text-sm">
           <div>
-            <span className="font-bold text-2xl text-zinc-900 dark:text-white">{stats.rate}</span>
-            <span className="text-zinc-500 dark:text-zinc-400 ml-1">hourly</span>
+            <span className="font-display font-bold text-2xl gradient-text-accent">{stats.rate}</span>
+            <span className="text-text-secondary ml-1">hourly</span>
           </div>
-          <div className="w-px h-8 bg-zinc-300 dark:bg-zinc-700" />
+          <div className="w-px h-8 bg-border" />
           <div>
-            <span className="font-bold text-2xl text-zinc-900 dark:text-white">{stats.location}</span>
+            <span className="font-display font-bold text-2xl text-text-primary">{stats.location}</span>
           </div>
-          <div className="w-px h-8 bg-zinc-300 dark:bg-zinc-700" />
+          <div className="w-px h-8 bg-border" />
           <div>
-            <span className="font-bold text-2xl text-zinc-900 dark:text-white">{stats.experience}</span>
-            <span className="text-zinc-500 dark:text-zinc-400 ml-1">experience</span>
+            <span className="font-display font-bold text-2xl text-text-primary">{stats.experience}</span>
+            <span className="text-text-secondary ml-1">experience</span>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-3">
           <a
             href="#services"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
           >
             View Services
             <ArrowRight className="w-4 h-4" />
           </a>
           <a
             href="mailto:nalin@nerdev.in"
-            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-zinc-900 dark:border-white text-zinc-900 dark:text-white rounded-lg font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
           >
             Get a Quote
           </a>
@@ -189,7 +162,7 @@ export default function ServicesPage() {
 
       {/* Tech Stack */}
       <section className="w-full">
-        <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-6 text-zinc-900 dark:text-white">
+        <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
           Tech Stack
         </h2>
         <div className="flex flex-wrap gap-3">
@@ -200,7 +173,7 @@ export default function ServicesPage() {
           ].map((tech) => (
             <span
               key={tech}
-              className="px-4 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-lg text-sm font-medium"
+              className="px-4 py-2 bg-surface text-text-primary rounded-lg text-sm font-medium border border-border"
             >
               {tech}
             </span>
@@ -210,32 +183,32 @@ export default function ServicesPage() {
 
       {/* Services */}
       <section id="services" className="w-full">
-        <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-6 text-zinc-900 dark:text-white">
+        <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
           What I Do
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {services.map((service, index) => (
             <div
               key={index}
-              className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
+              className="p-6 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-300"
             >
-              <div className="flex items-center gap-3 mb-4 text-zinc-900 dark:text-white">
-                <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg">
+              <div className="flex items-center gap-3 mb-4 text-text-primary">
+                <div className="p-2 bg-surface-light rounded-lg border border-border text-accent">
                   {service.icon}
                 </div>
-                <h3 className="font-bold text-xl">{service.title}</h3>
+                <h3 className="font-display font-bold text-xl">{service.title}</h3>
               </div>
-              <p className="text-zinc-600 dark:text-zinc-400 mb-4">
+              <p className="text-text-secondary mb-4">
                 {service.description}
               </p>
               
               <div className="mb-4">
-                <h4 className="font-semibold text-sm text-zinc-900 dark:text-white mb-2">Tech Stack</h4>
+                <h4 className="font-semibold text-sm text-text-primary mb-2">Tech Stack</h4>
                 <div className="flex flex-wrap gap-2">
                   {service.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-2 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded text-xs"
+                      className="px-2 py-1 bg-surface-light text-text-secondary rounded text-xs border border-border"
                     >
                       {tech}
                     </span>
@@ -244,11 +217,11 @@ export default function ServicesPage() {
               </div>
 
               <div>
-                <h4 className="font-semibold text-sm text-zinc-900 dark:text-white mb-2">Approach</h4>
+                <h4 className="font-semibold text-sm text-text-primary mb-2">Approach</h4>
                 <ul className="space-y-1">
                   {service.approach.map((item, i) => (
-                    <li key={i} className="text-sm text-zinc-600 dark:text-zinc-400 flex items-start gap-2">
-                      <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <li key={i} className="text-sm text-text-secondary flex items-start gap-2">
+                      <CheckCircle className="w-4 h-4 text-teal mt-0.5 flex-shrink-0" />
                       {item}
                     </li>
                   ))}
@@ -261,15 +234,15 @@ export default function ServicesPage() {
 
       {/* Process */}
       <section className="w-full">
-        <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-6 text-zinc-900 dark:text-white">
+        <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
           How I Work
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {process.map((item, index) => (
+          {processSteps.map((item, index) => (
             <div key={index} className="p-4">
-              <span className="font-bold text-4xl text-zinc-200 dark:text-zinc-700">{item.step}</span>
-              <h3 className="font-bold text-lg text-zinc-900 dark:text-white mt-2">{item.title}</h3>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">{item.description}</p>
+              <span className="font-display font-bold text-4xl gradient-text-accent">{item.step}</span>
+              <h3 className="font-display font-bold text-lg text-text-primary mt-2">{item.title}</h3>
+              <p className="text-sm text-text-secondary mt-1">{item.description}</p>
             </div>
           ))}
         </div>
@@ -277,16 +250,16 @@ export default function ServicesPage() {
 
       {/* Why Choose Me */}
       <section className="w-full">
-        <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-6 text-zinc-900 dark:text-white">
+        <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
           Why Work With Me
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {whyChooseMe.map((item, index) => (
             <div key={index} className="flex items-start gap-3 p-4">
-              <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-semibold text-zinc-900 dark:text-white">{item.title}</h3>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">{item.description}</p>
+                <h3 className="font-display font-semibold text-text-primary">{item.title}</h3>
+                <p className="text-sm text-text-secondary">{item.description}</p>
               </div>
             </div>
           ))}
@@ -295,45 +268,45 @@ export default function ServicesPage() {
 
       {/* Stats */}
       <section className="w-full py-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-xl bg-zinc-100 dark:bg-zinc-800/50">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-xl bg-surface border border-border">
           <div className="text-center">
-            <div className="font-bold text-3xl text-zinc-900 dark:text-white">{stats.projects}+</div>
-            <div className="text-sm text-zinc-500">Projects Built</div>
+            <div className="font-display font-bold text-3xl gradient-text-accent">{stats.projects}+</div>
+            <div className="text-sm text-text-secondary">Projects Built</div>
           </div>
           <div className="text-center">
-            <div className="font-bold text-3xl text-zinc-900 dark:text-white">{stats.experience}</div>
-            <div className="text-sm text-zinc-500">Experience</div>
+            <div className="font-display font-bold text-3xl gradient-text-accent">{stats.experience}</div>
+            <div className="text-sm text-text-secondary">Experience</div>
           </div>
           <div className="text-center">
-            <div className="font-bold text-3xl text-zinc-900 dark:text-white">{stats.leetcode}+</div>
-            <div className="text-sm text-zinc-500">LeetCode Problems</div>
+            <div className="font-display font-bold text-3xl gradient-text-accent">{stats.leetcode}+</div>
+            <div className="text-sm text-text-secondary">LeetCode Problems</div>
           </div>
           <div className="text-center">
-            <div className="font-bold text-3xl text-zinc-900 dark:text-white">{stats.codeforces}+</div>
-            <div className="text-sm text-zinc-500">CodeForces</div>
+            <div className="font-display font-bold text-3xl gradient-text-accent">{stats.codeforces}+</div>
+            <div className="text-sm text-text-secondary">CodeForces</div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="w-full py-8">
-        <div className="p-8 rounded-xl bg-zinc-900 dark:bg-zinc-800 text-center">
-          <h2 className="font-bold text-2xl text-white mb-2">
+        <div className="p-8 rounded-xl bg-surface border border-border text-center">
+          <h2 className="font-display font-bold text-2xl text-text-primary mb-2">
             Ready to build something great?
           </h2>
-          <p className="text-zinc-400 mb-6 max-w-lg mx-auto">
-            Let's discuss your project and see how I can help turn your idea into reality.
+          <p className="text-text-secondary mb-6 max-w-lg mx-auto">
+            Let&apos;s discuss your project and see how I can help turn your idea into reality.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <a
               href="mailto:nalin@nerdev.in?subject=Project Inquiry"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-zinc-900 rounded-lg font-medium hover:bg-zinc-200 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
             >
               Get In Touch
             </a>
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
             >
               View Portfolio
             </Link>

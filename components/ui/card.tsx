@@ -9,7 +9,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-white dark:bg-zinc-900/50 text-zinc-900 dark:text-white flex flex-col gap-6 rounded-lg border border-zinc-100 dark:border-zinc-800 py-4 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all",
+        "bg-surface text-text-primary flex flex-col gap-6 rounded-xl border border-border py-4 hover:border-accent/30 transition-all duration-300",
         className,
       )}
       {...props}
@@ -34,7 +34,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors", className)}
+      className={cn("leading-none font-display font-semibold text-text-primary group-hover:text-accent transition-colors", className)}
       {...props}
     />
   );
@@ -44,7 +44,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-zinc-500 dark:text-zinc-400 text-sm", className)}
+      className={cn("text-text-secondary text-sm", className)}
       {...props}
     />
   );
@@ -78,7 +78,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center px-4 [.border-t]:pt-4 text-zinc-900 dark:text-white",
+        "flex items-center px-4 [.border-t]:pt-4 text-text-primary",
         className,
       )}
       {...props}

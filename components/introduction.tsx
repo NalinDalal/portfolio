@@ -6,65 +6,66 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 const techStack = [
-  { name: "TypeScript", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" },
-  { name: "React", color: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20" },
-  { name: "Next.js", color: "bg-zinc-500/10 text-zinc-700 dark:text-zinc-300 border-zinc-500/20" },
-  { name: "Node.js", color: "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20" },
-  { name: "Rust", color: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20" },
-  { name: "PostgreSQL", color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20" },
-  { name: "Docker", color: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20" },
-  { name: "AWS", color: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20" },
+  { name: "TypeScript", color: "bg-accent/10 text-accent border-accent/20" },
+  { name: "React", color: "bg-teal/10 text-teal border-teal/20" },
+  { name: "Next.js", color: "bg-surface-light text-text-primary border-border" },
+  { name: "Node.js", color: "bg-teal/10 text-teal border-teal/20" },
+  { name: "Rust", color: "bg-accent/10 text-accent border-accent/20" },
+  { name: "PostgreSQL", color: "bg-teal/10 text-teal border-teal/20" },
+  { name: "Docker", color: "bg-surface-light text-text-primary border-border" },
+  { name: "AWS", color: "bg-accent/10 text-accent border-accent/20" },
 ];
 
 function Introduction() {
   return (
-    <section className="py-10">
+    <section className="py-16 relative">
+      {/* Dot grid background - signature element */}
+      <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none rounded-2xl" />
+
       {/* Hero */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+      <div className="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
         <div className="flex-1">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-2 mb-3"
+            className="flex items-center gap-3 mb-6"
           >
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">Available for freelance</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-teal animate-pulse" />
+            <span className="text-sm text-text-secondary font-medium">Available for freelance</span>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-bold text-4xl md:text-5xl lg:text-6xl tracking-tight mb-3"
+            className="font-display font-bold text-5xl md:text-6xl lg:text-7xl tracking-tight mb-6 leading-[1.05]"
           >
-            <span className="text-zinc-900 dark:text-white">I build </span>
-            <span className="bg-gradient-to-r from-blue-600 via-violet-600 to-purple-600 dark:from-blue-400 dark:via-violet-400 dark:to-purple-400 bg-clip-text text-transparent">
-              systems
-            </span>
-            <span className="text-zinc-900 dark:text-white"> that</span>
+            <span className="text-text-primary">I build </span>
+            <span className="gradient-text-accent">systems</span>
+            <span className="text-text-primary"> that</span>
             <br />
-            <span className="text-zinc-900 dark:text-white">matter.</span>
+            <span className="text-text-primary">matter.</span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-zinc-500 dark:text-zinc-400 mb-6 max-w-lg leading-relaxed"
+            className="text-lg text-text-secondary mb-8 max-w-lg leading-relaxed"
           >
             Full-stack engineer specializing in distributed systems, event-driven architectures, and platforms that serve thousands of users.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-wrap gap-3"
+            className="flex flex-wrap gap-4"
           >
             <Link
               href="/projects"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
             >
               View Projects
               <ArrowRight className="w-4 h-4" />
@@ -73,7 +74,7 @@ function Introduction() {
               href="https://cal.com/nalin-dalal"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-lg font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
             >
               Book a Call
             </a>
@@ -81,30 +82,30 @@ function Introduction() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className="relative shrink-0"
         >
-          <div className="absolute -inset-4 bg-gradient-to-tr from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-3xl blur-xl" />
+          <div className="absolute -inset-4 bg-gradient-to-tr from-accent/20 via-transparent to-teal/20 rounded-3xl blur-2xl" />
           <Image
             src="https://avatars.githubusercontent.com/u/116961144?v=4"
             alt="Nalin Dalal"
-            height={160}
-            width={160}
-            className="relative object-cover rounded-2xl border-2 border-zinc-200 dark:border-zinc-800 shadow-lg"
+            height={180}
+            width={180}
+            className="relative object-cover rounded-2xl border-2 border-border shadow-2xl"
           />
         </motion.div>
       </div>
 
       {/* Tech Stack */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="mt-10"
+        className="relative mt-12"
       >
-        <p className="text-xs font-medium text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">Tech Stack</p>
+        <p className="text-xs font-medium text-text-secondary uppercase tracking-widest mb-4 font-display">Tech Stack</p>
         <div className="flex flex-wrap gap-2">
           {techStack.map((tech) => (
             <span
@@ -119,37 +120,37 @@ function Introduction() {
 
       {/* Featured Project Callout */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="mt-10"
+        className="relative mt-12"
       >
         <Link href="/projects/modheshwari" className="group block">
-          <div className="relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-900/50 p-6 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/5 via-transparent to-transparent rounded-bl-full" />
+          <div className="relative overflow-hidden rounded-xl border border-border bg-surface p-6 hover:border-accent/50 transition-all duration-300">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-accent/5 via-transparent to-transparent rounded-bl-full" />
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded text-xs font-medium border border-blue-500/20">
-                    Personal Project
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="px-2.5 py-0.5 bg-accent/10 text-accent rounded text-xs font-medium border border-accent/20">
+                    Featured Project
                   </span>
-                  <span className="text-xs text-zinc-400">Live at modheshwari.nerdev.in</span>
+                  <span className="text-xs text-text-secondary">Live at modheshwari.nerdev.in</span>
                 </div>
-                <h3 className="font-bold text-lg text-zinc-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                <h3 className="font-display font-bold text-xl text-text-primary mb-2 group-hover:text-accent transition-colors">
                   Modheshwari
                 </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md">
+                <p className="text-sm text-text-secondary max-w-md leading-relaxed">
                   Community management platform I built for my local community — designed for 10-15k members, multi-service architecture with Kafka, WebSockets, and full DevOps pipeline.
                 </p>
-                <div className="flex flex-wrap gap-1.5 mt-3">
+                <div className="flex flex-wrap gap-1.5 mt-4">
                   {["Bun", "Next.js", "Prisma", "PostgreSQL", "Redis", "Kafka", "Docker"].map((t) => (
-                    <span key={t} className="px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded text-xs">
+                    <span key={t} className="px-2 py-0.5 bg-surface-light text-text-secondary rounded text-xs border border-border">
                       {t}
                     </span>
                   ))}
                 </div>
               </div>
-              <ExternalLink className="w-4 h-4 text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-500 dark:group-hover:text-zinc-400 transition-colors shrink-0 mt-1" />
+              <ExternalLink className="w-4 h-4 text-border group-hover:text-accent transition-colors shrink-0 mt-1" />
             </div>
           </div>
         </Link>
@@ -157,10 +158,10 @@ function Introduction() {
 
       {/* Quick Stats */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.7 }}
-        className="mt-8 flex flex-wrap gap-8"
+        className="relative mt-10 flex flex-wrap gap-10"
       >
         {[
           { value: "550+", label: "LeetCode" },
@@ -168,8 +169,8 @@ function Introduction() {
           { value: "30+", label: "Projects" },
         ].map((stat) => (
           <div key={stat.label}>
-            <span className="font-bold text-2xl text-zinc-900 dark:text-white">{stat.value}</span>
-            <span className="text-zinc-400 dark:text-zinc-500 ml-1.5 text-sm">{stat.label}</span>
+            <span className="font-display font-bold text-3xl gradient-text-accent">{stat.value}</span>
+            <span className="text-text-secondary ml-2 text-sm">{stat.label}</span>
           </div>
         ))}
       </motion.div>

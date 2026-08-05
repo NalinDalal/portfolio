@@ -1,7 +1,6 @@
 import { IconNameType, links } from "@/data";
 import React from "react";
 import PullRequestIcon from "./ui/icons/pull-request-icon";
-import GithubLogoIcon from "./ui/icons/gh-logo";
 import { Github, ExternalLink } from "lucide-react";
 
 function ProofOfWork() {
@@ -9,11 +8,11 @@ function ProofOfWork() {
   const socialLinks = links.filter((el) => !el?.hidden && el?.icon !== "pull-request");
 
   return (
-    <section className="py-6">
-      <h2 className="font-bold text-2xl md:text-3xl tracking-tight mb-1 text-zinc-900 dark:text-white">
+    <section className="py-8">
+      <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight mb-2 text-text-primary">
         Proof of Work
       </h2>
-      <p className="text-zinc-600 dark:text-zinc-400 mb-6">
+      <p className="text-text-secondary mb-6">
         Contributions and open source work
       </p>
 
@@ -24,17 +23,17 @@ function ProofOfWork() {
             href={el?.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-3 bg-zinc-50 dark:bg-zinc-900/50 rounded-lg border border-zinc-100 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all group"
+            className="flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-300 group"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-md">
-                <PullRequestIcon className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
+              <div className="p-2 bg-surface-light rounded-lg border border-border">
+                <PullRequestIcon className="w-4 h-4 text-accent" />
               </div>
-              <span className="text-sm text-zinc-700 dark:text-zinc-300 font-medium truncate max-w-[200px] md:max-w-[400px]">
+              <span className="text-sm text-text-primary font-medium truncate max-w-[200px] md:max-w-[400px]">
                 {el?.name}
               </span>
             </div>
-            <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors" />
+            <ExternalLink className="w-4 h-4 text-border group-hover:text-accent transition-colors" />
           </a>
         ))}
       </div>
@@ -46,7 +45,7 @@ function ProofOfWork() {
             href={el?.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-lg font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
           >
             <Github className="w-4 h-4" />
             GitHub

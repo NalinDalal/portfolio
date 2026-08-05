@@ -11,7 +11,7 @@ export default function Callout({
 }: CalloutProps) {
   return (
     <div
-      className={`rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-800 ${className}`}
+      className={`rounded-xl border border-border bg-surface p-4 text-sm text-text-secondary ${className}`}
       {...props}
     >
       {children}

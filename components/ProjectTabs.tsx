@@ -109,10 +109,10 @@ export function ProjectTabs({ repositories }: ProjectTabsProps) {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
               activeTab === tab.id
-                ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900"
-                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-white"
+                ? "bg-accent text-bg-primary"
+                : "bg-surface text-text-secondary border border-border hover:border-accent/30 hover:text-text-primary"
             }`}
           >
             {tab.label} ({tab.count})
@@ -133,10 +133,10 @@ export function ProjectTabs({ repositories }: ProjectTabsProps) {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-zinc-500 dark:text-zinc-400 text-lg">
+          <p className="text-text-secondary text-lg">
             No projects found in this category.
           </p>
-          <p className="text-zinc-400 dark:text-zinc-500 text-sm mt-2">
+          <p className="text-text-secondary/60 text-sm mt-2">
             Try selecting a different tab.
           </p>
         </div>

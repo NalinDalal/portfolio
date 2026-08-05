@@ -93,10 +93,10 @@ export default async function BlogPost(props: PageProps) {
   return (
     <main className="container mx-auto px-4 py-8">
       <BlogNavigation />
-      <h1 className="font-bold text-3xl md:text-5xl tracking-tight mb-2 text-black dark:text-white">
+      <h1 className="font-display font-bold text-3xl md:text-5xl tracking-tight mb-2 text-text-primary">
         {title}
       </h1>
-      <p className="text-gray-500 dark:text-gray-400 mb-4">{date}</p>
+      <p className="text-text-secondary mb-4">{date}</p>
       <Suspense fallback={<div>Loading...</div>}>
         <MarkdownRenderer content={post.content} />
       </Suspense>

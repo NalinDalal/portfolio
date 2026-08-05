@@ -1,10 +1,5 @@
 "use client";
 
-// import { GitHubPullRequest } from '@/types/github';
-
-type PullRequestCardProps = {
-  pullRequest: any;
-};
 import {
   Card,
   CardContent,
@@ -14,6 +9,10 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GitPullRequest, GitMerge, ExternalLink, Calendar } from "lucide-react";
+
+type PullRequestCardProps = {
+  pullRequest: any;
+};
 
 export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
   const formatDate = (dateString: string) => {
@@ -27,9 +26,9 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
   const isMerged = pullRequest.merged_at !== null;
 
   const getStatusColor = () => {
-    if (isMerged) return "text-white border-white";
-    if (pullRequest.state === "open") return "text-slate-300 border-slate-300";
-    return "text-slate-500 border-slate-500"; // For closed but not merged
+    if (isMerged) return "text-accent border-accent/30";
+    if (pullRequest.state === "open") return "text-teal border-teal/30";
+    return "text-text-secondary border-border";
   };
 
   const getStatusIcon = () => {
@@ -44,23 +43,23 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
   };
 
   return (
-    <Card className="group hover:border-white/40 transition-all duration-300 hover:shadow-lg hover:shadow-slate-200/10 transition-transform transform hover:scale-[1.05]">
+    <Card className="group hover:border-accent/30 transition-all duration-300 hover:shadow-lg hover:shadow-accent/5">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <Badge variant="outline" className={`${getStatusColor()} border`}>
+              <Badge variant="outline" className={getStatusColor()}>
                 <div className="flex items-center gap-1">
                   {getStatusIcon()}
                   <span>{getStatusText()}</span>
                 </div>
               </Badge>
-              <span className="text-sm text-slate-500">
+              <span className="text-sm text-text-secondary">
                 #{pullRequest.number}
               </span>
             </div>
 
-            <CardTitle className="text-lg group-hover:text-purple-400 transition-colors">
+            <CardTitle className="text-lg group-hover:text-accent transition-colors">
               <a
                 href={pullRequest.html_url}
                 target="_blank"
@@ -68,12 +67,12 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
                 className="flex items-start gap-2 hover:underline"
               >
                 <span className="flex-1">{pullRequest.title}</span>
-                <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity mt-1 flex-shrink-0 text-white" />
+                <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity mt-1 flex-shrink-0 text-text-primary" />
               </a>
             </CardTitle>
 
             <CardDescription className="mt-2">
-              <span className="font-medium text-slate-300">
+              <span className="font-medium text-text-primary">
                 {pullRequest.base?.repo?.full_name || "Unknown repository"}
               </span>
             </CardDescription>
@@ -83,7 +82,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
 
       <CardContent>
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 text-sm text-slate-400">
+          <div className="flex items-center gap-2 text-sm text-text-secondary">
             <Calendar className="h-4 w-4" />
             <span>
               {isMerged
@@ -94,7 +93,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
         </div>
 
         {pullRequest.body && (
-          <p className="text-sm text-slate-400 line-clamp-2 mb-4">
+          <p className="text-sm text-text-secondary line-clamp-2 mb-4">
             {pullRequest.body.slice(0, 150)}
             {pullRequest.body.length > 150 && "..."}
           </p>
