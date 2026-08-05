@@ -6,7 +6,7 @@ function GetInTouch() {
   const socialLinks = [
     { icon: <Github className="w-5 h-5" />, href: "https://github.com/nalindalal", label: "GitHub" },
     { icon: <Mail className="w-5 h-5" />, href: "mailto:nalin@nerdev.in", label: "Email" },
-    { icon: <Linkedin className="w-5 h-5" />, href: "https://www.linkedin.com/in/nalin-dalal", label: "LinkedIn" },
+    { icon: <Linkedin className="w-5 h-5" />, href: "https://www.linkedin.com/in/nalin-dalal-815617271", label: "LinkedIn" },
     { icon: <Twitter className="w-5 h-5" />, href: "https://twitter.com/nalin82929", label: "Twitter" },
   ];
 

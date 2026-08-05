@@ -40,6 +40,19 @@ const projects = [
       "Applied monorepo architecture and state management for synchronized multi-user sessions.",
     ],
   },
+  {
+    name: "Modheshwari",
+    link: "https://modheshwari.nerdev.in/",
+    tech: ["Bun", "TypeScript", "Next.js", "Prisma", "PostgreSQL", "Redis", "Kafka", "Docker"],
+    points: [
+      "Architected a full-stack community management platform designed to support 10,000-15,000 members, covering family records, events, resource requests, forums, and notifications.",
+      "Designed role-based access control with privacy controls across community, gotra, family, and member roles.",
+      "Built multi-approver resource request and event approval workflows using Prisma/PostgreSQL as the domain model.",
+      "Implemented asynchronous notification delivery via Kafka workers and a dedicated WebSocket service for real-time messaging and updates.",
+      "Set up CI/CD with GitHub Actions to build, test, and deploy Docker images to AWS ECR/ECS, with Prometheus and New Relic monitoring.",
+      "Load/stress-tested the platform against projected usage for a 10-15k member community.",
+    ],
+  },
 ];
 
 const achievements = [
@@ -161,8 +174,9 @@ export default function ResumePage() {
           <h3 className="text-lg font-bold text-zinc-900 dark:text-white mb-3">Technical Skills</h3>
           <div className="space-y-2 text-zinc-700 dark:text-zinc-300">
             <p><span className="font-semibold">Languages:</span> C++, TypeScript, JavaScript, Rust, Solidity, SQL</p>
-            <p><span className="font-semibold">Frameworks:</span> React, Next.js (App Router), Node.js, Tailwind CSS, MonoRepo, Prisma</p>
-            <p><span className="font-semibold">DevOps & Cloud:</span> Docker, Kubernetes, AWS, Vercel, GitHub Actions, YAML Files</p>
+            <p><span className="font-semibold">Frameworks:</span> React, Next.js (App Router), Node.js, Tailwind CSS, Prisma, Elysia</p>
+            <p><span className="font-semibold">DevOps & Cloud:</span> Docker, Kubernetes, AWS, Vercel, GitHub Actions, Terraform</p>
+            <p><span className="font-semibold">Data & Messaging:</span> PostgreSQL, Redis, Kafka, Elasticsearch, WebSockets</p>
             <p><span className="font-semibold">Tools:</span> Git, Jest, Bash/Zsh, LazyGit, Neovim</p>
           </div>
         </section>

@@ -105,14 +105,15 @@
   {
     "slug": "modheshwari",
     "projectName": "Modheshwari",
-    "description": "A complex monorepo architecture with multiple packages to handle community management and event-driven workflows. Uses Bun for fast package management and builds.",
-    "summary": "MonoRepo solution for community and event management",
-    "githubLink": "https://github.com/NalinDalal/Modheshwari",
+    "description": "Self-initiated community management platform I built to solve real coordination problems — multi-service architecture with role-based workflows, event-driven notifications, realtime chat, and full DevOps pipeline.",
+    "summary": "Multi-service community platform with event-driven architecture",
+    "liveLink": "https://modheshwari.nerdev.in/",
+    "githubLink": "https://github.com/nerdev-co/modheshwari",
     "caseStudy": "/projects/modheshwari",
-    "tags": ["monorepo", "bun", "community", "event-driven", "fullstack"],
+    "tags": ["monorepo", "bun", "kafka", "websockets", "prisma", "postgresql", "redis", "docker", "fullstack"],
     "featured": true,
     "createdAt": "2024-06-10",
-    "updatedAt": "2024-10-15"
+    "updatedAt": "2025-08-01"
   },
   {
     "slug": "redis-clone",
