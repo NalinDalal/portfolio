@@ -8,6 +8,7 @@ import { getProjects, getProjectBySlug } from "@/lib/projects";
 import { ExternalLink, Github, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import remarkGfm from "remark-gfm";
 import HashScrollHandler from "@/components/HashScrollHandler";
 import { Mermaid } from "@/components/Mermaid";
 
@@ -284,7 +285,11 @@ ${project.tags.map((t) => `- ${t}`).join("\n")}
 
         {/* MDX Content */}
         <article className="prose prose-invert max-w-none">
-          <MDXRemote source={content} components={mdxComponents} />
+          <MDXRemote
+            source={content}
+            components={mdxComponents}
+            options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+          />
         </article>
 
         {/* Footer */}

@@ -6,6 +6,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Suspense } from "react";
+import remarkGfm from "remark-gfm";
 import HashScrollHandler from "@/components/HashScrollHandler";
 import { Mermaid } from "@/components/Mermaid";
 
@@ -220,7 +221,11 @@ export default async function BlogPage({
           </header>
 
           <article className="prose prose-invert max-w-none">
-            <MDXRemote source={content} components={mdxComponents} />
+            <MDXRemote
+              source={content}
+              components={mdxComponents}
+              options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+            />
           </article>
 
           <footer className="mt-16 pt-8 border-t border-border">
