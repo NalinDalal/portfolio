@@ -264,7 +264,53 @@ Postgres is the system of record; every side effect flows through the outbox. Th
 - **Prometheus / Grafana** dashboards for the API and WebSocket services, with Alertmanager for alerts
 - **Dead-letter queues** for both outbox events and notification deliveries — no automatic replay UI yet, but every failed event is inspectable
 - **Automated Postgres backups** — a scheduled GitHub Actions workflow dumps the database and uploads to a versioned S3 bucket with least-privilege IAM, so the system of record is recoverable
-- **Documented production incidents** — nginx upstream resolution, Docker build disk exhaustion, and backup failures were each root-caused and written up as incident reports with lessons learned
+- **Documented production incidents** — nginx upstream resolution, Docker build disk exhaustion, and a WS module resolution crash were each root-caused and written up as detailed incident reports with lessons learned
+
+## Production Incidents
+
+Three production incidents have been root-caused and documented as formal incident reports in the repository.
+
+### Incident 1: Docker Build Disk Exhaustion on EC2 (2026-08-06)
+
+**Severity:** High — all production deploys blocked
+
+Every push to main failed with `no space left on device` during Docker image extraction. Three root causes combined:
+
+1. **Monolithic Dockerfile** — all three services (be, web, ws) were built from a single Dockerfile that copied the full `node_modules` (~5GB including devDependencies) into every image. Building 3 images in parallel peaked at ~15GB disk usage on a server with only ~12GB free.
+2. **Builder cache grew unbounded** — `docker builder prune` only ran before builds, not after, so cache accumulated across deploys. Weekly scheduled pruning was too infrequent for a deploy-on-every-push workflow.
+3. **Detached HEAD rollback** — failed rollback used `git checkout <commit>`, leaving the repo in detached HEAD state. The next deploy's `git pull` failed because there was no checked-out branch.
+
+**Resolution:** Split the Dockerfile into per-service targets (`runner-be`, `runner-web`, `runner-ws`) with `--production` installs in a shared `runner-base` stage, reducing each image to ~2-3GB. Added two-phase Docker cleanup (before build: dangling only; after deploy: prune old builder cache). Fixed rollback to use `git reset --hard` instead of `git checkout`. Changed `docker-prune.yml` from weekly to daily.
+
+**Outcome:** Peak build disk usage dropped from ~15GB to ~10GB, fitting within available space. Deploys resumed successfully.
+
+### Incident 2: Nginx Upstream Resolution Failure (2026-08)
+
+**Severity:** High — site returning 502 errors
+
+Nginx failed to resolve upstream hostnames (`host not found in upstream "web"`, `host not found in upstream "be"`). Systematic debugging eliminated Docker DNS failure, wrong upstream names, incorrect Nginx configuration, and backend/frontend unavailability.
+
+**Root Cause:** Nginx attempted to resolve upstream hosts before Docker DNS had registered all Compose service names. `depends_on` controls startup order but does not guarantee service name resolution or application readiness.
+
+**Resolution:** Restarting the Nginx container after all application containers had joined the Docker network resolved the issue. No networking or configuration changes were required.
+
+**Outcome:** Infrastructure confirmed healthy. Incident reinforced the importance of validating each infrastructure layer independently and avoiding assumptions about Docker DNS during container startup.
+
+### Incident 3: WS Container Crash — Module Resolution Failure (2026-08-11)
+
+**Severity:** High — WebSocket service down, crash-looping
+
+`modheshwari-ws` crashed on startup with `Cannot find module '../be/lib/redisClient'`. The WebSocket service imported a Redis client module from the backend app via a cross-app relative import (`apps/ws/redisSub.ts` → `../be/lib/redisClient`). The `runner-ws` Docker image only copies `apps/ws` — `apps/be` is never present in the WS image, so the module did not exist at runtime.
+
+**Root Cause:** Cross-app relative import violating monorepo boundaries. Apps must not import across app boundaries; shared code belongs in `packages/`.
+
+**Resolution:** Created a shared `packages/redis` workspace package (`@modheshwari/redis`) containing `getRedisClient` and `quitRedisClient`. Updated `apps/ws/redisSub.ts` and all 8 BE consumers to import from `@modheshwari/redis`. Deleted `apps/be/lib/redisClient.ts`. Updated package.json dependencies, tsconfig path mappings, Dockerfile COPY stages, and regenerated `bun.lock`.
+
+**Verification:** `tsc --noEmit` clean for both apps, `turbo build` (ws + be) passes, bun runtime resolution confirmed via workspace symlink.
+
+**Outcome:** Architectural defect fixed. The corrected `modheshwari-ws` image deploys via CI pipeline. This incident highlighted the need for a lint rule or CI check forbidding cross-app relative imports.
+
+---
 
 ## Results & Metrics
 
