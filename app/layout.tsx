@@ -32,7 +32,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nerdev.in"),
+  metadataBase: new URL("https://nalin.nerdev.in"),
   title: {
     default: "Nalin Dalal | Full Stack Engineer & Developer",
     template: "%s | Nalin Dalal",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     "freelance developer",
     "Bhopal developer",
   ],
-  authors: [{ name: "Nalin Dalal", url: "https://nerdev.in" }],
+  authors: [{ name: "Nalin Dalal", url: "https://nalin.nerdev.in" }],
   creator: "Nalin Dalal",
   publisher: "Nalin Dalal",
   robots: {
@@ -69,11 +69,11 @@ export const metadata: Metadata = {
     title: "Nalin Dalal | Full Stack Engineer & Developer",
     description:
       "Software engineer, open-source contributor, and builder of things that matter.",
-    url: "https://nerdev.in",
+    url: "https://nalin.nerdev.in",
     siteName: "Nalin Dalal",
     images: [
       {
-        url: "https://nerdev.in/og-image.png",
+        url: "https://nalin.nerdev.in/og-image.png",
         width: 1200,
         height: 630,
         alt: "Nalin Dalal - Full Stack Developer",
@@ -87,7 +87,7 @@ export const metadata: Metadata = {
     title: "Nalin Dalal | Full Stack Engineer & Developer",
     description:
       "Software engineer, open-source contributor, and builder of things that matter.",
-    images: [{ url: "https://nerdev.in/og-image.png" }],
+    images: [{ url: "https://nalin.nerdev.in/og-image.png" }],
     creator: "@nalindalal",
   },
   verification: {

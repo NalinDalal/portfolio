@@ -20,6 +20,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: 'https://nerdev.in/sitemap.xml',
+    sitemap: 'https://nalin.nerdev.in/sitemap.xml',
   };
 }

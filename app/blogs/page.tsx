@@ -12,13 +12,13 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    url: "https://nerdev.in/blogs",
-    images: [{ url: "https://nerdev.in/og-image.png" }],
+    url: "https://nalin.nerdev.in/blogs",
+    images: [{ url: "https://nalin.nerdev.in/og-image.png" }],
   },
   twitter: {
     title,
     description,
-    images: [{ url: "https://nerdev.in/og-image.png" }],
+    images: [{ url: "https://nalin.nerdev.in/og-image.png" }],
   },
 };
 

@@ -3,7 +3,7 @@ import { getAllBlogPosts } from '@/utils/get-blog-posts';
 import { getProjects } from '@/lib/projects';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://nerdev.in';
+  const baseUrl = 'https://nalin.nerdev.in';
   
   const blogPosts = getAllBlogPosts();
   const projects = await getProjects();

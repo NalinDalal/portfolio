@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Projects - Nalin Dalal",
     description: "A collection of my work spanning full-stack apps, tools, and challenges.",
-    url: "https://nerdev.in/projects",
-    images: [{ url: "https://nerdev.in/og-image.png" }],
+    url: "https://nalin.nerdev.in/projects",
+    images: [{ url: "https://nalin.nerdev.in/og-image.png" }],
   },
   twitter: {
     title: "Projects - Nalin Dalal",
     description: "A collection of my work spanning full-stack apps, tools, and challenges.",
-    images: [{ url: "https://nerdev.in/og-image.png" }],
+    images: [{ url: "https://nalin.nerdev.in/og-image.png" }],
   },
 };
 
