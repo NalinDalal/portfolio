@@ -264,11 +264,11 @@ Postgres is the system of record; every side effect flows through the outbox. Th
 - **Prometheus / Grafana** dashboards for the API and WebSocket services, with Alertmanager for alerts
 - **Dead-letter queues** for both outbox events and notification deliveries — no automatic replay UI yet, but every failed event is inspectable
 - **Automated Postgres backups** — a scheduled GitHub Actions workflow dumps the database and uploads to a versioned S3 bucket with least-privilege IAM, so the system of record is recoverable
-- **Documented production incidents** — nginx upstream resolution, Docker build disk exhaustion, and a WS module resolution crash were each root-caused and written up as detailed incident reports with lessons learned
+- **Documented production incidents** — nginx upstream resolution, Docker build disk exhaustion, a WS module resolution crash, and a post-deploy 502 caused by stale nginx upstream IPs were each root-caused and written up as detailed incident reports with lessons learned
 
 ## Production Incidents
 
-Three production incidents have been root-caused and documented as formal incident reports in the repository.
+Four production incidents have been root-caused and documented as formal incident reports in the repository.
 
 ### Incident 1: Docker Build Disk Exhaustion on EC2 (2026-08-06)
 
@@ -309,6 +309,34 @@ Nginx failed to resolve upstream hostnames (`host not found in upstream "web"`, 
 **Verification:** `tsc --noEmit` clean for both apps, `turbo build` (ws + be) passes, bun runtime resolution confirmed via workspace symlink.
 
 **Outcome:** Architectural defect fixed. The corrected `modheshwari-ws` image deploys via CI pipeline. This incident highlighted the need for a lint rule or CI check forbidding cross-app relative imports.
+
+### Incident 4: Post-Deploy 502 — Nginx Upstream IP Staleness (2026-08-11)
+
+**Severity:** High — site returning 502 errors after successful deploy
+
+The CI/CD pipeline for the WS module fix completed successfully: `ci` passed, `build-and-push` pushed the new `modheshwari-ws:latest` image to GHCR, and `deploy` pulled and restarted containers on EC2. The backend health check passed and no rollback was triggered. Yet `modheshwari.nerdev.in` still returned 502.
+
+**Root Cause:** Nginx resolves Docker upstream hostnames (`be:3001`, `web:3000`, `ws:3002`) once at startup via Docker DNS. When `docker compose up -d --remove-orphans` recreates containers during a deploy, the containers get new IP addresses, but the running `modheshwari-nginx` container was never restarted — so it continued proxying to the old, now-dead upstream IPs. The deploy workflow did include `docker compose restart nginx` as a guard, but the 502s persisted long enough to be noticeable.
+
+**Resolution:** Manually restarting nginx on EC2 (`docker compose restart nginx`) forced it to re-resolve upstreams via Docker DNS and pick up the new container IPs. The site recovered immediately. No code or infrastructure changes were required for the immediate fix.
+
+**Proper fix (codebase):** The real solution is to make nginx re-resolve DNS on every request rather than caching upstream IPs at startup. This is done with Docker's embedded DNS resolver (`127.0.0.11`) and a variable-based `proxy_pass`:
+
+```nginx
+resolver 127.0.0.11 valid=30s ipv6=off;
+
+location /api/ {
+    set $upstream_be http://be:3001;
+    proxy_pass $upstream_be;
+    proxy_http_version 1.1;
+}
+```
+
+With `proxy_pass $variable`, nginx consults DNS on each request (within the 30s TTL), so recreated containers are automatically picked up without any restart. The trade-off is losing upstream block features like load balancing across multiple servers and keepalive connections — acceptable here because each service runs as a single container.
+
+The deploy workflow's `docker compose restart nginx` step is kept as a pragmatic belt-and-suspenders guard, but the `nginx.conf` change eliminates the need for it.
+
+**Outcome:** The 502 was resolved by restarting nginx. The case study and deploy workflow were updated to reflect the proper DNS-resolution fix. This incident reinforced that reverse proxies in Docker Compose need dynamic upstream resolution when containers are recreated during deploys.
 
 ---
 

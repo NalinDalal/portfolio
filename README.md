@@ -1,108 +1,42 @@
-Add the github token in .env as
+# Nalin Dalal — Portfolio
 
-```sh
-GITHUB_TOKEN=[ghp_something]
+Built with Next.js 15, React 19, TypeScript, Tailwind CSS, MDX.
+
+## Local Development
+
+```bash
+cp .env.example .env.local
+npm install
+npm run dev
 ```
 
-## How to Add a New Pull Request Doc Blog
+Open `http://localhost:3000`.
 
-1. **Create a folder ending with `-pr` inside the `blogs/` directory.**  
-   Example:
+## Adding Content
 
-   ```
-   blogs/asyncapi-pr/   #for asyncapi
-   blogs/processing-pr/   #for processing
-   ```
+### Pull Request Docs
 
-2. **Add your `.mdx` documentation file inside that folder.**  
-   Example:
+Create a folder ending in `-pr` inside `blogs/` and add your `.mdx` file:
 
-   ```
-   blogs/asyncapi-pr/shaderImprovement.mdx
-   ```
+```
+blogs/asyncapi-pr/shaderImprovement.mdx
+```
 
-3. **Your doc will automatically appear on the `/blogs` page and be accessible at:**
+This auto-populates at `/blogs/asyncapi/shaderImprovement`.
 
-   ```
-   /blogs/asyncapi/shaderImprovement
-   ```
-
-4. **To update or add more PR docs, repeat steps 1 and 2.**
-
-> Only folders ending with `-pr` will be auto-populated as PR docs.
-
-when you add a pr doc run 2 command after it:
+After adding a PR doc:
 
 ```bash
 npm run prebuild
 npm run build
 ```
 
----
+### Projects & Case Studies
 
-# to do
+Projects are populated from `data/projects.json`. Add entries there with `projectName`, `liveLink`, `githubLink`, `summary`, `tags`, and `caseStudy` path.
 
-- put up your good projects, there links
-  and there case studies
-  so for that what i was thinking, i will manually populate the project name, description, link and link a case study to it
-  do like projects.json has like this:
+Case studies are MDX files in `case-study/`. The `caseStudy` field in `projects.json` links a project to its case study page.
 
-```json
-{
-    {
-    'projectName':'blind-app',
-    'liveLink':'https://blind-app-omega.vercel.app/',
-    'githubLink':'https://github.com/NalinDalal/blind-app','Summary':'Next.js applucation that serves local college community where student scan share stuff keeping themselves anonymous'
-    ,'caseStudy':'/link to case study, md file with everything'
-},{},{}
-}
-```
+## Deployment
 
-So projects endpoint should be like, populate my 3-4 projects from a json,
-Json has like name, live link, GitHub link, summary to put into card, and some tags like nextjs, prisma etc
-
-Also a link to case study, is it like gr8?
-
-so for case study do like mkdir case-study, we will populate json manually, put like blind.mdx into that json, makes sense?
-
-am i thinking right?
-
-- put up your good projects, there links
-  and there case studies
-  so for that what i was thinking, i will manually populate the project name, description, link and link a case study to it
-  do like projects.json has like this:
-
-```json
-{
-    {
-    'projectName':'blind-app',
-    'liveLink':'https://blind-app-omega.vercel.app/',
-    'githubLink':'https://github.com/NalinDalal/blind-app','Summary':'Next.js applucation that serves local college community where student scan share stuff keeping themselves anonymous'
-    ,'caseStudy':'/link to case study, md file with everything'
-},{
-
-},{}
-}
-```
-
-Should I do this
-
-So projects endpoint should be like, populate my 3-4 projects from a json,
-
-Json has like name, live link, GitHub link, summary to put into card, and some tags like nextjs, prisma etc
-
-Also a link to case study, is it like gr8?
-
-now when i go to case study, it should be like, go to localhost:3000/projects/blind which renders a page from projects folder with name blind.mdx
-
-u know i want to keep it dynamic so i can easily link all this stuff in json
-
-do you get my point?
-
----
-
-we have 1 domains for free:
-
-- `https://nerddev.cc.cc/`
-
-export to it
+Exports to Vercel / Netlify.
