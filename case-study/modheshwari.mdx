@@ -1,14 +1,14 @@
 ---
 title: "Modheshwari - Community Management Platform"
 description: "Multi-service community platform for 10-15k members — event-driven notifications with transactional outbox, escalation delivery, realtime chat with reconnect sync, RBAC workflows, and full DevOps pipeline"
-date: "2024-06-10"
+date: "2026-08-10"
 tags: ["monorepo", "bun", "kafka", "websockets", "prisma", "postgresql", "redis", "docker", "outbox", "realtime"]
 ---
 
 # Modheshwari
 
 <Callout type="info">
-**Type:** Self-initiated personal project — built for the Modheshwari community. **Live at** [modheshwari.nerdev.in](https://modheshwari.nerdev.in/) · **Source** [github.com/nerdev-co/modheshwari](https://github.com/nerdev-co/modheshwari)
+**Type:** Self-initiated personal project — built for the Modheshwari community. **Live at** [modheshwari.nerdev.in](https://modheshwari.nerdev.in/) · **Source** [github.com/NalinDalal/modheshwari](https://github.com/NalinDalal/modheshwari)
 </Callout>
 
 ## Problem / Context
@@ -58,12 +58,14 @@ flowchart LR
 
 **Architecture at a glance:**
 
-The system runs as a monorepo with three runtime services behind an Nginx reverse proxy:
+The system runs as a monorepo with three runtime services behind an Nginx reverse proxy, deployed to production on AWS EC2:
 
 - **`apps/be`** — Bun + Elysia REST API (port 3001). All business logic, RBAC, and Prisma access.
 - **`apps/ws`** — Bun + `ws` WebSocket server (port 3002). Realtime chat and notification delivery.
 - **`apps/web`** — Next.js 15 frontend (port 3000).
 - Nginx routes `/api/` to `be:3001`, everything else to `web:3000`, and WebSocket upgrades to `ws:3002`.
+
+In production the stack runs on a single AWS EC2 instance (t3.medium) behind Cloudflare with Let's Encrypt SSL, using Neon (managed PostgreSQL) as the database. CI/CD is a three-stage GitHub Actions pipeline: lint/type-check/build on Turbo, then Docker images built and pushed to GHCR, then SSH deploy to EC2 with health checks and automatic rollback to the previous images.
 
 The data layer is shared across services:
 
@@ -133,7 +135,7 @@ flowchart TD
 
 Five levels of RBAC enforced via a `requireAuth(req, allowedRoles?)` middleware gate on every protected route. Approvals flow upward (Family Head → Gotra Head → Subhead → Community Head). Role changes are checked by `checkRoleChangePermission()` and written to an immutable audit table (see Reliability).
 
-### Core Data Model (Prisma, 30+ models)
+### Core Data Model (Prisma, 25 models)
 
 | Model | Purpose |
 |---|---|
@@ -142,8 +144,11 @@ Five levels of RBAC enforced via a `requireAuth(req, allowedRoles?)` middleware 
 | `MemberInvite` | Pending join requests (PENDING/APPROVED/REJECTED) — family head approves before membership is created |
 | `UserRelation` | Directed lineage relations (SPOUSE/PARENT/CHILD/SIBLING) with unique constraint against duplicates |
 | `Event`, `EventApproval`, `EventRegistration`, `Payment` | Event lifecycle with per-approver records, cascading deletes from the FK side |
-| `ResourceRequest` | Multi-step review with cached `approverName` snapshot |
+| `ResourceRequest`, `ResourceRequestApproval` | Multi-step review with per-approver records and cached `approverName` snapshot |
+| `MedicalRecord` | Per-member health tracking |
+| `StatusUpdateRequest`, `StatusUpdateApproval` | Health/status update submissions with approval workflow |
 | `Notification`, `NotificationDelivery` | Per-channel delivery records with status tracking |
+| `FanoutAudit` | Audit trail for notification fan-out writes |
 | `Conversation`, `Message` | Chat, persisted before fan-out |
 | `OutboxEvent`, `OutboxEventDeadLetter` | Transactional outbox + dead-letter queue |
 | `RoleChangeAudit` | Immutable audit log for role changes |
@@ -241,6 +246,8 @@ The WebSocket layer is a separate service and had to work independently of the H
 
 Large fan-outs (broadcast to an entire gotra) created spike writes to the primary DB. An optional caching mode (`NOTIFICATION_CACHE=true`) makes the fan-out worker write per-user notifications into Redis lists keyed `notifications:{userId}` with a configurable TTL (default 7 days) instead of doing immediate `createMany`. The Kafka routing event is still emitted, so channel workers keep working, and audit records stay updated. This absorbs short-lived write spikes, reduces DB contention, and improves fan-out latency.
 
+In-app delivery gets the same treatment: the API publishes lightweight previews to Redis per recipient (`notification_preview:{userId}:{previewId}`, 60s TTL) before the full delivery path runs. The in-app worker skips recipients with a fresh preview marker, and the client upserts previews and merges them with the persisted notification once it arrives — eliminating duplicate in-app messages during fan-out.
+
 ### 7. Hardening: the production audit
 
 An engineering audit of the codebase found four critical reliability gaps — non-atomic DB+Kafka writes, non-idempotent consumers, unpersisted WS messages, and fire-and-forget ES indexing — plus missing audit for role changes. All were fixed without breaking a single API contract (details in challenge 1 and 5). Beyond that:
@@ -256,16 +263,18 @@ Postgres is the system of record; every side effect flows through the outbox. Th
 - **Metrics on `/metrics`**: `outboxPendingEvents`, `outboxPublishFailures`, `outboxRetryCount`, `websocketReconciliationCount`, `elasticsearchIndexFailures`, `roleChangeAnomalyCount`, plus consumer lag and per-channel success/retry/error rates
 - **Prometheus / Grafana** dashboards for the API and WebSocket services, with Alertmanager for alerts
 - **Dead-letter queues** for both outbox events and notification deliveries — no automatic replay UI yet, but every failed event is inspectable
+- **Automated Postgres backups** — a scheduled GitHub Actions workflow dumps the database and uploads to a versioned S3 bucket with least-privilege IAM, so the system of record is recoverable
+- **Documented production incidents** — nginx upstream resolution, Docker build disk exhaustion, and backup failures were each root-caused and written up as incident reports with lessons learned
 
 ## Results & Metrics
 
 | Metric | Value |
 |---|---|
-| Development period | Oct 2025 → Feb 2026 (ongoing maintenance) |
-| Commits | 146+ |
-| Lines of code | ~15,000+ (excluding node_modules) |
+| Development period | Oct 2025 → present (production since Aug 2026) |
+| Commits | 417+ |
+| Lines of code | ~23,000+ (excluding node_modules) |
 | API endpoints | 50+ |
-| Database models | 30+ |
+| Database models | 25 |
 | Notification channels | 4 (Email, SMS, Push, In-App) |
 | Workers | 5 (Router, Email, Push, SMS, Escalation) + outbox relay + ES reconciliation |
 | Kafka topics | 5 |
@@ -273,6 +282,7 @@ Postgres is the system of record; every side effect flows through the outbox. Th
 | Escalation savings | 70% of users read in-app within 5 minutes |
 | RBAC levels | 5 |
 | WebSocket reconnect recovery | Up to 500 missed notifications, paginated chat sync |
+| Production deployment | AWS EC2 + Nginx + Cloudflare, Neon Postgres, automated S3 backups |
 
 ## Tech Stack
 
@@ -290,10 +300,11 @@ Postgres is the system of record; every side effect flows through the outbox. Th
 - Elasticsearch
 - Nginx
 - Docker Compose
-- GitHub Actions
-- AWS ECR / ECS
-- Prometheus / Grafana
-- New Relic
+- GitHub Actions (GHCR images, SSH deploy to EC2, S3 backups)
+- AWS EC2
+- Cloudflare
+- Let's Encrypt
+- Prometheus / Grafana / Alertmanager
 - Terraform
 
 ## Current State
@@ -311,14 +322,14 @@ It's a production-minded system with real architectural depth and operational co
 
 ## What I Built
 
-- Architected a full-stack community management platform designed to support 10,000-15,000 members, covering family records, events, resource requests, forums, and notifications.
+- Architected a full-stack community management platform designed to support 10,000-15,000 members, covering family records, events, resource requests, health tracking, and notifications.
 - Designed role-based access control with privacy controls across community, gotra, family, and member roles.
 - Built multi-approver resource request and event approval workflows using Prisma/PostgreSQL as the domain model.
 - Implemented a transactional outbox with Kafka consumers and idempotency, plus escalation-based delivery across email, SMS, push, and in-app channels.
 - Built a dedicated WebSocket service with Postgres-persisted messages, Redis Pub/Sub fan-out, and paginated reconnect sync.
 - Hardened the system via audit: fixed dual-write gaps, XSS, connection-pool exhaustion, and added immutable role-change audit with anomaly metrics.
-- Set up CI/CD with GitHub Actions to build, test, and deploy Docker images to AWS ECR/ECS, with Prometheus and New Relic monitoring.
-- Load/stress-tested the platform against projected usage for a 10-15k member community.
+- Set up CI/CD with GitHub Actions to build and push Docker images to GHCR and deploy to AWS EC2, with health checks and automatic rollback, plus scheduled Postgres backups to S3.
+- Set up Prometheus/Grafana monitoring with provisioned dashboards, and wrote incident reports for production failures as they occurred.
 
 ## What This Project Demonstrates
 
@@ -336,6 +347,6 @@ This case study highlights the kinds of engineering decisions that matter in int
 
 **Links:**
 - [Live Platform](https://modheshwari.nerdev.in/)
-- [GitHub Repository](https://github.com/nerdev-co/modheshwari)
+- [GitHub Repository](https://github.com/NalinDalal/modheshwari)
 
-**Tech Stack:** Bun, TypeScript, Next.js, React, Elysia, Prisma, PostgreSQL, Redis, Kafka, WebSockets, Elasticsearch, Docker, GitHub Actions, AWS ECR/ECS, Terraform, Prometheus/Grafana
+**Tech Stack:** Bun, TypeScript, Next.js, React, Elysia, Prisma, PostgreSQL, Redis, Kafka, WebSockets, Elasticsearch, Docker, GitHub Actions, AWS EC2, Cloudflare, Terraform, Prometheus/Grafana
