@@ -13,18 +13,6 @@
     "updatedAt": "2024-10-01"
   },
   {
-    "slug": "interactive-drawing-app",
-    "projectName": "Interactive Drawing App",
-    "description": "Collaborative real-time canvas supporting drawing, erasing, and shape persistence. Applied monorepo architecture and state management for synchronized multi-user sessions.",
-    "summary": "Real-time collaborative canvas with multi-user sync",
-    "githubLink": "https://github.com/NalinDalal/interactive-drawing-app",
-    "caseStudy": "/projects/interactive-drawing-app",
-    "tags": ["monorepo", "react", "nodejs", "websockets", "fullstack"],
-    "featured": true,
-    "createdAt": "2025-01-01",
-    "updatedAt": "2025-01-15"
-  },
-  {
     "slug": "codraw",
     "projectName": "CoDraw",
     "description": "Excalidraw-style collaborative whiteboard with real-time shape sync over WebSockets, Bun-native backends, session-based auth, and automated CI/CD deployment.",
@@ -38,18 +26,6 @@
     "updatedAt": "2026-08-11"
   },
   {
-    "slug": "fullstack-blogging-platform",
-    "projectName": "Full-Stack Blogging Platform",
-    "description": "Built a platform with user authentication, CRUD operations, and Vercel deployment. Implemented responsive UI and optimized Postgres data models for high performance.",
-    "summary": "Full-stack platform with auth, CRUD, and optimized Postgres",
-    "githubLink": "https://github.com/NalinDalal/blogging-platform",
-    "caseStudy": "/projects/fullstack-blogging-platform",
-    "tags": ["react", "nextjs", "prisma", "postgresql", "fullstack"],
-    "featured": true,
-    "createdAt": "2024-06-01",
-    "updatedAt": "2024-06-30"
-  },
-  {
     "slug": "modheshwari",
     "projectName": "Modheshwari",
     "description": "Self-initiated community management platform I built to solve real coordination problems — multi-service architecture with role-based workflows, event-driven notifications, realtime chat, and full DevOps pipeline.",
@@ -60,7 +36,7 @@
     "tags": ["monorepo", "bun", "kafka", "websockets", "prisma", "postgresql", "redis", "docker", "fullstack"],
     "featured": true,
     "createdAt": "2024-06-10",
-    "updatedAt": "2025-08-01"
+    "updatedAt": "2026-08-11"
   },
   {
     "slug": "redis-clone",
