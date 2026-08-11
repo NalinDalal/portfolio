@@ -1,71 +1,5 @@
 [
   {
-    "slug": "p5-js-holi",
-    "projectName": "P5.js Holi",
-    "description": "Creative p5.js generative art celebrating Holi festival - vibrant colors and interactive digital art.",
-    "summary": "P5.js generative art for Holi festival",
-    "githubLink": "https://github.com/NalinDalal/p5.js-holi",
-    "tags": ["p5.js", "creative-coding", "generative-art", "art"],
-    "featured": false,
-    "createdAt": "2024-03-15",
-    "updatedAt": "2024-03-15"
-  },
-  {
-    "slug": "promise-day-p5",
-    "projectName": "Promise Day P5",
-    "description": "Creative p5.js art piece for promise day - combining programming and art to create meaningful digital experiences.",
-    "summary": "P5.js art for promise day",
-    "githubLink": "https://github.com/NalinDalal/promise-day-p5",
-    "tags": ["p5.js", "creative-coding", "generative-art", "art"],
-    "featured": false,
-    "createdAt": "2024-02-14",
-    "updatedAt": "2024-02-14"
-  },
-  {
-    "slug": "rose-day-p5",
-    "projectName": "Rose Day P5",
-    "description": "Creative p5.js interactive art piece for rose day - digital art celebrating love and romance.",
-    "summary": "P5.js interactive art for rose day",
-    "githubLink": "https://github.com/NalinDalal/rose-day-p5",
-    "tags": ["p5.js", "creative-coding", "generative-art", "art"],
-    "featured": false,
-    "createdAt": "2024-02-14",
-    "updatedAt": "2024-02-14"
-  },
-  {
-    "slug": "new-year-2026-p5",
-    "projectName": "New Year 2026 P5",
-    "description": "Creative p5.js celebration art for New Year 2026 - interactive animation bringing in the new year with digital creativity.",
-    "summary": "P5.js celebration art for New Year 2026",
-    "githubLink": "https://github.com/NalinDalal/new-year-2026-p5",
-    "tags": ["p5.js", "creative-coding", "generative-art", "art"],
-    "featured": false,
-    "createdAt": "2025-12-31",
-    "updatedAt": "2025-12-31"
-  },
-  {
-    "slug": "propose-day-p5",
-    "projectName": "Propose Day P5",
-    "description": "Creative p5.js generative art piece for propose day - interactive animation showcasing digital art and programming creativity.",
-    "summary": "P5.js generative art for propose day",
-    "githubLink": "https://github.com/NalinDalal/propose-day-p5",
-    "tags": ["p5.js", "creative-coding", "generative-art", "art"],
-    "featured": false,
-    "createdAt": "2024-02-14",
-    "updatedAt": "2024-02-14"
-  },
-  {
-    "slug": "teddy-day-p5",
-    "projectName": "Teddy Day P5",
-    "description": "Creative p5.js interactive art piece for teddy day - combining programming and art to create meaningful digital experiences.",
-    "summary": "P5.js interactive art for teddy day",
-    "githubLink": "https://github.com/NalinDalal/teddy-day-p5",
-    "tags": ["p5.js", "creative-coding", "generative-art", "art"],
-    "featured": false,
-    "createdAt": "2024-02-14",
-    "updatedAt": "2024-02-14"
-  },
-  {
     "slug": "blind-app",
     "projectName": "Blind",
     "description": "Anonymous community platform for college students. Built with Next.js featuring moderation filters, cursor-based pagination, and lightweight post-syncing for real-time performance.",
@@ -89,6 +23,19 @@
     "featured": true,
     "createdAt": "2025-01-01",
     "updatedAt": "2025-01-15"
+  },
+  {
+    "slug": "codraw",
+    "projectName": "CoDraw",
+    "description": "Excalidraw-style collaborative whiteboard with real-time shape sync over WebSockets, Bun-native backends, session-based auth, and automated CI/CD deployment.",
+    "summary": "Real-time collaborative whiteboard with WebSocket sync and auth",
+    "githubLink": "https://github.com/nerdev-co/codraw/tree/main",
+    "liveLink": "https://codraw.nerdev.in/",
+    "caseStudy": "/projects/codraw",
+    "tags": ["monorepo", "bun", "websockets", "nextjs", "prisma", "postgresql", "roughjs", "realtime", "collaboration"],
+    "featured": true,
+    "createdAt": "2025-01-01",
+    "updatedAt": "2026-08-11"
   },
   {
     "slug": "fullstack-blogging-platform",
