@@ -218,7 +218,7 @@ The deploy is idempotent: `pm2 start ecosystem.config.js --update-env` replaces 
 
 ### Incident Response
 
-Two production incidents have been documented in the repository:
+Three production incidents have been documented in the repository:
 
 **Incident 1: Nginx `/api/` prefix not stripping (2026-08-08)**
 
@@ -227,6 +227,12 @@ Every API call returned 404. The root cause was Nginx's `proxy_pass` not includi
 **Incident 2: Nginx upstream IP staleness after container recreation (2026-08-11)**
 
 After deploys that recreated Docker containers, Nginx continued proxying to old upstream IPs, returning 502. The root cause was Nginx resolving upstream hostnames once at startup and caching them. Fixed by configuring Nginx to re-resolve DNS on each request using Docker's embedded DNS resolver (`127.0.0.11`) with a 30s TTL, so recreated containers are automatically picked up without restarting Nginx.
+
+**Incident 3: Intermittent site failures — unbound SSR fetch + bad Nginx upgrade headers (2026-08-12)**
+
+Shortly after the first production deploy, `codraw.nerdev.in` was intermittently unreachable: page loads would hang and fail, then work again moments later. The backend was healthy (`curl localhost:3001/` answered in 0.002s), OOM-kill was ruled out via `dmesg`, and PM2 logs showed clean boots — no crash loop. The real root cause was the home page's async server component: its SSR `fetch` to `/auth/me` (a database-backed route) had **no timeout**, so a slow/cold first query over the Neon serverless DB connection blocked the entire render until an internal timeout killed it, producing repeated `failed to pipe response` / `The operation timed out` (undici code 23) errors. A secondary problem: Nginx was sending `Connection: upgrade` on *every* request to the frontend, even plain GETs with no WebSocket upgrade.
+
+**Fixed** by bounding the SSR fetch with `AbortSignal.timeout(5000)` so a slow backend degrades to guest rendering instead of hanging, and removing the unconditional `Upgrade`/`Connection: upgrade` headers from the `/` location (WebSocket proxying at `/ws` is unaffected). Root-caused via process-of-elimination: keep-alive fetch loop (no wedge), OOM check (empty), PM2 logs (clean), and `NEXT_PUBLIC_HTTP_BACKEND` being unset (ruled out a self-referential public-URL loop).
 
 ## Results & Metrics
 
