@@ -1,5 +1,5 @@
 ---
-title: "Auto-Link and Auto-Close Issues on PRs to Dev Branches"
+title: "Improve Accessibility Guidance for describe() Usage"
 date: "2025-11-09"
 tags: ["processing", "github", "documentation"]
 ---
