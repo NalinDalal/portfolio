@@ -1,7 +1,7 @@
 ---
 title: "CoDraw - Real-Time Collaborative Whiteboard"
 description: "Excalidraw-style collaborative whiteboard with real-time shape sync over WebSockets, Bun-native backends, session-based auth, and automated CI/CD deployment"
-date: "2026-08-11"
+date: "2026-08-18"
 tags: ["monorepo", "bun", "websockets", "nextjs", "prisma", "postgresql", "roughjs", "realtime", "collaboration"]
 ---
 
@@ -41,6 +41,7 @@ My work centered on:
 - adding optimistic concurrency control to prevent silent data loss during concurrent edits
 - building the CI/CD pipeline with GitHub Actions for automated deployment to EC2
 - hardening the system against common WebSocket, authentication, and data integrity failure modes
+- extracting the canvas engine into focused managers (pointer, mouse, touch, keyboard, navigation, tool, text, shape, style, history, export, WebSocket sync, cursor, auto-save, laser, library, mermaid, plugin)
 
 This was a solo full-stack effort with emphasis on realtime systems, frontend state management, and production deployment.
 
@@ -106,6 +107,14 @@ The WebSocket backend was added to handle real-time shape synchronization. The p
 
 Security audit, crash fixes, Bun migration, session management overhaul, and CI/CD setup. Key changes included moving from stateless JWTs to server-side sessions with httpOnly cookies, adding optimistic concurrency with version checking, implementing auto-reconnect with exponential backoff, and hardening against common attack vectors (XSS, CORS misconfiguration, rate limiting).
 
+### Phase 5 — Manager Extraction (Aug 2026)
+
+Extracted the canvas engine from a monolithic `Game.ts` (~2056 lines) into focused manager modules: `PointerInteractionManager`, `MouseManager`, `TouchManager`, `KeyboardManager`, `NavigationManager`, `ToolManager`, `TextManager`, `ShapeManager`, `ShapeArrangement`, `ShapeStyle`, `ArrowManager`, `ImageManager`, `ClipboardManager`, `RenderManager`, `AutoSaveManager`, `WebSocketSyncManager`, `CursorManager`, `HistoryManager`, `ExportManager`, `StyleManager`, `LaserManager`, `LibraryManager`, `MermaidManager`, and `PluginManager`. This reduced `Game.ts` to a thin public-API façade at ~1404 lines, with 23 files under `draw/managers/`.
+
+### Phase 6 — Performance & Collaboration Hardening (Aug 2026)
+
+Added spatial grid index for fast hit testing, cursor coalescing to reduce WebSocket message volume, trash persistence, image asset extraction for snapshot size control, frame highlight caching, scoped cache invalidation, and ChromeSlots layout coordinator.
+
 ## Domain Model & Core Concepts
 
 ### Room-Based Collaboration
@@ -138,6 +147,7 @@ Users authenticate via the HTTP API, receive a session cookie, then connect to t
 | `Chat` | Messages within a room |
 | `Session` | Server-side session storage with expiration |
 | Shape tables | Persisted shape state for auto-save |
+| `ImageAsset` | Extracted image data URLs (UUID-keyed, keeps snapshots under 512KB) |
 
 ## Hard Technical Challenges Solved
 
@@ -159,12 +169,9 @@ Stateless JWTs can't be revoked before expiry — a security risk if a user logs
 
 **Solution: server-side sessions with httpOnly cookies.**
 
-The Prisma `Session` model stores token hashes with expiration timestamps. On signin, the backend creates a session record and issues two tokens:
+The Prisma `Session` model stores token hashes with expiration timestamps. On signin, the backend creates a session record and sets an httpOnly cookie with a 7-day session token. The response body only returns the `userId` — no JWT is sent to the client.
 
-- A 5-minute WebSocket token as an httpOnly, Secure, SameSite=Strict cookie — not readable from JavaScript, not exposed to XSS
-- A short-lived access token returned in the response body for the client to hold in memory for HTTP API calls
-
-The WebSocket auth flow works around a constraint: WebSocket upgrade handshakes don't support custom headers in all browsers. Instead, the frontend calls `/auth/ws-token` to get a fresh WS token, then passes it in the WebSocket query string. The WS backend verifies the session exists in Postgres before accepting the connection.
+The WebSocket auth flow works around a constraint: WebSocket upgrade handshakes don't support custom Authorization headers in all browsers. Instead, the frontend calls `/auth/ws-token` (with the session cookie) to get a fresh 5-minute WS token in the response body, then passes it in the `Sec-WebSocket-Protocol` header. The WS backend verifies the session exists in Postgres before accepting the connection. Token-less guests can also connect without any auth, using a stable client-generated guest ID.
 
 A heartbeat timer refreshes the WS token every 4 minutes, and `re_auth` messages allow the server to update the connection's user ID without dropping the socket. Logout hits `/auth/logout`, revokes the session, and clears the cookie.
 
@@ -196,6 +203,16 @@ A heartbeat timer (every 4 minutes) fetches a fresh WebSocket token and sends a 
 
 This design means there's no delta replay logic, no message sequence numbers to track, and no risk of applying stale diffs to a state that changed significantly while offline. The trade-off is a visible "jump" when state syncs after a long disconnect — acceptable for a whiteboard where exact pixel-perfect continuity isn't required.
 
+### 6. Manager extraction from monolith to focused modules
+
+The canvas engine started as a single `Game.ts` file (~2056 lines) that owned every concern: pointer dispatch, mouse/touch/keyboard events, WebSocket sync, rendering, undo/redo, tool state, navigation, text editing, shape lifecycle, and export.
+
+**Solution: decomposed into 23 focused manager modules under `draw/managers/`.**
+
+Each manager owns a single concern and communicates through injected `GameContext` and API interfaces. Managers never cross-import each other. Pointer interaction, mouse, touch, keyboard, navigation, tool, text, shape arrangement, shape style, arrow, image, clipboard, render, auto-save, WebSocket sync, cursor, history, export, style, laser, library, mermaid, and plugin managers each handle their own lifecycle. `Game.ts` is now a thin public-API façade delegating to managers.
+
+This makes the engine testable in isolation, reduces merge conflicts during parallel development, and makes each interaction path discoverable without reading a 2000-line file.
+
 ## Reliability & Deployment
 
 ### Observability
@@ -206,6 +223,8 @@ This design means there's no delta replay logic, no message sequence numbers to 
 - **Body size limits** on HTTP endpoints to prevent memory exhaustion from large payloads
 - **Message size limits** on WebSocket messages to prevent DoS
 - **Rate limiting** on auth endpoints (sliding window, in-memory)
+- **Spatial grid index** for fast hit testing on large canvases
+- **ImageAsset extraction** to keep snapshot rows under the 512KB DB row cap
 
 ### CI/CD
 
@@ -214,7 +233,7 @@ GitHub Actions workflows run on every PR and push to main:
 1. **CI** — install, lint, typecheck, build across all workspaces via Turborepo
 2. **Deploy** — triggered only on CI success: SSH into EC2, `git reset --hard`, `bun install --frozen-lockfile`, `bun run build`, `prisma migrate deploy`, `pm2 restart all --update-env`
 
-The deploy is idempotent: `pm2 start ecosystem.config.js --update-env` replaces the existing process without manual intervention.
+The deploy is idempotent: `pm2 start deploy/pm2/ecosystem.config.js --update-env` replaces the existing process without manual intervention.
 
 ### Incident Response
 
@@ -234,17 +253,41 @@ Shortly after the first production deploy, `codraw.nerdev.in` was intermittently
 
 **Fixed** by bounding the SSR fetch with `AbortSignal.timeout(5000)` so a slow backend degrades to guest rendering instead of hanging, and removing the unconditional `Upgrade`/`Connection: upgrade` headers from the `/` location (WebSocket proxying at `/ws` is unaffected). Root-caused via process-of-elimination: keep-alive fetch loop (no wedge), OOM check (empty), PM2 logs (clean), and `NEXT_PUBLIC_HTTP_BACKEND` being unset (ruled out a self-referential public-URL loop).
 
+**Incident 4: Canvas Blur on HiDPI/Retina Displays (2026-08-14)**
+
+A user reported that drawn shapes appeared "soft" or blurry on a Retina display. The effect was consistent across all shape types and zoom levels. Screenshots confirmed that strokes and fills lacked the crispness expected from a vector canvas renderer.
+
+**Root cause:** The canvas backing store was sized in CSS pixels rather than physical pixels. The engine's internal coordinate math was also sized in CSS pixels, but it read `canvas.width/height` directly as its logical dimensions — creating a coupling that prevented a one-line fix.
+
+**Fixed** by separating the logical coordinate space (CSS pixels) from the physical backing store (CSS × DPR). New fields `cssWidth`, `cssHeight`, and `dpr` were added to `Game.ts`. All 24 logical `canvas.width/height` usages were replaced with `cssWidth/cssHeight`. The two sites that legitimately need the physical backing store dimensions (`buildCache` sizing, `clearCanvas` cache comparison) were left as `this.canvas.width/height`.
+
+**Incident 5: TypeScript `boundTextId` Union Gap (2026-08-14)**
+
+After implementing bound text-in-shapes, `tsc --noEmit` reported `Property 'boundTextId' does not exist on type 'Shape'` at 10+ call sites in `Game.ts`.
+
+**Root cause:** `boundTextId` was added to the six container shape interfaces but not to the other shape interfaces in the `Shape` union type. TypeScript's discriminated union requires a property to exist on every member of the union before it can be accessed through a base-type reference.
+
+**Fixed** by adding `boundTextId?: string` to all 12 shape interfaces in `packages/shapes/`.
+
+**Incident 6: Cache Canvas Clear Rect Dimension Mismatch (2026-08-14)**
+
+While validating the DPR fix, observed that after a window resize the offscreen cache sometimes retained fragments of the previous frame's background, producing ghosting.
+
+**Root cause:** `buildCache()` called `clearRect(0, 0, this.canvas.width, this.canvas.height)` on a DPR-transformed context. The code was mixing physical (`canvas.width`) and logical (`cssWidth`) values.
+
+**Fixed** by replacing with logical dimensions and adding an explicit `ctx.setTransform(1,0,0,1,0,0)` before `drawImage` in `clearCanvas()` to ensure the cache blit is a raw 1:1 pixel copy.
+
 ## Results & Metrics
 
 | Metric | Value |
 |---|---|
 | Development period | Jan 2025 → present (production since Aug 2026) |
-| Commits | 400+ |
-| Lines of code | ~15,000+ (excluding node_modules) |
-| Drawing tools | 10 (Select, Pencil, Rectangle, Ellipse, Diamond, Arrow, Line, Text, Image, Eraser) |
+| Commits | 474 |
+| Lines of code | ~25,380 (excluding node_modules) |
+| Drawing tools | 16 (Select, Hand, Rectangle, Diamond, Ellipse, Line, Arrow, Pencil, Eraser, Text, Image, Pen, Ellipsis arc, Sticky note, Frame, Eyedropper, Laser) |
 | Export formats | 3 (PNG, SVG, JSON) |
-| WebSocket message types | 6 (shape-diff, cursor, chat, join_room, leave_room, re_auth) |
-| Session duration | 5 min WS token, 7 day refresh token |
+| WebSocket message types | 8 (shape-diff, cursor, chat, join_room, leave_room, re_auth, presence, shape-diff-ack) |
+| Session duration | 7 day session cookie, 5 min WS token |
 | Auto-save debounce | 1.5s |
 | Undo stack cap | 100 entries |
 | Reconnect backoff | Exponential, 1s initial, 30s max |
@@ -271,14 +314,16 @@ Shortly after the first production deploy, `codraw.nerdev.in` was intermittently
 
 The project is live and production-ready. The repository includes:
 
-- a fully functional canvas engine with 10 drawing tools
-- real-time multi-user collaboration over WebSocket
-- session-based authentication with token revocation
+- a fully functional canvas engine with 16 tools (Select, Hand, Rectangle, Diamond, Ellipse, Line, Arrow, Pencil, Eraser, Text, Image, Pen, Ellipsis arc, Sticky note, Frame, Eyedropper, Laser)
+- real-time multi-user collaboration over WebSocket with guest access
+- session-based authentication with httpOnly cookies and token revocation
 - optimistic concurrency for conflict-free concurrent editing
 - export to PNG, SVG, and JSON
 - dark/light theme with persistence
 - touch support (pinch-to-zoom, two-finger pan)
 - keyboard shortcuts for all major actions
+- spatial grid index for fast hit testing on large canvases
+- IndexedDB-backed LRU image cache with ImageAsset extraction for snapshot size control
 - automated CI/CD deployment to EC2
 - incident documentation and operational runbooks
 
@@ -294,6 +339,7 @@ Areas still evolving include test coverage (currently manual verification), a no
 - Built auto-save with debounced persistence, undo/redo with delta-based stacks, shape grouping, copy/paste, and export to PNG/SVG/JSON.
 - Set up GitHub Actions CI/CD with typecheck, lint, and build on every PR, and automated deploy to EC2 with health checks and idempotent PM2 restarts.
 - Hardened the system against common failure modes: JSON.parse crashes, race conditions, division by zero, stack overflow on large arrays, memory leaks, and CORS misconfiguration.
+- Extracted the canvas engine from a monolithic `Game.ts` (~2056 lines) into 23 focused manager modules under `draw/managers/`, reducing `Game.ts` to a thin public-API façade (~1404 lines).
 
 ## What This Project Demonstrates
 
@@ -305,3 +351,4 @@ This case study highlights engineering decisions that matter in interviews for f
 - production deployment patterns (PM2, Nginx, CI/CD, incident response)
 - practical tradeoffs in a real product (last-write-wins vs CRDTs, debounce timing, session vs JWT)
 - security hardening (httpOnly cookies, CORS restriction, rate limiting, input validation)
+- large-scale codebase refactoring (monolith to manager-based architecture without breaking existing behavior)
