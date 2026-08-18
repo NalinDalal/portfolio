@@ -1,7 +1,7 @@
 import { GitHubRepository, GitHubPullRequest, GitHubStats } from '@/types/github';
 
 export function getRelevantRepositories(repos: GitHubRepository[]): GitHubRepository[] {
-  return repos.filter(repo => repo.stargazers_count > 0);
+  return repos.filter(repo => repo.stargazersCount > 0);
 }
 
 export function calculateGitHubStats(
@@ -9,7 +9,7 @@ export function calculateGitHubStats(
   pullRequests: GitHubPullRequest[]
 ): GitHubStats {
   const totalPRs = pullRequests.length;
-  const mergedPRs = pullRequests.filter(pr => pr.merged_at !== null).length;
+  const mergedPRs = pullRequests.filter(pr => pr.mergedAt !== null).length;
 
   return {
     totalPRs,

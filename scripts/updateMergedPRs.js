@@ -81,12 +81,18 @@ async function getMergedPRs() {
       throw new Error("Unexpected API response format");
     }
 
-    const prs = data.items.map((pr) => ({
-      title: sanitizeText(pr.title),
-      url: pr.html_url,
-      repo: pr.repository_url.split("/").pop(),
-      mergedAt: pr.closed_at, // Optional: add merge date
-    }));
+    const prs = data.items.map((pr) => {
+      const htmlUrl = pr.html_url;
+      const repositoryUrl = pr.repository_url;
+      const closedAt = pr.closed_at;
+
+      return {
+        title: sanitizeText(pr.title),
+        url: htmlUrl,
+        repo: repositoryUrl.split("/").pop(),
+        mergedAt: closedAt, // Optional: add merge date
+      };
+    });
 
     return prs;
   } catch (error) {

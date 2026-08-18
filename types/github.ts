@@ -1,43 +1,43 @@
 export interface GitHubRepository {
   id: number;
   name: string;
-  html_url: string;
+  htmlUrl: string;
   description: string;
-  stargazers_count: number;
-  forks_count: number;
+  stargazersCount: number;
+  forksCount: number;
   language: string;
   topics: string[];
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface GitHubPullRequest {
   id: string;
   number: number;
   title: string;
-  html_url: string;
+  htmlUrl: string;
   state: 'open' | 'closed';
-  created_at: string;
-  merged_at: string | null;
+  createdAt: string;
+  mergedAt: string | null;
   body: string;
   labels: { name: string; color: string }[];
   base: {
     repo: {
-      full_name: string;
+      fullName: string;
     };
   };
 }
 
 export interface GitHubUser {
   login: string;
-  avatar_url: string;
-  html_url: string;
-  public_repos: number;
+  avatarUrl: string;
+  htmlUrl: string;
+  publicRepos: number;
   followers: number;
   following: number;
   bio: string;
   name: string;
-    location?: string;
+  location?: string;
 }
 
 export interface GitHubStats {

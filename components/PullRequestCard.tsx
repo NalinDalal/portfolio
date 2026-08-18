@@ -23,7 +23,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
     });
   };
 
-  const isMerged = pullRequest.merged_at !== null;
+  const isMerged = pullRequest.mergedAt !== null;
 
   const getStatusColor = () => {
     if (isMerged) return "text-accent border-accent/30";
@@ -61,7 +61,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
 
             <CardTitle className="text-lg group-hover:text-accent transition-colors">
               <a
-                href={pullRequest.html_url}
+                href={pullRequest.htmlUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-2 hover:underline"
@@ -73,7 +73,7 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
 
             <CardDescription className="mt-2">
               <span className="font-medium text-text-primary">
-                {pullRequest.base?.repo?.full_name || "Unknown repository"}
+                {pullRequest.base?.repo?.fullName || "Unknown repository"}
               </span>
             </CardDescription>
           </div>
@@ -86,8 +86,8 @@ export function PullRequestCard({ pullRequest }: PullRequestCardProps) {
             <Calendar className="h-4 w-4" />
             <span>
               {isMerged
-                ? `Merged ${formatDate(pullRequest.merged_at!)}`
-                : `Opened ${formatDate(pullRequest.created_at)}`}
+                ? `Merged ${formatDate(pullRequest.mergedAt!)}`
+                : `Opened ${formatDate(pullRequest.createdAt)}`}
             </span>
           </div>
         </div>
