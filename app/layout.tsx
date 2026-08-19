@@ -49,6 +49,7 @@ export const metadata: Metadata = {
     "AWS developer",
     "open source contributor",
     "freelance developer",
+    "open to full-time roles",
     "Bhopal developer",
   ],
   authors: [{ name: "Nalin Dalal", url: "https://nalin.nerdev.in" }],

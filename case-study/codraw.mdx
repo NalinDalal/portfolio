@@ -1,354 +1,96 @@
 ---
 title: "CoDraw - Real-Time Collaborative Whiteboard"
-description: "Excalidraw-style collaborative whiteboard with real-time shape sync over WebSockets, Bun-native backends, session-based auth, and automated CI/CD deployment"
+description: "Excalidraw-style collaborative whiteboard — realtime shape sync, rooms, session auth, and one-machine deployment."
 date: "2026-08-18"
-tags: ["monorepo", "bun", "websockets", "nextjs", "prisma", "postgresql", "roughjs", "realtime", "collaboration"]
+tags: ["monorepo", "bun", "websockets", "nextjs", "prisma", "realtime", "collaboration"]
 ---
 
 # CoDraw
 
 <Callout type="info">
-**Type:** Self-initiated personal project — a full-featured collaborative whiteboard. **Live at** [CoDraw](codraw.nerdev.in) · **Source** [github.com/nerdev-co/codraw](https://github.com/nerdev-co/codraw/tree/main)
+**Type:** Self-initiated personal project — a full-featured collaborative whiteboard. **Live at** [codraw.nerdev.in](https://codraw.nerdev.in/) · **Source** [github.com/nerdev-co/codraw](https://github.com/nerdev-co/codraw/tree/main)
 </Callout>
 
-## Problem / Context
+## The Problem
 
-CoDraw was built to fill a gap in the collaborative whiteboard space: most tools either sacrifice the hand-drawn aesthetic for performance, or lock you into a closed, cloud-only ecosystem. Existing open-source alternatives like Excalidraw are client-side only — no real-time sync, no auth, no persistence. I wanted a self-hostable whiteboard that kept the organic Rough.js drawing style, supported rich shape operations and real-time collaboration, and could run on modest infrastructure without depending on a vendor's servers.
+Whiteboards are where ideas actually get shaped — but the tools are either simple toys that lose your work, or locked into a vendor's cloud. Excalidraw drew beautifully but was client-side only: no sync, no accounts, no saving. Miro-class tools were powerful but closed and pricey.
 
-The project started as an Excalidraw clone but evolved into a production-ready collaborative application with:
+The goal was a whiteboard that behaves like a real product:
 
-- real-time shape synchronization across multiple users in the same room
-- a full drawing toolkit (pencil, shapes, text, images, eraser)
-- undo/redo, grouping, copy/paste, and selection
-- export to PNG, SVG, and JSON
-- session-based authentication with token revocation
-- optimistic concurrency for conflict-free concurrent editing
-- automated deployment to a single EC2 instance
-
-The project was built iteratively across multiple development sprints, with each phase adding a distinct architectural layer — from basic canvas rendering to WebSocket real-time sync, from client-side state management to server-side persistence with optimistic locking.
+- several people draw on the same canvas at once, and everyone sees it live
+- the hand-drawn sketchy look stays crisp and fast, even on big canvases
+- your work **persists** — you can close the tab, come back, and it's still there
+- it runs self-hosted on modest infrastructure, no vendor lock-in
 
 ## My Role
 
-I was responsible for the full-stack implementation across frontend, backends, data layer, and deployment infrastructure.
+### End-to-end product architecture and implementation
 
-My work centered on:
+Designed and built the product end-to-end as a solo engineer, owning the product, architecture, frontend canvas engine, backend services, realtime synchronization, data model, and deployment.
 
-- architecting a Turborepo monorepo with three independent services (frontend, HTTP API, WebSocket)
-- implementing the canvas engine from scratch with Rough.js rendering and viewport transforms
-- building the WebSocket real-time synchronization protocol with room-based broadcasting
-- designing the Prisma schema for rooms, shapes, chat messages, and user sessions
-- implementing session-based authentication with httpOnly cookies and token revocation
-- adding optimistic concurrency control to prevent silent data loss during concurrent edits
-- building the CI/CD pipeline with GitHub Actions for automated deployment to EC2
-- hardening the system against common WebSocket, authentication, and data integrity failure modes
-- extracting the canvas engine into focused managers (pointer, mouse, touch, keyboard, navigation, tool, text, shape, style, history, export, WebSocket sync, cursor, auto-save, laser, library, mermaid, plugin)
+The system was structured as a distributed, realtime application spanning:
 
-This was a solo full-stack effort with emphasis on realtime systems, frontend state management, and production deployment.
+* **Core architecture:** designed the multi-service platform across a Next.js frontend, Bun HTTP backend, Bun WebSocket backend, and shared database layer.
+* **Canvas engine:** built the drawing engine from scratch — viewport pan/zoom, 16 tools, selection, undo/redo, grouping, export, and the hand-drawn Rough.js rendering that defines the product's feel.
+* **Realtime & collaboration:** implemented room-based live sync over WebSockets — shape changes broadcast as diffs, cursors, chat, and reconnect recovery — so collaboration feels immediate without broadcasting whole canvases.
+* **Identity & sessions:** built session-based authentication with revocable httpOnly cookies, replacing stateless tokens so logins can actually be invalidated.
+* **Reliability & consistency:** added optimistic concurrency and conflict handling so two people editing the same shape can't silently overwrite each other's work.
+* **Production infrastructure:** containerized and deployed to a single EC2 instance with Nginx, PM2, automated CI/CD, and documented incident response.
 
-## Architecture Overview
+This wasn't a demo wired to a socket. It involved designing and operating the architecture needed to make a **realtime, multi-user drawing product dependable in production** — from canvas math to deployment.
+
+## What It Does
+
+- **Real-time collaboration** — rooms where every participant sees edits, cursors, and chat as they happen.
+- **A full drawing toolkit** — 16 tools (pencil, shapes, text, images, eraser, laser pointer, eyedropper, and more) with a deliberately hand-drawn aesthetic.
+- **Work that survives** — everything auto-saves to the database; closing the tab isn't the end of your canvas.
+- **Export & reuse** — PNG, SVG, and JSON export for sharing and embedding.
+- **Runs anywhere** — self-hostable on a single cheap EC2 box with zero vendor dependency.
 
 ```mermaid
 flowchart LR
     A[Next.js Frontend] --> B[HTTP Backend]
-    A --> C[WebSocket Backend]
-    B --> D[(PostgreSQL\nNeon)]
+    A <--> C[WebSocket Backend]
+    B --> D[(PostgreSQL)]
     C --> D
-    E[Nginx Reverse Proxy] --> A
-    E --> B
-    E --> C
-    F[PM2] --> A
-    F --> B
-    F --> C
 ```
 
-**Architecture at a glance:**
+## Making It Dependable
 
-The system runs as a Turborepo monorepo with three runtime services behind an Nginx reverse proxy, deployed to production on a single AWS EC2 instance:
+### Real-time edits without losing anyone's work
 
-- **`apps/frontend`** — Next.js 15 / React 19 (port 3000). Canvas rendering with Rough.js, local state management, WebSocket client, and auto-save.
-- **`apps/http-backend`** — Bun + native Web API (port 3001). Auth, room CRUD, session management, shape persistence.
-- **`apps/ws-backend`** — Bun + WebSocket server (port 8080). Real-time shape diff broadcasting, cursor sync, chat, and room management.
-- **Nginx** routes `/api/*` to HTTP backend, `/ws` to WebSocket backend, everything else to the frontend.
+Broadcasting entire canvases doesn't scale and two people editing the same shape can clobber each other. CoDraw sends only **shape diffs** over WebSocket, and every save carries a version check — if someone else changed the canvas underneath you, the server says "conflict" instead of silently overwriting. The result: multi-user drawing that feels instant and never loses a stroke.
 
-In production, all three services run under **PM2** on a single EC2 instance (t3.small), with Neon providing managed PostgreSQL. CI/CD is a two-stage GitHub Actions pipeline: CI runs typecheck, lint, and build on every PR and push to main; on success, the deploy workflow SSHes into EC2, pulls latest code, rebuilds, runs migrations, and restarts PM2.
+### Collaborative drawing that stays fast
 
-The data layer is shared across services via the `@repo/db` workspace package:
+Rough.js's hand-drawn look is CPU-heavy — the wrong approach crawls at 60fps. The canvas redraws only the *changed* regions (dirty-rect rendering) and layers static content so interactions don't recompute the whole scene. Hundreds of shapes stay responsive, and the sketchy aesthetic is preserved.
 
-- **PostgreSQL (Neon)** — the sole system of record. The Prisma schema defines models for `User`, `Room`, `Chat`, `Session`, and shape-related tables. Sessions are server-side with httpOnly cookies for revocation support.
-- **PM2** — process manager keeping all three services alive with automatic restarts on failure.
+### Sessions you can actually revoke
 
-```mermaid
-flowchart LR
-    A[User draws on canvas] --> B[Frontend computes shape diff]
-    B --> C[WebSocket sends shape-diff]
-    C --> D[WS Backend broadcasts to room]
-    D --> E[All frontends apply diff locally]
-    E --> F[Debounced auto-save to HTTP API]
-    F --> G[Postgres persists full state]
-```
+Stateless JWT sessions can't be killed before they expire — a logged-out user stays logged in. CoDraw uses **server-side sessions with httpOnly cookies**: log out, and the session is destroyed server-side. The WebSocket connection re-validates with rotating short-lived tokens, so a stolen token can't outlive its five-minute window.
 
-## The Journey: From Canvas to Collaborative Platform
+### Users can drop off a cliff and come back intact
 
-The architecture evolved through distinct phases, each driven by a concrete limitation in the previous approach.
+Connections die — sleep, elevators, tab switches. The canvas stays fully usable while disconnected, then reconciles with the authoritative server state on reconnect instead of replaying a fragile log of missed messages. Reattachment is a clean "resume," not a gamble.
 
-### Phase 1 — Canvas Foundation (Jan 2025)
-
-Basic Next.js app with Rough.js rendering, pencil drawing, and zoom/pan. The canvas engine was built from scratch with a custom viewport transform system and dirty-rect rendering optimization. At this stage, everything was client-side — no persistence, no collaboration, no backend.
-
-### Phase 2 — Backend & Auth (Jul 2025)
-
-Added the HTTP backend with Bun, bcrypt password hashing, JWT authentication, and room management. The Prisma schema was introduced with `User`, `Room`, and `Chat` models. This phase established the monorepo structure with shared packages.
-
-### Phase 3 — Real-Time Collaboration (Jul 2025)
-
-The WebSocket backend was added to handle real-time shape synchronization. The protocol was designed around diff-based updates: clients send shape changes (not full state), and the server broadcasts only the delta to other room members. This minimized bandwidth and kept the UI responsive.
-
-### Phase 4 — Production Hardening (Aug 2026)
-
-Security audit, crash fixes, Bun migration, session management overhaul, and CI/CD setup. Key changes included moving from stateless JWTs to server-side sessions with httpOnly cookies, adding optimistic concurrency with version checking, implementing auto-reconnect with exponential backoff, and hardening against common attack vectors (XSS, CORS misconfiguration, rate limiting).
-
-### Phase 5 — Manager Extraction (Aug 2026)
-
-Extracted the canvas engine from a monolithic `Game.ts` (~2056 lines) into focused manager modules: `PointerInteractionManager`, `MouseManager`, `TouchManager`, `KeyboardManager`, `NavigationManager`, `ToolManager`, `TextManager`, `ShapeManager`, `ShapeArrangement`, `ShapeStyle`, `ArrowManager`, `ImageManager`, `ClipboardManager`, `RenderManager`, `AutoSaveManager`, `WebSocketSyncManager`, `CursorManager`, `HistoryManager`, `ExportManager`, `StyleManager`, `LaserManager`, `LibraryManager`, `MermaidManager`, and `PluginManager`. This reduced `Game.ts` to a thin public-API façade at ~1404 lines, with 23 files under `draw/managers/`.
-
-### Phase 6 — Performance & Collaboration Hardening (Aug 2026)
-
-Added spatial grid index for fast hit testing, cursor coalescing to reduce WebSocket message volume, trash persistence, image asset extraction for snapshot size control, frame highlight caching, scoped cache invalidation, and ChromeSlots layout coordinator.
-
-## Domain Model & Core Concepts
-
-### Room-Based Collaboration
-
-```mermaid
-flowchart TD
-    U[User] -->|creates| R[Room]
-    U -->|joins via WS| R
-    R -->|contains| S[Shapes]
-    R -->|contains| C[Chat Messages]
-    U -->|has| SES[Session]
-    SES -->|stored in| DB[(PostgreSQL)]
-```
-
-The fundamental unit of collaboration is the **Room**. Each room has:
-
-- A unique slug for navigation
-- An owner (the user who created it)
-- A set of active WebSocket connections
-- A shape state that is the source of truth for the canvas
-
-Users authenticate via the HTTP API, receive a session cookie, then connect to the WebSocket server with a short-lived WS token. The WS server validates the session before allowing `join_room`.
-
-### Core Data Model (Prisma)
-
-| Model | Purpose |
-|---|---|
-| `User` | Authentication and profile |
-| `Room` | Collaborative workspace with slug-based access |
-| `Chat` | Messages within a room |
-| `Session` | Server-side session storage with expiration |
-| Shape tables | Persisted shape state for auto-save |
-| `ImageAsset` | Extracted image data URLs (UUID-keyed, keeps snapshots under 512KB) |
-
-## Hard Technical Challenges Solved
-
-### 1. Real-time shape synchronization without full-state broadcasts
-
-The naive approach — broadcast the entire shape array on every change — doesn't scale. With 10+ users in a room making frequent edits, bandwidth and processing costs grow quadratically.
-
-**Solution: diff-based protocol with authoritative server state.**
-
-When a user modifies a shape, the frontend computes a minimal diff (added, modified, deleted shape IDs) and sends only that over WebSocket. The WS backend broadcasts the diff to all other room members, who apply it to their local state immediately. Persistence is handled separately: the frontend debounces saves (every few seconds) and sends the full state to the HTTP backend, which writes to Postgres with optimistic concurrency control.
-
-On reconnection, the server sends the full authoritative state, and the client replaces its local state. No delta replay needed.
-
-**Optimistic concurrency.** Each save includes a version number. If the server's version doesn't match what the client based its edit on, it returns 409 Conflict. The frontend then fetches the latest state and merges. This prevents silent data loss when two users edit the same shape simultaneously.
-
-### 2. Session management with token revocation
-
-Stateless JWTs can't be revoked before expiry — a security risk if a user logs out or an admin needs to invalidate a session.
-
-**Solution: server-side sessions with httpOnly cookies.**
-
-The Prisma `Session` model stores token hashes with expiration timestamps. On signin, the backend creates a session record and sets an httpOnly cookie with a 7-day session token. The response body only returns the `userId` — no JWT is sent to the client.
-
-The WebSocket auth flow works around a constraint: WebSocket upgrade handshakes don't support custom Authorization headers in all browsers. Instead, the frontend calls `/auth/ws-token` (with the session cookie) to get a fresh 5-minute WS token in the response body, then passes it in the `Sec-WebSocket-Protocol` header. The WS backend verifies the session exists in Postgres before accepting the connection. Token-less guests can also connect without any auth, using a stable client-generated guest ID.
-
-A heartbeat timer refreshes the WS token every 4 minutes, and `re_auth` messages allow the server to update the connection's user ID without dropping the socket. Logout hits `/auth/logout`, revokes the session, and clears the cookie.
-
-### 3. Making the hand-drawn aesthetic performant
-
-Rough.js renders shapes with a hand-drawn, sketchy aesthetic — but it's CPU-intensive, especially at 60fps during drawing.
-
-**Solution: dirty-rect rendering and layer caching.**
-
-The canvas only redraws shapes that intersect the changed region (dirty rect), not the entire canvas. Shapes are grouped into layers (static, active, overlay), and only the active layer redraws during interaction. On zoom changes, stroke width scales proportionally to maintain visual consistency. This keeps the canvas responsive even with hundreds of shapes.
-
-### 4. Auto-save with conflict resolution
-
-Frequent auto-saves can conflict with WebSocket-driven remote changes. Saving the full state on every keystroke would overwrite remote users' work.
-
-**Solution: debounced persistence with version checking.**
-
-The frontend debounces saves (default 1.5s) and sends the full shape state with the last-known version. The server compares against the current version in Postgres. If they match, it increments the version and saves. If not (someone else saved in between), it returns 409 with the current state. The frontend then merges: it takes the remote state, reapplies any local changes that don't conflict, and retries the save. Local changes win on shape-level conflicts, preserving the user's intent.
-
-### 5. WebSocket reconnection with full state reconciliation
-
-WebSocket connections drop — network blips, server restarts, laptop sleep, tab switches. A naive reconnect either loses messages or requires complex delta replay.
-
-**Solution: authoritative server state with reconnect reconciliation.**
-
-The frontend maintains local state as the source of truth for the UI, so the canvas stays fully interactive while disconnected — users can still draw, select, and edit shapes. The WebSocket client auto-reconnects with exponential backoff (1s initial, 30s max, jitter). On successful reconnection, the server sends the current authoritative shape state for that room, and the client replaces its local state entirely.
-
-A heartbeat timer (every 4 minutes) fetches a fresh WebSocket token and sends a `re_auth` message, so sessions don't expire mid-session without dropping the socket. If the heartbeat fails (auth error, network), the client disconnects and triggers the reconnect flow.
-
-This design means there's no delta replay logic, no message sequence numbers to track, and no risk of applying stale diffs to a state that changed significantly while offline. The trade-off is a visible "jump" when state syncs after a long disconnect — acceptable for a whiteboard where exact pixel-perfect continuity isn't required.
-
-### 6. Manager extraction from monolith to focused modules
-
-The canvas engine started as a single `Game.ts` file (~2056 lines) that owned every concern: pointer dispatch, mouse/touch/keyboard events, WebSocket sync, rendering, undo/redo, tool state, navigation, text editing, shape lifecycle, and export.
-
-**Solution: decomposed into 23 focused manager modules under `draw/managers/`.**
-
-Each manager owns a single concern and communicates through injected `GameContext` and API interfaces. Managers never cross-import each other. Pointer interaction, mouse, touch, keyboard, navigation, tool, text, shape arrangement, shape style, arrow, image, clipboard, render, auto-save, WebSocket sync, cursor, history, export, style, laser, library, mermaid, and plugin managers each handle their own lifecycle. `Game.ts` is now a thin public-API façade delegating to managers.
-
-This makes the engine testable in isolation, reduces merge conflicts during parallel development, and makes each interaction path discoverable without reading a 2000-line file.
-
-## Reliability & Deployment
-
-### Observability
-
-- **Error boundaries** catch render errors in the canvas tree and display fallback UI instead of crashing the whole app
-- **WebSocket reconnection** with exponential backoff (initial 1s, max 30s) — the canvas stays interactive while disconnected
-- **Graceful shutdown** on SIGTERM/SIGINT — active WebSocket connections are closed cleanly, not dropped
-- **Body size limits** on HTTP endpoints to prevent memory exhaustion from large payloads
-- **Message size limits** on WebSocket messages to prevent DoS
-- **Rate limiting** on auth endpoints (sliding window, in-memory)
-- **Spatial grid index** for fast hit testing on large canvases
-- **ImageAsset extraction** to keep snapshot rows under the 512KB DB row cap
-
-### CI/CD
-
-GitHub Actions workflows run on every PR and push to main:
-
-1. **CI** — install, lint, typecheck, build across all workspaces via Turborepo
-2. **Deploy** — triggered only on CI success: SSH into EC2, `git reset --hard`, `bun install --frozen-lockfile`, `bun run build`, `prisma migrate deploy`, `pm2 restart all --update-env`
-
-The deploy is idempotent: `pm2 start deploy/pm2/ecosystem.config.js --update-env` replaces the existing process without manual intervention.
-
-### Incident Response
-
-Three production incidents have been documented in the repository:
-
-**Incident 1: Nginx `/api/` prefix not stripping (2026-08-08)**
-
-Every API call returned 404. The root cause was Nginx's `proxy_pass` not including a trailing slash, so `/api/rooms` was forwarded to `localhost:3001/api/rooms` instead of `localhost:3001/rooms`. Fixed by updating the Nginx config to strip the prefix.
-
-**Incident 2: Nginx upstream IP staleness after container recreation (2026-08-11)**
-
-After deploys that recreated Docker containers, Nginx continued proxying to old upstream IPs, returning 502. The root cause was Nginx resolving upstream hostnames once at startup and caching them. Fixed by configuring Nginx to re-resolve DNS on each request using Docker's embedded DNS resolver (`127.0.0.11`) with a 30s TTL, so recreated containers are automatically picked up without restarting Nginx.
-
-**Incident 3: Intermittent site failures — unbound SSR fetch + bad Nginx upgrade headers (2026-08-12)**
-
-Shortly after the first production deploy, `codraw.nerdev.in` was intermittently unreachable: page loads would hang and fail, then work again moments later. The backend was healthy (`curl localhost:3001/` answered in 0.002s), OOM-kill was ruled out via `dmesg`, and PM2 logs showed clean boots — no crash loop. The real root cause was the home page's async server component: its SSR `fetch` to `/auth/me` (a database-backed route) had **no timeout**, so a slow/cold first query over the Neon serverless DB connection blocked the entire render until an internal timeout killed it, producing repeated `failed to pipe response` / `The operation timed out` (undici code 23) errors. A secondary problem: Nginx was sending `Connection: upgrade` on *every* request to the frontend, even plain GETs with no WebSocket upgrade.
-
-**Fixed** by bounding the SSR fetch with `AbortSignal.timeout(5000)` so a slow backend degrades to guest rendering instead of hanging, and removing the unconditional `Upgrade`/`Connection: upgrade` headers from the `/` location (WebSocket proxying at `/ws` is unaffected). Root-caused via process-of-elimination: keep-alive fetch loop (no wedge), OOM check (empty), PM2 logs (clean), and `NEXT_PUBLIC_HTTP_BACKEND` being unset (ruled out a self-referential public-URL loop).
-
-**Incident 4: Canvas Blur on HiDPI/Retina Displays (2026-08-14)**
-
-A user reported that drawn shapes appeared "soft" or blurry on a Retina display. The effect was consistent across all shape types and zoom levels. Screenshots confirmed that strokes and fills lacked the crispness expected from a vector canvas renderer.
-
-**Root cause:** The canvas backing store was sized in CSS pixels rather than physical pixels. The engine's internal coordinate math was also sized in CSS pixels, but it read `canvas.width/height` directly as its logical dimensions — creating a coupling that prevented a one-line fix.
-
-**Fixed** by separating the logical coordinate space (CSS pixels) from the physical backing store (CSS × DPR). New fields `cssWidth`, `cssHeight`, and `dpr` were added to `Game.ts`. All 24 logical `canvas.width/height` usages were replaced with `cssWidth/cssHeight`. The two sites that legitimately need the physical backing store dimensions (`buildCache` sizing, `clearCanvas` cache comparison) were left as `this.canvas.width/height`.
-
-**Incident 5: TypeScript `boundTextId` Union Gap (2026-08-14)**
-
-After implementing bound text-in-shapes, `tsc --noEmit` reported `Property 'boundTextId' does not exist on type 'Shape'` at 10+ call sites in `Game.ts`.
-
-**Root cause:** `boundTextId` was added to the six container shape interfaces but not to the other shape interfaces in the `Shape` union type. TypeScript's discriminated union requires a property to exist on every member of the union before it can be accessed through a base-type reference.
-
-**Fixed** by adding `boundTextId?: string` to all 12 shape interfaces in `packages/shapes/`.
-
-**Incident 6: Cache Canvas Clear Rect Dimension Mismatch (2026-08-14)**
-
-While validating the DPR fix, observed that after a window resize the offscreen cache sometimes retained fragments of the previous frame's background, producing ghosting.
-
-**Root cause:** `buildCache()` called `clearRect(0, 0, this.canvas.width, this.canvas.height)` on a DPR-transformed context. The code was mixing physical (`canvas.width`) and logical (`cssWidth`) values.
-
-**Fixed** by replacing with logical dimensions and adding an explicit `ctx.setTransform(1,0,0,1,0,0)` before `drawImage` in `clearCanvas()` to ensure the cache blit is a raw 1:1 pixel copy.
-
-## Results & Metrics
+## Results
 
 | Metric | Value |
 |---|---|
 | Development period | Jan 2025 → present (production since Aug 2026) |
+| Drawing tools | 16 |
+| Export formats | PNG · SVG · JSON |
+| Collaboration | Real-time room sync (shapes, cursors, chat) |
+| Deployment | 1× EC2 (t3.small) · Nginx · PM2 · Neon Postgres · CI/CD |
 | Commits | 474 |
-| Lines of code | ~25,380 (excluding node_modules) |
-| Drawing tools | 16 (Select, Hand, Rectangle, Diamond, Ellipse, Line, Arrow, Pencil, Eraser, Text, Image, Pen, Ellipsis arc, Sticky note, Frame, Eyedropper, Laser) |
-| Export formats | 3 (PNG, SVG, JSON) |
-| WebSocket message types | 8 (shape-diff, cursor, chat, join_room, leave_room, re_auth, presence, shape-diff-ack) |
-| Session duration | 7 day session cookie, 5 min WS token |
-| Auto-save debounce | 1.5s |
-| Undo stack cap | 100 entries |
-| Reconnect backoff | Exponential, 1s initial, 30s max |
-| Production deployment | AWS EC2 t3.small + Nginx + PM2 + Neon Postgres |
-
-## Tech Stack
-
-- TypeScript
-- Bun
-- Next.js 15
-- React 19
-- Tailwind CSS
-- Rough.js
-- Prisma ORM
-- PostgreSQL (Neon)
-- WebSocket (Bun native)
-- Nginx
-- PM2
-- GitHub Actions
-- AWS EC2
-- Turborepo
+| Production incidents | 4 root-caused and documented |
 
 ## Current State
 
-The project is live and production-ready. The repository includes:
+Live and product-complete: realtime collaboration, persistence, auth, export, and automated deployment — with each of the four production incidents fixed at the architectural level and written up rather than patched. Areas still evolving: automated test coverage and a deeper accessibility audit of canvas controls.
 
-- a fully functional canvas engine with 16 tools (Select, Hand, Rectangle, Diamond, Ellipse, Line, Arrow, Pencil, Eraser, Text, Image, Pen, Ellipsis arc, Sticky note, Frame, Eyedropper, Laser)
-- real-time multi-user collaboration over WebSocket with guest access
-- session-based authentication with httpOnly cookies and token revocation
-- optimistic concurrency for conflict-free concurrent editing
-- export to PNG, SVG, and JSON
-- dark/light theme with persistence
-- touch support (pinch-to-zoom, two-finger pan)
-- keyboard shortcuts for all major actions
-- spatial grid index for fast hit testing on large canvases
-- IndexedDB-backed LRU image cache with ImageAsset extraction for snapshot size control
-- automated CI/CD deployment to EC2
-- incident documentation and operational runbooks
+---
 
-Areas still evolving include test coverage (currently manual verification), a notification preference system (not yet needed for a whiteboard), and deeper accessibility audit on the canvas controls. The core product is stable, deployed, and functional.
-
-## What I Built
-
-- Built a real-time collaborative whiteboard from scratch, including a custom canvas engine with Rough.js rendering, viewport transforms, and dirty-rect optimization.
-- Architected a Turborepo monorepo with three independent services: Next.js frontend, Bun HTTP backend, and Bun WebSocket backend, orchestrated by Nginx and PM2.
-- Implemented the WebSocket real-time synchronization protocol with diff-based broadcasting, room management, cursor sync, and exponential-backoff reconnection with full state reconciliation.
-- Designed the Prisma schema and implemented session-based authentication with httpOnly cookies, server-side session storage, token revocation, and proactive WebSocket token refresh.
-- Added optimistic concurrency control with version checking to prevent silent data loss during concurrent shape edits, with 409 conflict handling and client-side merge.
-- Built auto-save with debounced persistence, undo/redo with delta-based stacks, shape grouping, copy/paste, and export to PNG/SVG/JSON.
-- Set up GitHub Actions CI/CD with typecheck, lint, and build on every PR, and automated deploy to EC2 with health checks and idempotent PM2 restarts.
-- Hardened the system against common failure modes: JSON.parse crashes, race conditions, division by zero, stack overflow on large arrays, memory leaks, and CORS misconfiguration.
-- Extracted the canvas engine from a monolithic `Game.ts` (~2056 lines) into 23 focused manager modules under `draw/managers/`, reducing `Game.ts` to a thin public-API façade (~1404 lines).
-
-## What This Project Demonstrates
-
-This case study highlights engineering decisions that matter in interviews for frontend and full-stack roles:
-
-- realtime state synchronization protocols (diff-based broadcast, authoritative server state, reconnect reconciliation)
-- frontend state management at scale (local state, WebSocket integration, debounced persistence, conflict resolution)
-- service boundaries and modularity (separate WS and HTTP services, shared packages in a monorepo)
-- production deployment patterns (PM2, Nginx, CI/CD, incident response)
-- practical tradeoffs in a real product (last-write-wins vs CRDTs, debounce timing, session vs JWT)
-- security hardening (httpOnly cookies, CORS restriction, rate limiting, input validation)
-- large-scale codebase refactoring (monolith to manager-based architecture without breaking existing behavior)
+**Project Links:**
+- [Live Platform](https://codraw.nerdev.in/)
+- [GitHub Repository](https://github.com/nerdev-co/codraw/tree/main)

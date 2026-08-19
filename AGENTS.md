@@ -19,8 +19,9 @@ GitHub-derived TypeScript types (`types/github.ts`) use camelCase fields (`htmlU
 
 1. **Never hand-edit `data/mergedPRs.json`** — `.github/workflows/merged-pr.yml` regenerates and commits it every 6 hours via `scripts/updateMergedPRs.js`. Any manual edit is silently overwritten on the next run. If you need different data, change the script or the workflow, not the file.
 2. **Don't reintroduce a blog manifest** — blog routing (`app/blogs/[slug]/[subslug]/page.tsx`) discovers posts from the filesystem. Any import-map or registry for blog content will drift out of sync with the files, exactly like the deleted one did.
-3. **Keep the frontmatter schemas stable** — blog posts use `title` + `date` (required), `tags` + `description` (optional); that's what `utils/get-blog-posts.ts` validates with zod. Case studies use `title` + `date`. Do NOT copy the stray `version`/`author` frontmatter from `case-study/blind.mdx` — nothing reads it.
+3. **Keep the frontmatter schemas stable** — blog posts use `title` + `date` (required), `tags` + `description` (optional); that's what `utils/get-blog-posts.ts` validates with zod. Case studies use `title` + `date` (`tags`/`description` optional). Nothing reads extra frontmatter like `version`/`author` — don't add it.
 4. **Code identifiers are camelCase** — including keys mapped from GitHub API responses (`htmlUrl`, `mergedAt`). snake_case keys exist only inside the raw `data/*.json` API dumps, because that's what GitHub sends.
+5. **Content facts come from the user, not from inference** — any factual claim about the author's work (roles, features, metrics, project descriptions, achievements) must be supplied or confirmed by the user before it's written. Read the repo README and data files for grounding, but never invent, infer, or extrapolate facts. If a claim can't be traced to the user, a README, or a live site, ask first.
 
 ## How and where it's working
 
@@ -68,6 +69,17 @@ Why: `types/github.ts` types are camelCase; snake_case keys only exist inside ra
 Bad: editing `data/mergedPRs.json` by hand.
 Good: `bun run update:prs` — it rewrites the file, creates a `.backup`, and validates the JSON. `GITHUB_TOKEN` in `.env.local` only raises the API rate limit.
 Why: CI also runs this on a schedule; hand edits always lose.
+
+### Writing or editing a case study (`case-study/*.mdx`)
+
+Case studies are read by lazy, non-technical readers (recruiters, founders). The Modheshwari rewrite is the gold standard; mirror its shape and tone.
+
+1. **Strong role statement first.** The "My Role" section leads with an end-to-end ownership claim ("Designed and built the product end-to-end as a solo engineer, owning the architecture, backend, realtime infrastructure, data model, asynchronous workflows, and deployment") plus bolded bullets per concern (core architecture, domain & workflows, identity, realtime/async, reliability, production) and a closing "This wasn't simply…" punchline.
+2. **Outcomes over mechanics.** Say what the user/community gets, in plain words. No phase-by-phase journeys, no schema/table dumps, no incident postmortems, no commit/LOC lists in the body. Technical depth belongs in a blog post, not a case study.
+3. **Ask the user for facts — never write them yourself.** Every claim, metric, feature list, role detail, and product description must be *supplied or confirmed by the user*, not invented or inferred. Read the linked repo's README and `data/projects.json` first for grounding, but if a fact can't be traced back to the user, the README, or the live site, **stop and ask the user before writing it**. Do not fill gaps from memory. `case-study/blind.mdx` once described a product that didn't exist (a voice-navigation app) because nobody checked; the real repo was an anonymous college community app. When in doubt, end the session by listing every claim you couldn't verify and ask the user to confirm each one.
+4. **At least one diagram.** Mermaid blocks (rendered by `components/Mermaid` via `language-mermaid` code fences) break up prose and people love pictures. A page with zero diagrams is a red flag.
+5. **Every link verified before finishing.** `curl -s -o /dev/null -w "%{http_code}" -L <url>` on each URL in the file (and in `data/projects.json`); anything that isn't 200 gets fixed or dropped. Also check bare domains in Markdown links — `[x](codraw.nerdev.in)` without `https://` renders as a broken relative link.
+6. **Frontmatter** stays `title` + `date` + optional `tags`/`description`, per the schemas above.
 
 ## A note from the author
 

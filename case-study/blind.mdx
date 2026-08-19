@@ -1,323 +1,98 @@
 ---
-title: "Blind App — Documentation"
-description: "MDX documentation for the Blind App: an accessible web/mobile application focused on people with visual impairments."
+title: "Blind - Anonymous Community Platform"
+description: "Anonymous community platform for college students — OTP-verified signup, anonymous identity layer, content moderation, and a fast cursor-paginated feed."
 date: "2024-01-15"
 ---
 
-# Blind App
-
-> Accessible-first web application tailored for people with visual impairments. This document explains goals, architecture, installation, usage, accessibility decisions, UI components, APIs, testing, deployment, and contribution guidelines.
+# Blind
 
 <Callout type="info">
-**Audience:** Product managers, engineers, designers, testers, and contributors who will build or maintain Blind App.
+**Type:** Self-initiated personal project — built for college communities. **Live at** [blind.nerdev.in](https://blind.nerdev.in/) · **Source** [github.com/NalinDalal/blind-app](https://github.com/NalinDalal/blind-app)
 </Callout>
 
-## Table of Contents
+## The Problem
 
-- [Overview](#overview)
-- [Goals & Principles](#goals--principles)
-- [Architecture](#architecture)
-- [Getting Started](#getting-started)
-- [Accessibility Checklist](#accessibility-checklist)
-- [UI Components & Patterns](#ui-components--patterns)
-- [Data Layer & API](#data-layer--api)
-- [Testing & QA](#testing--qa)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [Roadmap](#roadmap)
-- [Appendix: Keyboard Map & ARIA Examples](#appendix-keyboard-map--aria-examples)
+College communities run on group chats and anonymous confession pages — both broken in opposite ways. Real-name spaces silence people; anonymous ones flood with spam and trolling because there's no moderation, no accountability, and no way to know anyone is even a student.
 
----
+The goal was an **anonymous-by-default** community space with real safety rails:
 
-## Overview
+- students can post, comment, and reply without revealing who they are
+- only actual students can join — verified, not claimed
+- spam and harassment get filtered instead of buried
+- the feed stays fast and smooth no matter how many posts pile up
 
-**Blind App** is an accessible-first application providing a set of features focused on enabling people with low or no vision to interact with digital content. Typical features:
+## My Role
 
-* Voice-driven navigation and commands
-* High-contrast, large-type themes
-* Screen-reader-first markup and ARIA-safe components
-* Haptic / audio cues for mobile
-* Offline support for essential data
+### End-to-end product architecture and implementation
 
-<Callout type="success">
-This app prioritizes accessibility from the ground up, ensuring every feature works without visual affordances.
-</Callout>
+Designed and built the product end-to-end as a solo engineer, owning the product, architecture, authentication flow, anonymity layer, moderation pipeline, data model, and deployment.
 
----
+* **Core architecture:** designed the full-stack platform on Next.js API routes over PostgreSQL, structured around distinct services: auth, identity/anonymity, feed, moderation, and notifications.
+* **Identity & anonymity:** designed the separation between a student's real, verified identity and their anonymous profile — verification happens once, and every post is tied to an anonymous identity mapping so no one can tie content back to a person.
+* **Authentication & security:** built the custom auth flow — email OTP verification for student signup, bcrypt password hashing, and JWT access/refresh token pairs — so sessions are secure and revocable end-to-end.
+* **Moderation & safety:** built the content moderation filter that screens posts and comments before they reach the community, with audit logging of moderation decisions.
+* **Data model & API:** designed the PostgreSQL schema and REST API for posts, nested comment replies, likes, and cursor-paginated feed loading.
+* **Deployment:** containerized with Docker and deployed the app to production.
 
-## Goals & Principles
+## What It Does
 
-1. **Accessibility by default** — everything should work without visual affordances
-2. **Predictable keyboard & voice navigation** — users must be able to complete flows using keyboard or voice alone
-3. **Performance and reliability** — slow connections and offline use are common; the app must be resilient
-4. **Privacy & minimal permissions** — audio/mic access is optional and explained clearly
-5. **Composable UI components** — accessible primitives that teams can reuse
+- **Anonymous posting** — post, comment, and reply without identity friction; nested replies and likes keep discussion structured.
+- **College-verified community** — signup requires a valid `@oriental.ac.in` email, confirmed via OTP, so the room is actually full of students.
+- **Content moderation** — a built-in filter blocks inappropriate content in posts and comments before it spreads.
+- **A feed that never crawls** — cursor-based pagination loads posts on demand, regardless of volume.
+- **Polished UX** — dark/light themes, optimistic state management, and form validation with proper error handling.
 
----
-
-## Architecture
-
-* **Frontend:** Next.js (MDX for content), React, Tailwind for utility styles. UI primitives are accessible-first
-* **Backend:** Lightweight RESTful API (or GraphQL if required); OAuth for auth
-* **Persistence:** IndexedDB + localStorage for offline-first experiences
-* **Mobile:** Progressive Web App with service worker, optional native wrappers
-* **Telemetry:** Opt-in only; keep data minimal and anonymized
-
-<Callout type="info">
-The architecture prioritizes offline-first capabilities and progressive enhancement for better accessibility across all devices.
-</Callout>
-
----
-
-## Getting Started
-
-### Local Development
-
-```bash
-# Clone repository
-git clone git@github.com:NalinDalal/blind-app.git
-cd blind-app
-
-# Install dependencies
-pnpm install
-
-# Run development server
-pnpm dev
+```mermaid
+flowchart TD
+    U[Student] -->|email + OTP| A[Auth Service]
+    A --> V[College Email Verification]
+    A -.->|verified identity| ID[Anonymity Layer]
+    ID -.->|anonymous mapping| AN[Anon Identity Map]
+    U -->|anonymous post| F[Feed & Post Service]
+    F --> M[Content Moderation]
+    M -->|blocked or approved| P[(Posts & Comments)]
+    F -->|audit log| L[(Audit Logs)]
+    U -->|load feed| F
+    F -->|cursor page| P
 ```
 
-Open `http://localhost:3000`. The app ships with a high-contrast theme and voice tutorial enabled by default in `dev` for testing.
+## Making It Work in the Real World
 
-### Environment Variables
+### Anonymous, but not unaccountable
 
-Create a `.env.local` with at least:
+The core design decision: verify the student once, then **separate the real identity from the anonymous one**. A person is provably a student, yet no post is linkable to them — and when moderation finds abuse, the audit trail exists to act on it. That's the difference between "anonymous" and "chaos".
 
-```bash
-NEXT_PUBLIC_API_URL=https://api.example.com
-NEXT_PUBLIC_VOICE_KEY=your-voice-api-key  # optional
-```
+### Signing up without a password circus
 
-### Project Structure
+New users verify their college email via OTP, then get JWT access/refresh token pairs — sessions that can be rotated and invalidated, instead of tokens that live forever. The barrier-to-entry math matters for a student community: easy to join, hard to abuse.
 
-```
-/src
-  /components  # accessible UI primitives
-  /hooks       # custom React hooks
-  /lib         # data layer, speech utils
-  /pages       # Next.js pages
-  /styles      # global styles
-  /tests       # test suites
-```
+### Moderation before it reaches anyone
 
-<Callout type="warning">
-Ensure you have Node.js 18+ and pnpm installed before starting development.
-</Callout>
+The filter runs on the platform side of the feed — content is screened as part of posting, so spam and harassment don't get a moment in front of the community. Cheap flip side of anonymous posting, and the feature that keeps the space usable at all.
 
----
+### A feed that scales down gracefully
 
-## Accessibility Checklist
+Cursor-based pagination means the app fetches only what's on screen, so browsing a busy semester's worth of posts stays smooth — no "load everything" bottleneck.
 
-Follow this checklist for every screen and component:
+## Results
 
-- [ ] Proper semantic HTML (landmark roles, headings in order)
-- [ ] Keyboard operable: tab order, focus visibility, skip links
-- [ ] ARIA used only where semantics are insufficient
-- [ ] Focus management for dialogs and route changes
-- [ ] Announcements for dynamic content (live regions)
-- [ ] Text alternatives for images and icons
-- [ ] Sufficient contrast ratios (WCAG AA / large text AAA where feasible)
-- [ ] Reduced motion support
-- [ ] Clear permission prompts and privacy notices for mic/camera
+| Metric | Value |
+|---|---|
+| Project type | Solo, end-to-end (concept → deployment) |
+| Community access | Verified `@oriental.ac.in` students only |
+| Authentication | Email OTP + JWT access/refresh tokens (bcrypt-hashed) |
+| Anonymity | Real identity separated from anonymous profile mapping |
+| Moderation | Filter + audit logging on posts and comments |
+| Feed | Cursor-based pagination, nested replies, likes |
+| Tech stack | Next.js · TypeScript · PostgreSQL · Prisma · Redux Toolkit · TanStack Query · Docker |
+| Docs | API reference, architecture, OpenAPI spec, roadmap in-repo |
 
-<Callout type="error">
-**Important:** Helpful tools include axe, Lighthouse (Accessibility), NVDA/VoiceOver testing, and ChromeVox. Use them regularly!
-</Callout>
+## Current State
 
----
-
-## UI Components & Patterns
-
-### Accessible Primitives (Recommended API)
-
-* `VisuallyHidden` — for helper text only read by screen readers
-* `Button` — supports `aria-pressed`, `aria-label`, and keyboard activation
-* `Dialog` — traps focus, restores focus on close, has `aria-modal` and `role=dialog`
-* `LiveRegion` — polite/urgent announcements
-* `Listbox` — ARIA-compliant combobox/listbox keyboard interactions
-* `SkipLink` — top of page to jump to main content
-
-### Example: VoiceCommandProvider Usage
-
-```jsx
-import { VoiceCommandProvider, useVoice } from "../lib/voice"
-
-function App() {
-  return (
-    <VoiceCommandProvider>
-      <MainApp />
-    </VoiceCommandProvider>
-  )
-}
-
-function Search() {
-  const { startListening, stopListening, transcript } = useVoice()
-  
-  return (
-    <div>
-      <button onClick={startListening} aria-label="Start voice search">
-        Start
-      </button>
-      <button onClick={stopListening} aria-label="Stop voice search">
-        Stop
-      </button>
-      <div aria-live="polite">{transcript}</div>
-    </div>
-  )
-}
-```
-
-<Callout type="info">
-**Note:** Always show a visible and an ARIA status when voice is active. Offer manual fallback input for users who cannot or prefer not to use voice commands.
-</Callout>
-
----
-
-## Data Layer & API
-
-### Authentication
-
-* OAuth2 / JWT short-lived tokens
-* Ensure tokens are stored in `httpOnly` cookies where possible for security
-
-### REST Contract (Example)
-
-**GET /v1/items** — list accessible items (paginated)
-
-Response:
-```json
-{
-  "items": [
-    {
-      "id": "123",
-      "title": "...",
-      "content": "..."
-    }
-  ],
-  "cursor": "abc"
-}
-```
-
-**POST /v1/feedback** — user-submitted feedback (voice or text)
-
-Request:
-```json
-{
-  "type": "voice|text",
-  "content": "...",
-  "metadata": {}
-}
-```
-
-<Callout type="warning">
-**Privacy:** Store minimal metadata and encrypt PII at rest. Follow GDPR and accessibility privacy guidelines.
-</Callout>
-
----
-
-## Testing & QA
-
-1. **Unit tests** for components (React Testing Library + Jest)
-2. **Integration tests** for flows (Playwright) — include keyboard-only scenarios
-3. **Accessibility tests:** axe-core in CI + manual screen-reader passes (VoiceOver on macOS, NVDA on Windows)
-4. **Voice / audio tests:** mock speech APIs and test UI states when audio permission is denied or dropped
-
-<Callout type="error">
-**Critical:** CI should fail on serious accessibility regressions. Accessibility is not optional!
-</Callout>
-
----
-
-## Deployment
-
-* **Build:** `pnpm build` (Next.js)
-* **Hosting:** Vercel, Netlify, or any static + serverless provider
-* **Secrets:** Store keys in provider secrets manager
-* **Monitoring:** Sentry (opt-in) and basic uptime checks
-
-<Callout type="success">
-For PWA and service worker: ensure proper asset headers and offline caching are configured correctly.
-</Callout>
-
----
-
-## Contributing
-
-Please follow the repository's `CONTRIBUTING.md`. High-level rules:
-
-* Open issues for UX changes and accessibility regressions
-* Every UI change must include accessibility tests and a short demo (GIF or steps) showing keyboard and screen-reader interactions
-* Use small, focused PRs. Link to the issue or user story
-* Test with actual screen readers before submitting
-
-<Callout type="info">
-We welcome contributions! Focus on accessibility-first improvements and clear documentation.
-</Callout>
-
----
-
-## Roadmap
-
-### Short-term Goals
-
-* **Q1:** Minimal viable voice navigation
-* **Q2:** Offline favorites + caching
-* **Q3:** Native mobile wrappers with enhanced haptics
-* **Later:** ML-assisted audio summaries
-
----
-
-## Appendix: Keyboard Map & ARIA Examples
-
-### Keyboard Conventions
-
-* `Tab` / `Shift+Tab` — move forward/backward between interactive elements
-* `Enter` / `Space` — activate button or select
-* `Esc` — close overlays
-* `Alt+M` — open main voice command (example shortcut)
-
-### ARIA Example: Accessible Modal
-
-```html
-<div 
-  role="dialog" 
-  aria-modal="true" 
-  aria-labelledby="dialog-title" 
-  tabindex="-1"
->
-  <h2 id="dialog-title">Confirm Action</h2>
-  <p>Are you sure?</p>
-  <button>Cancel</button>
-  <button>Confirm</button>
-</div>
-```
-
-<Callout type="info">
-For more ARIA patterns and examples, refer to the [W3C ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/).
-</Callout>
-
----
-
-## Conclusion
-
-The Blind App demonstrates that accessibility isn't just a feature—it's a fundamental design principle. By prioritizing keyboard navigation, screen reader compatibility, and voice commands from the start, we've created an application that's usable by everyone, regardless of their visual abilities.
-
-<Callout type="success">
-**Ready to get started?** Clone the repository and follow the Getting Started guide above!
-</Callout>
+Live and deployed. Core loop — verified anonymous signup, moderated posting, fast feed — is complete.
 
 ---
 
 **Project Links:**
-- [Live Demo](https://blind-app-cyan.vercel.app/)
+- [Live Platform](https://blind.nerdev.in/)
 - [GitHub Repository](https://github.com/NalinDalal/blind-app)
-
-**Tech Stack:** Next.js, React, TypeScript, Tailwind CSS, Web Speech API

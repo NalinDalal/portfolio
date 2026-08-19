@@ -17,7 +17,7 @@ const projects = [
   },
   {
     name: "Blind",
-    link: "https://blind-app-cyan.vercel.app/",
+    link: "https://blind.nerdev.in/",
     tech: ["Next.js", "PostgreSQL", "Prisma"],
     points: [
       "Anonymous platform with moderation filters and cursor-based pagination for data retrieval.",
@@ -41,7 +41,7 @@ const projects = [
       "Designed role-based access control with privacy controls across community, gotra, family, and member roles.",
       "Built multi-approver resource request and event approval workflows using Prisma/PostgreSQL as the domain model.",
       "Implemented asynchronous notification delivery via Kafka workers and a dedicated WebSocket service for real-time messaging and updates.",
-      "Set up CI/CD with GitHub Actions to build, test, and deploy Docker images to AWS ECR/ECS, with Prometheus and New Relic monitoring.",
+      "Set up CI/CD with GitHub Actions to build and deploy Docker images to AWS EC2, with Prometheus/Grafana monitoring and automated database backups.",
       "Load/stress-tested the platform against projected usage for a 10-15k member community.",
     ],
   },

@@ -1,8 +1,8 @@
 ---
 title: "Modheshwari - Community Management Platform"
-description: "Multi-service community platform for 10-15k members — event-driven notifications with transactional outbox, escalation delivery, realtime chat with reconnect sync, RBAC workflows, and full DevOps pipeline"
+description: "Community platform for 10-15k members — families, events, approvals, realtime chat, and notifications. Built end-to-end as a solo engineer."
 date: "2026-08-10"
-tags: ["monorepo", "bun", "kafka", "websockets", "prisma", "postgresql", "redis", "docker", "outbox", "realtime"]
+tags: ["community", "realtime", "event-driven", "bun", "docker"]
 ---
 
 # Modheshwari
@@ -11,416 +11,105 @@ tags: ["monorepo", "bun", "kafka", "websockets", "prisma", "postgresql", "redis"
 **Type:** Self-initiated personal project — built for the Modheshwari community. **Live at** [modheshwari.nerdev.in](https://modheshwari.nerdev.in/) · **Source** [github.com/NalinDalal/modheshwari](https://github.com/NalinDalal/modheshwari)
 </Callout>
 
-## Problem / Context
+## The Problem
 
-Modheshwari was built to solve a practical coordination problem for a community organization: how to manage families, governance roles, events, approvals, communications, and member discovery without relying on scattered spreadsheets, group chats, and manual follow-ups.
+A community of **10,000-15,000 members** was being run on spreadsheets, group chats, and manual follow-ups. Family records, event registrations, approvals, and announcements lived in tools that didn't talk to each other — so organizers spent their time chasing information and pinging people instead of serving the community.
 
-The platform is designed for a community of **10,000-15,000 members** and needed to support a mix of high-trust administrative workflows and day-to-day member interaction. In practice, that meant a system that could:
+The goal: one platform where the right people see the right things at the right time —
 
-- model community hierarchy and role-based permissions
-- support event approvals and registrations
-- handle resource requests with multi-step review
-- deliver notifications and chat in near real time
-- remain operational in a self-hosted or small-team deployment environment
-
-The project was never just a CRUD app. It was a distributed product with business rules, notification delivery, realtime communication, and infrastructure concerns all interwoven — and it evolved through five architectural phases over roughly four months of development.
+- members can find families and know who's who in the community
+- events, resource requests, and status updates move through proper approval workflows
+- nobody misses an important notification, and nobody gets spammed
+- organizers can run the whole thing without a dedicated IT team
 
 ## My Role
 
-I was responsible for shaping and implementing the core product architecture across the backend, realtime messaging layer, data model, and deployment structure.
+### End-to-end product architecture and implementation
 
-My work centered on:
+Designed and built the product end-to-end as a solo engineer, owning the architecture, backend, realtime infrastructure, data model, asynchronous workflows, and deployment.
 
-- designing the multi-service architecture for API, websocket, and background processing
-- implementing the domain model and workflows for families, events, approvals, and notifications
-- building authentication and role-based authorization for different community roles
-- integrating asynchronous notification delivery with Kafka and Redis
-- hardening the system: transactional outbox, consumer idempotency, reconnect reconciliation, audit logging
-- setting up containerized deployment, observability, and operational tooling
+The system was structured as a distributed, event-driven application spanning:
 
-This was a full-stack implementation with strong backend and platform responsibilities rather than a UI-only exercise.
+* **Core architecture:** designed the multi-service platform across API, WebSockets/realtime communication, background workers, and persistence.
+* **Domain & workflows:** modeled and implemented the core workflows for families, events, approvals, roles, and notifications, including the state transitions and business rules connecting them.
+* **Identity & authorization:** built authentication and role-based access control around the different community roles and their permissions.
+* **Realtime & asynchronous systems:** implemented realtime messaging alongside Kafka/Redis-based event and notification processing, with the reliability mechanisms required to make asynchronous delivery safe.
+* **Reliability & consistency:** introduced a transactional outbox, idempotent consumers, reconnect reconciliation, and audit logging to handle failures, retries, duplicate events, and inconsistent client state.
+* **Production infrastructure:** containerized the services and established deployment, observability, logging, and operational tooling.
 
-## Architecture Overview
+This wasn't simply a full-stack application with a backend attached. It involved designing and operating the underlying architecture needed to make a **realtime, role-aware, event-driven product reliable in production** — with full ownership from domain modeling through infrastructure and deployment.
 
-```mermaid
-flowchart LR
-    A[Next.js Web App] --> B[Backend API]
-    A --> C[WebSocket Service]
-    B --> D[(PostgreSQL)]
-    B --> E[(Redis)]
-    B --> F[Kafka]
-    C --> E
-    C --> F
-    B --> G[Elasticsearch]
-    H[Prometheus / Grafana] --> B
-    H --> C
-```
+## What It Does
 
-**Architecture at a glance:**
+A members-first community platform:
 
-The system runs as a monorepo with three runtime services behind an Nginx reverse proxy, deployed to production on AWS EC2:
-
-- **`apps/be`** — Bun + Elysia REST API (port 3001). All business logic, RBAC, and Prisma access.
-- **`apps/ws`** — Bun + `ws` WebSocket server (port 3002). Realtime chat and notification delivery.
-- **`apps/web`** — Next.js 15 frontend (port 3000).
-- Nginx routes `/api/` to `be:3001`, everything else to `web:3000`, and WebSocket upgrades to `ws:3002`.
-
-In production the stack runs on a single AWS EC2 instance (t3.medium) behind Cloudflare with Let's Encrypt SSL, using Neon (managed PostgreSQL) as the database. CI/CD is a three-stage GitHub Actions pipeline: lint/type-check/build on Turbo, then Docker images built and pushed to GHCR, then SSH deploy to EC2 with health checks and automatic rollback to the previous images.
-
-The data layer is shared across services:
-
-- **PostgreSQL (Neon in production)** — the sole system of record. Families, members, events, approvals, notifications, messages, outbox events, and audit logs.
-- **Redis** — caching, Pub/Sub fan-out for WebSockets, rate limiting, DLQ, notification drain, Kafka consumer idempotency, and the outbox relay lock.
-- **Kafka** — the async notification backbone with 5 topics: `notification.events`, `notification.email`, `notification.push`, `notification.sms`, `notification.read`.
-- **Elasticsearch** — a derived search index (users + events), kept in sync via the outbox relay plus a periodic reconciliation worker.
+- **Family directory & discovery** — searchable profiles, family trees, and member relations with privacy controls per role.
+- **Events** — create, submit for approval, register, and pay, with organizers notified as decisions happen.
+- **Resource requests** — multi-step approvals (e.g. hall bookings) that move up the chain automatically.
+- **Health & status tracking** — per-member medical records and status updates, with an approval workflow for sensitive changes.
+- **Realtime chat** — direct messaging with typing indicators, read receipts, and no lost messages.
+- **Notifications on your terms** — in-app, email, SMS, and push, escalating to a stronger channel only if you haven't read the message.
 
 ```mermaid
 flowchart LR
-    A[API Handler] -->|DB transaction| B[(Postgres\nbusiness state + OutboxEvent)]
-    B --> C[Outbox Relay\nRedis-locked single instance]
-    C --> D[Kafka notification.events]
-    D --> E[Router Worker]
-    E --> F[notification.email / push / sms]
-    F --> G[Channel Workers\nSMTP / FCM / Twilio]
-    C --> H[Elasticsearch\nindexing]
+    A[Members & Organizers] --> B[Web App]
+    B --> C[API]
+    B --> D[Realtime Chat & Live Updates]
+    C --> E[(Database)]
+    C --> F[Message Bus]
+    F --> G[Notification Workers\nEmail · SMS · Push · In-App]
 ```
 
-## The Journey: From REST to Event-Driven
+## Making It Dependable
 
-The architecture didn't start here — it evolved through five phases, each driven by a real limitation in the previous one.
+Building the features was the easy part. The hard part was making them **keep working** when a process crashes, a phone is offline, or a broadcast goes out to 5,000 people at once.
 
-### Phase 1 — REST API Foundation (Oct - Nov 2025)
+### Messages that never silently disappear
 
-A traditional synchronous Bun + Elysia API with JWT auth, RBAC (5 roles), and REST endpoints for families, users, profiles, search, events, and resource requests. Rate limiting (5 login/signup, 30 search per minute) and pagination were added early — they proved essential in production. The obvious gap: no realtime communication.
+If a notification is saved to the database and the system crashes before the worker picks it up, the message is gone — and with 4 channels and thousands of members, "gone" means someone misses a funeral, a vaccination drive, or an approval deadline. A **transactional outbox** solves this: the message and the business change are written together in a single transaction, so a crash can never split them. Delivery is retried with backoff, and anything still failing lands in a dead-letter queue where it can be inspected instead of lost.
 
-### Phase 2 — WebSocket Real-Time Layer (Jan 2026)
+### Notifications that respect your attention (and the budget)
 
-A separate WebSocket server (`apps/ws/`) for direct messaging — conversations API, typing indicators, read receipts, optimistic UI. **Key decision: separate process**, so chat failures never cascade into the API and connections can scale independently.
+Blasting every message to every channel is expensive — SMS costs real money, and most people read in-app notifications within 5 minutes anyway. So the platform **escalates** instead: start with a gentle in-app notification, and only escalate to SMS (10 minutes) then email (40 minutes) if the member still hasn't read it. Members read what matters, organizers save spend, and nothing urgent slips.
 
-### Phase 3 — Kafka Event-Driven Architecture (Jan 2026)
+### Realtime chat that survives bad networks
 
-Synchronous notification delivery blocked API responses. Kafka decoupled it: the API publishes to `notification.events` and returns in under 10ms while workers process asynchronously. Topic-based routing allowed channel-specific workers to be added without touching the producer.
+Chat messages are saved **before** they're delivered, so a dropped connection never loses them. When members reconnect, they automatically catch up: pending notifications come back immediately, and missed chat messages sync with pagination and de-duplication. Reconnecting isn't a gamble — it's a resume.
 
-### Phase 4 — Multi-Channel Notification Workers (Jan - Feb 2026)
+### Roles that match how the community actually runs
 
-Production-ready workers for all four channels, each isolated with its own Kafka topic:
-
-- **Router worker** — per-recipient routing, respects user preferences, handles priority
-- **Email worker** — Nodemailer SMTP (Gmail / SendGrid / AWS SES), HTML templates, retry with backoff
-- **Push worker** — Firebase Cloud Messaging, device token management, 150-char limit
-- **SMS worker** — Twilio, phone validation, 160-char formatting
-
-SDKs are loaded lazily and optional — if Firebase or Twilio credentials are missing, workers degrade gracefully instead of failing the pipeline.
-
-### Phase 5 — Hybrid Delivery with Escalation (Feb 2, 2026)
-
-Progressive delivery to optimize cost and UX: in-app first, escalate to SMS after 10 minutes and email after 40 minutes if still unread. More on this below.
-
-## Domain Model & Roles
-
-### Role-Based Access Control
+Five levels — Member, Family Head, Gotra Head, Subhead, and Community Head — with approvals flowing upward and every role change written to an immutable audit log. Organizers can delegate without losing oversight, and sensitive changes are traceable.
 
 ```mermaid
 flowchart TD
-    CH[COMMUNITY_HEAD\nfull access, final approver]
-    CS[COMMUNITY_SUBHEAD\nsecondary top-level approver]
-    GH[GOTRA_HEAD\ngotra-level oversight]
-    FH[FAMILY_HEAD\nleads family, submits requests]
-    M[MEMBER\nregular user]
-    CH --> CS
-    CS --> GH
-    GH --> FH
-    FH --> M
+    CH[Community Head] --> CS[Subhead]
+    CS --> GH[Gotra Head]
+    GH --> FH[Family Head]
+    FH --> M[Member]
 ```
 
-Five levels of RBAC enforced via a `requireAuth(req, allowedRoles?)` middleware gate on every protected route. Approvals flow upward (Family Head → Gotra Head → Subhead → Community Head). Role changes are checked by `checkRoleChangePermission()` and written to an immutable audit table (see Reliability).
+## Operating It, Not Just Shipping It
 
-### Core Data Model (Prisma, 25 models)
+The platform runs in production on AWS, deployed continuously from GitHub Actions with health checks, automatic rollback, automated database backups to S3, and Prometheus/Grafana monitoring. Four real production incidents (a build disk exhaustion, two Nginx resolution failures, a container crash) were root-caused, fixed at the architectural level, and written up as incident reports — the proper fix, not the symptom patch. The same care went into "it deploys and stays up" as into the features themselves.
 
-| Model | Purpose |
-|---|---|
-| `User`, `Profile` | Members, one-to-one profile with phone/gotra/location/status |
-| `Family`, `FamilyMember` | Families with readable `uniqueId`; membership history preserved via junction records |
-| `MemberInvite` | Pending join requests (PENDING/APPROVED/REJECTED) — family head approves before membership is created |
-| `UserRelation` | Directed lineage relations (SPOUSE/PARENT/CHILD/SIBLING) with unique constraint against duplicates |
-| `Event`, `EventApproval`, `EventRegistration`, `Payment` | Event lifecycle with per-approver records, cascading deletes from the FK side |
-| `ResourceRequest`, `ResourceRequestApproval` | Multi-step review with per-approver records and cached `approverName` snapshot |
-| `MedicalRecord` | Per-member health tracking |
-| `StatusUpdateRequest`, `StatusUpdateApproval` | Health/status update submissions with approval workflow |
-| `Notification`, `NotificationDelivery` | Per-channel delivery records with status tracking |
-| `FanoutAudit` | Audit trail for notification fan-out writes |
-| `Conversation`, `Message` | Chat, persisted before fan-out |
-| `OutboxEvent`, `OutboxEventDeadLetter` | Transactional outbox + dead-letter queue |
-| `RoleChangeAudit` | Immutable audit log for role changes |
-
-Two design decisions here are worth calling out:
-
-- **`approverName` is a cached snapshot** on approval records — avoids a join in hot list views.
-- **Cascade deletes live on the FK side** (`onDelete: Cascade` on `EventApproval.event`), which is Prisma-compatible; `User` and `Family` intentionally have no cascades — soft deletes preserve history.
-
-## Hard Technical Challenges Solved
-
-### 1. Making notifications reliable without coupling delivery to the request path
-
-The naive approach — save to DB, then publish to Kafka — has a fatal gap: if the process crashes between COMMIT and publish, the event is silently lost. That's the classic dual-write problem.
-
-**Solution: transactional outbox.**
-
-Every business mutation now commits inside a single Postgres transaction alongside an `OutboxEvent` row. A single outbox relay worker (locked via a Redis key so only one instance runs) polls pending events, publishes them to Kafka or Elasticsearch, and marks them published:
-
-- Business write + outbox event commit atomically — rollback removes both
-- The relay never holds a DB connection while waiting on Kafka — it claims events, releases, publishes, then updates
-- Failures increment `attempts` and retry with backoff up to `OUTBOX_MAX_ATTEMPTS` (default 10), then move to `OutboxEventDeadLetter` with the failure reason
-- The API returns **202 Accepted** immediately; the relay handles delivery
-
-**Consumer idempotency.** Each outbox-produced Kafka message carries a stable `_outboxId` key. Consumers call `ensureIdempotent(messageKey)` before processing — a Redis SET with a 24h TTL makes duplicate deliveries (rebalance, replay, retry) silent no-ops. Idempotency does not rely on timestamps.
-
-### 2. Moving from a basic CRUD app to a real workflow-driven system
-
-The biggest architectural shift was moving away from treating the product as a set of simple create/read/update/delete screens and toward modeling real business processes. Early on, the project could have stayed as a collection of basic forms and tables, but the domain required stateful workflows, role-aware permissions, and multi-step coordination.
-
-That meant changing how the system was designed:
-
-- moving from isolated endpoints to a more intentional service and route structure
-- introducing approval state machines for events and resource requests
-- modeling relationships between users, families, and community roles instead of only storing flat records
-- treating notifications and background processing as first-class concerns rather than afterthoughts
-
-### 3. Implementing multi-step approvals for community workflows
-
-Community workflows are not simple CRUD operations. Approvals are stateful, role-sensitive, and need to be evaluated across multiple actors.
-
-```mermaid
-flowchart TD
-    C[Creator submits event] --> S[Event.status = PENDING\nEventApproval rows for all approvers]
-    S --> A[Each approver approves / rejects / requests changes]
-    A -->|all approved| OK[Event.status = APPROVED]
-    A -->|any rejected| NO[Event.status = REJECTED]
-    A -->|changes requested| CH[Creator updates\napprovals reset]
-    OK --> N[Notified via outbox + Kafka router]
-    NO --> N
-```
-
-This required carefully modeling the approval lifecycle in Prisma — `@@unique([eventId, approverId])` guarantees a single approval record per approver per event — and coordinating state transitions across related tables so the workflow stays consistent even as different actors review it concurrently.
-
-### 4. Building a cost-aware notification delivery strategy (escalation)
-
-Broadcasting every notification to every channel is expensive: SMS costs $0.01-0.05 per message, email ~$0.001, and 70% of users read in-app notifications within 5 minutes.
-
-**Two delivery strategies:**
-
-- **BROADCAST** — all enabled channels fire immediately. Used for critical/urgent content (payment confirmations, security alerts).
-- **ESCALATION** — in-app first; if unread after 10 minutes → SMS; if still unread after 40 minutes → email. Used for informational content by default.
-
-```mermaid
-flowchart LR
-    API[broadcastNotification\nstrategy + priority] --> K[Kafka notification.events]
-    K --> R[Router Worker]
-    R --> B{Strategy?}
-    B -->|BROADCAST| ALL[All channels immediately]
-    B -->|ESCALATION| I[In-App now]
-    I --> S[NotificationDelivery SCHEDULED\nSMS +10min, Email +40min]
-    S --> EW[Escalation Worker\npolls every 30s]
-    EW --> RD{Read?}
-    RD -->|No| SEND[Send channel]
-    RD -->|Yes| CANCEL[CANCEL pending]
-    USER[User reads notification] --> KA[Kafka notification.read]
-    KA --> EW
-```
-
-The escalation worker is database-backed polling (every 30s) rather than a distributed scheduler — simpler, survives worker restarts, and 30-second precision is irrelevant for 10-minute delays. Reading a notification publishes a `notification.read` event that the escalation worker consumes to cancel all pending deliveries for that notification.
-
-**Priority overrides strategy:** `CRITICAL` priority forces BROADCAST even when ESCALATION was requested — guaranteed immediacy for the messages that matter.
-
-### 5. Making realtime chat reliable in a multi-service deployment
-
-The WebSocket layer is a separate service and had to work independently of the HTTP API — and, more importantly, survive failures.
-
-**Message durability.** Chat messages are persisted to Postgres *before* Redis Pub/Sub fan-out. If the WS server restarts, Redis drops, or a client disconnects, nothing is lost.
-
-**Reconnect reconciliation.** On connect, the server pushes unread notifications (`reconcileMissedNotifications`, up to 500). Clients can also send a `sync` message with `lastSeenAt`, `limit` (default 200, max 500), and `cursor` to recover missed chat messages paginated — the response includes `hasMore` and `nextCursor`. Clients deduplicate by `messageId`.
-
-**Auth handshake hardening.** The server accepts unauthenticated upgrades but requires an initial `{type: 'auth', token: '<JWT>'}` handshake within 5 seconds. This removed a permissive `?token=` query-parameter path — tokens never leak into URLs while remaining browser-compatible. Heartbeat every 30s, timeout after 60s.
-
-### 6. Absorbing fan-out write spikes with Redis caching
-
-Large fan-outs (broadcast to an entire gotra) created spike writes to the primary DB. An optional caching mode (`NOTIFICATION_CACHE=true`) makes the fan-out worker write per-user notifications into Redis lists keyed `notifications:{userId}` with a configurable TTL (default 7 days) instead of doing immediate `createMany`. The Kafka routing event is still emitted, so channel workers keep working, and audit records stay updated. This absorbs short-lived write spikes, reduces DB contention, and improves fan-out latency.
-
-In-app delivery gets the same treatment: the API publishes lightweight previews to Redis per recipient (`notification_preview:{userId}:{previewId}`, 60s TTL) before the full delivery path runs. The in-app worker skips recipients with a fresh preview marker, and the client upserts previews and merges them with the persisted notification once it arrives — eliminating duplicate in-app messages during fan-out.
-
-### 7. Hardening: the production audit
-
-An engineering audit of the codebase found four critical reliability gaps — non-atomic DB+Kafka writes, non-idempotent consumers, unpersisted WS messages, and fire-and-forget ES indexing — plus missing audit for role changes. All were fixed without breaking a single API contract (details in challenge 1 and 5). Beyond that:
-
-- **ES indexing now goes through the outbox relay** — ES downtime never blocks DB writes, and failed indexing retries automatically. A periodic `esReconciliation` worker (every hour by default) re-indexes recently updated users/events to repair drift.
-- **Role changes are audited.** Every change writes an immutable `RoleChangeAudit` record with actor, target, previous/new role, and metadata. Anomaly counters track role changes per hour per actor (threshold 5) and mass demotions per hour per actor (threshold 3), exposed as Prometheus metrics for alerting.
-- **HTML sanitization** on email content (XSS), singleton PrismaClient to fix connection-pool exhaustion (10-15x throughput), proper SMS 160-char enforcement, SIGTERM handling on the escalation worker for container-safe shutdown, and lazy producer initialization on read endpoints.
-
-## Reliability & Observability
-
-Postgres is the system of record; every side effect flows through the outbox. The whole reliability layer is observable:
-
-- **Metrics on `/metrics`**: `outboxPendingEvents`, `outboxPublishFailures`, `outboxRetryCount`, `websocketReconciliationCount`, `elasticsearchIndexFailures`, `roleChangeAnomalyCount`, plus consumer lag and per-channel success/retry/error rates
-- **Prometheus / Grafana** dashboards for the API and WebSocket services, with Alertmanager for alerts
-- **Dead-letter queues** for both outbox events and notification deliveries — no automatic replay UI yet, but every failed event is inspectable
-- **Automated Postgres backups** — a scheduled GitHub Actions workflow dumps the database and uploads to a versioned S3 bucket with least-privilege IAM, so the system of record is recoverable
-- **Documented production incidents** — nginx upstream resolution, Docker build disk exhaustion, a WS module resolution crash, and a post-deploy 502 caused by stale nginx upstream IPs were each root-caused and written up as detailed incident reports with lessons learned
-
-## Production Incidents
-
-Four production incidents have been root-caused and documented as formal incident reports in the repository.
-
-### Incident 1: Docker Build Disk Exhaustion on EC2 (2026-08-06)
-
-**Severity:** High — all production deploys blocked
-
-Every push to main failed with `no space left on device` during Docker image extraction. Three root causes combined:
-
-1. **Monolithic Dockerfile** — all three services (be, web, ws) were built from a single Dockerfile that copied the full `node_modules` (~5GB including devDependencies) into every image. Building 3 images in parallel peaked at ~15GB disk usage on a server with only ~12GB free.
-2. **Builder cache grew unbounded** — `docker builder prune` only ran before builds, not after, so cache accumulated across deploys. Weekly scheduled pruning was too infrequent for a deploy-on-every-push workflow.
-3. **Detached HEAD rollback** — failed rollback used `git checkout <commit>`, leaving the repo in detached HEAD state. The next deploy's `git pull` failed because there was no checked-out branch.
-
-**Resolution:** Split the Dockerfile into per-service targets (`runner-be`, `runner-web`, `runner-ws`) with `--production` installs in a shared `runner-base` stage, reducing each image to ~2-3GB. Added two-phase Docker cleanup (before build: dangling only; after deploy: prune old builder cache). Fixed rollback to use `git reset --hard` instead of `git checkout`. Changed `docker-prune.yml` from weekly to daily.
-
-**Outcome:** Peak build disk usage dropped from ~15GB to ~10GB, fitting within available space. Deploys resumed successfully.
-
-### Incident 2: Nginx Upstream Resolution Failure (2026-08)
-
-**Severity:** High — site returning 502 errors
-
-Nginx failed to resolve upstream hostnames (`host not found in upstream "web"`, `host not found in upstream "be"`). Systematic debugging eliminated Docker DNS failure, wrong upstream names, incorrect Nginx configuration, and backend/frontend unavailability.
-
-**Root Cause:** Nginx attempted to resolve upstream hosts before Docker DNS had registered all Compose service names. `depends_on` controls startup order but does not guarantee service name resolution or application readiness.
-
-**Resolution:** Restarting the Nginx container after all application containers had joined the Docker network resolved the issue. No networking or configuration changes were required.
-
-**Outcome:** Infrastructure confirmed healthy. Incident reinforced the importance of validating each infrastructure layer independently and avoiding assumptions about Docker DNS during container startup.
-
-### Incident 3: WS Container Crash — Module Resolution Failure (2026-08-11)
-
-**Severity:** High — WebSocket service down, crash-looping
-
-`modheshwari-ws` crashed on startup with `Cannot find module '../be/lib/redisClient'`. The WebSocket service imported a Redis client module from the backend app via a cross-app relative import (`apps/ws/redisSub.ts` → `../be/lib/redisClient`). The `runner-ws` Docker image only copies `apps/ws` — `apps/be` is never present in the WS image, so the module did not exist at runtime.
-
-**Root Cause:** Cross-app relative import violating monorepo boundaries. Apps must not import across app boundaries; shared code belongs in `packages/`.
-
-**Resolution:** Created a shared `packages/redis` workspace package (`@modheshwari/redis`) containing `getRedisClient` and `quitRedisClient`. Updated `apps/ws/redisSub.ts` and all 8 BE consumers to import from `@modheshwari/redis`. Deleted `apps/be/lib/redisClient.ts`. Updated package.json dependencies, tsconfig path mappings, Dockerfile COPY stages, and regenerated `bun.lock`.
-
-**Verification:** `tsc --noEmit` clean for both apps, `turbo build` (ws + be) passes, bun runtime resolution confirmed via workspace symlink.
-
-**Outcome:** Architectural defect fixed. The corrected `modheshwari-ws` image deploys via CI pipeline. This incident highlighted the need for a lint rule or CI check forbidding cross-app relative imports.
-
-### Incident 4: Post-Deploy 502 — Nginx Upstream IP Staleness (2026-08-11)
-
-**Severity:** High — site returning 502 errors after successful deploy
-
-The CI/CD pipeline for the WS module fix completed successfully: `ci` passed, `build-and-push` pushed the new `modheshwari-ws:latest` image to GHCR, and `deploy` pulled and restarted containers on EC2. The backend health check passed and no rollback was triggered. Yet `modheshwari.nerdev.in` still returned 502.
-
-**Root Cause:** Nginx resolves Docker upstream hostnames (`be:3001`, `web:3000`, `ws:3002`) once at startup via Docker DNS. When `docker compose up -d --remove-orphans` recreates containers during a deploy, the containers get new IP addresses, but the running `modheshwari-nginx` container was never restarted — so it continued proxying to the old, now-dead upstream IPs. The deploy workflow did include `docker compose restart nginx` as a guard, but the 502s persisted long enough to be noticeable.
-
-**Resolution:** Manually restarting nginx on EC2 (`docker compose restart nginx`) forced it to re-resolve upstreams via Docker DNS and pick up the new container IPs. The site recovered immediately. No code or infrastructure changes were required for the immediate fix.
-
-**Proper fix (codebase):** The real solution is to make nginx re-resolve DNS on every request rather than caching upstream IPs at startup. This is done with Docker's embedded DNS resolver (`127.0.0.11`) and a variable-based `proxy_pass`:
-
-```nginx
-resolver 127.0.0.11 valid=30s ipv6=off;
-
-location /api/ {
-    set $upstream_be http://be:3001;
-    proxy_pass $upstream_be;
-    proxy_http_version 1.1;
-}
-```
-
-With `proxy_pass $variable`, nginx consults DNS on each request (within the 30s TTL), so recreated containers are automatically picked up without any restart. The trade-off is losing upstream block features like load balancing across multiple servers and keepalive connections — acceptable here because each service runs as a single container.
-
-The deploy workflow's `docker compose restart nginx` step is kept as a pragmatic belt-and-suspenders guard, but the `nginx.conf` change eliminates the need for it.
-
-**Outcome:** The 502 was resolved by restarting nginx. The case study and deploy workflow were updated to reflect the proper DNS-resolution fix. This incident reinforced that reverse proxies in Docker Compose need dynamic upstream resolution when containers are recreated during deploys.
-
----
-
-## Results & Metrics
+## Results
 
 | Metric | Value |
 |---|---|
+| Community scale | Designed for 10,000-15,000 members |
 | Development period | Oct 2025 → present (production since Aug 2026) |
-| Commits | 417+ |
-| Lines of code | ~23,000+ (excluding node_modules) |
-| API endpoints | 50+ |
-| Database models | 25 |
-| Notification channels | 4 (Email, SMS, Push, In-App) |
-| Workers | 5 (Router, Email, Push, SMS, Escalation) + outbox relay + ES reconciliation |
-| Kafka topics | 5 |
-| Notification enqueue latency | Under 10ms (202 Accepted, async delivery) |
-| Escalation savings | 70% of users read in-app within 5 minutes |
-| RBAC levels | 5 |
-| WebSocket reconnect recovery | Up to 500 missed notifications, paginated chat sync |
-| Production deployment | AWS EC2 + Nginx + Cloudflare, Neon Postgres, automated S3 backups |
-
-## Tech Stack
-
-- TypeScript
-- Bun
-- Next.js 15
-- React 19
-- Tailwind CSS
-- Elysia
-- Prisma ORM
-- PostgreSQL (Neon)
-- Redis
-- Kafka
-- WebSocket service (Bun + ws)
-- Elasticsearch
-- Nginx
-- Docker Compose
-- GitHub Actions (GHCR images, SSH deploy to EC2, S3 backups)
-- AWS EC2
-- Cloudflare
-- Let's Encrypt
-- Prometheus / Grafana / Alertmanager
-- Terraform
+| Notification channels | 4 (in-app, email, SMS, push) |
+| Enqueue latency | ~10ms (async delivery) |
+| In-app read rate | 70% within 5 minutes |
+| Reconnect recovery | Up to 500 missed notifications per reconnect |
+| Production stack | AWS EC2 · Nginx · Cloudflare · Docker · CI/CD with auto-rollback |
 
 ## Current State
 
-The project is live and in a portfolio-ready state. The repository includes:
-
-- a working multi-service architecture (API, WebSocket service, background workers)
-- a substantial Prisma domain model spanning families, events, approvals, notifications, messaging, and audit
-- role-based CRUD and approval workflow logic
-- realtime notification/chat capability with reconnect reconciliation
-- a transactional outbox, consumer idempotency, and dead-letter handling
-- deployment and monitoring configuration
-
-It's a production-minded system with real architectural depth and operational concerns — the kind of project that holds up under the questions interviewers actually ask when they want to understand how someone thinks about systems, not just features. As with any actively maintained platform, some areas (test coverage, an outbox replay UI, notification preferences UI) are still evolving.
-
-## What I Built
-
-- Architected a full-stack community management platform designed to support 10,000-15,000 members, covering family records, events, resource requests, health tracking, and notifications.
-- Designed role-based access control with privacy controls across community, gotra, family, and member roles.
-- Built multi-approver resource request and event approval workflows using Prisma/PostgreSQL as the domain model.
-- Implemented a transactional outbox with Kafka consumers and idempotency, plus escalation-based delivery across email, SMS, push, and in-app channels.
-- Built a dedicated WebSocket service with Postgres-persisted messages, Redis Pub/Sub fan-out, and paginated reconnect sync.
-- Hardened the system via audit: fixed dual-write gaps, XSS, connection-pool exhaustion, and added immutable role-change audit with anomaly metrics.
-- Set up CI/CD with GitHub Actions to build and push Docker images to GHCR and deploy to AWS EC2, with health checks and automatic rollback, plus scheduled Postgres backups to S3.
-- Set up Prometheus/Grafana monitoring with provisioned dashboards, and wrote incident reports for production failures as they occurred.
-
-## What This Project Demonstrates
-
-This case study highlights the kinds of engineering decisions that matter in interviews:
-
-- service boundaries and modularity
-- asynchronous systems design (Kafka, transactional outbox, idempotency)
-- stateful workflow modeling
-- realtime architecture and reliability (persistence before fan-out, reconnect sync)
-- cost-aware delivery design (escalation vs broadcast)
-- deployment and observability
-- practical tradeoffs in a real product codebase
+The platform is live with real workflows, a reliable event-driven core, and operating tooling — the kind of project that survives contact with production. Ongoing work: test coverage, an outbox replay UI, and a notification-preferences page.
 
 ---
 
 **Links:**
 - [Live Platform](https://modheshwari.nerdev.in/)
 - [GitHub Repository](https://github.com/NalinDalal/modheshwari)
-
-**Tech Stack:** Bun, TypeScript, Next.js, React, Elysia, Prisma, PostgreSQL, Redis, Kafka, WebSockets, Elasticsearch, Docker, GitHub Actions, AWS EC2, Cloudflare, Terraform, Prometheus/Grafana

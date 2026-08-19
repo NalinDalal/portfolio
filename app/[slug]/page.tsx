@@ -72,7 +72,7 @@ export async function generateMetadata(props: PageProps) {
       description: post.title,
       images: [
         {
-          url: `/og-image/${params.slug}`,
+          url: "/og-image.png",
         },
       ],
     },

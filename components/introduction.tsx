@@ -29,10 +29,16 @@ function Introduction() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center gap-3 mb-6"
+            className="flex flex-wrap items-center gap-3 mb-6"
           >
-            <span className="w-2.5 h-2.5 rounded-full bg-teal animate-pulse" />
-            <span className="text-sm text-text-secondary font-medium">Available for freelance</span>
+            <span className="flex items-center gap-2 px-3 py-1 rounded-full border border-teal/20 bg-teal/10">
+              <span className="w-2 h-2 rounded-full bg-teal animate-pulse" />
+              <span className="text-xs font-medium text-teal">Freelance · Open</span>
+            </span>
+            <span className="flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/10">
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+              <span className="text-xs font-medium text-accent">Full-Time · Open</span>
+            </span>
           </motion.div>
 
           <motion.h1
@@ -71,12 +77,18 @@ function Introduction() {
               <ArrowRight className="w-4 h-4" />
             </Link>
             <a
-              href="https://cal.com/nalin-dalal"
+              href="https://cal.com/nerdev"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
             >
-              Book a Call
+              Book a Call — Freelance
+            </a>
+            <a
+              href="mailto:nalin@nerdev.in?subject=Full-Time%20Opportunity"
+              className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
+            >
+              Open to Full-Time Roles
             </a>
           </motion.div>
         </div>
