@@ -21,7 +21,7 @@ function WorkExperience() {
               <div className="absolute left-2.5 w-3 h-3 rounded-full bg-accent border-4 border-bg-primary" />
               
               <div className="bg-surface rounded-xl p-5 border border-border hover:border-accent/30 transition-colors duration-300">
-                <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                   <div>
                     <h3 className="font-display font-semibold text-lg text-text-primary">
                       {exp.position}
@@ -35,6 +35,11 @@ function WorkExperience() {
                     {exp.startDate} — {exp.endDate}
                   </div>
                 </div>
+                <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-2">
+                  {exp.highlights.map((highlight, i) => (
+                    <li key={i}>{highlight}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}

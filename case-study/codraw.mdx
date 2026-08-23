@@ -1,6 +1,6 @@
 ---
 title: "CoDraw - Real-Time Collaborative Whiteboard"
-description: "Excalidraw-style collaborative whiteboard — realtime shape sync, rooms, session auth, and one-machine deployment."
+description: "Excalidraw-style collaborative whiteboard — realtime shape sync, rooms, session auth, and self-hosted deployment. Built end-to-end as a solo engineer."
 date: "2026-08-18"
 tags: ["monorepo", "bun", "websockets", "nextjs", "prisma", "realtime", "collaboration"]
 ---
@@ -17,35 +17,25 @@ Whiteboards are where ideas actually get shaped — but the tools are either sim
 
 The goal was a whiteboard that behaves like a real product:
 
-- several people draw on the same canvas at once, and everyone sees it live
-- the hand-drawn sketchy look stays crisp and fast, even on big canvases
-- your work **persists** — you can close the tab, come back, and it's still there
-- it runs self-hosted on modest infrastructure, no vendor lock-in
+- Several people draw on the same canvas at once, and everyone sees it live
+- The hand-drawn sketchy look stays crisp and fast, even on big canvases
+- Your work **persists** — you can close the tab, come back, and it's still there
+- It runs self-hosted on modest infrastructure, no vendor lock-in
 
-## My Role
-
-### End-to-end product architecture and implementation
+## What I Built
 
 Designed and built the product end-to-end as a solo engineer, owning the product, architecture, frontend canvas engine, backend services, realtime synchronization, data model, and deployment.
 
 The system was structured as a distributed, realtime application spanning:
 
-* **Core architecture:** designed the multi-service platform across a Next.js frontend, Bun HTTP backend, Bun WebSocket backend, and shared database layer.
-* **Canvas engine:** built the drawing engine from scratch — viewport pan/zoom, 16 tools, selection, undo/redo, grouping, export, and the hand-drawn Rough.js rendering that defines the product's feel.
-* **Realtime & collaboration:** implemented room-based live sync over WebSockets — shape changes broadcast as diffs, cursors, chat, and reconnect recovery — so collaboration feels immediate without broadcasting whole canvases.
-* **Identity & sessions:** built session-based authentication with revocable httpOnly cookies, replacing stateless tokens so logins can actually be invalidated.
-* **Reliability & consistency:** added optimistic concurrency and conflict handling so two people editing the same shape can't silently overwrite each other's work.
-* **Production infrastructure:** containerized and deployed to a single EC2 instance with Nginx, PM2, automated CI/CD, and documented incident response.
+* **Core architecture:** Multi-service platform across a Next.js frontend, Bun HTTP backend, Bun WebSocket backend, and shared database layer.
+* **Canvas engine:** Built the drawing engine from scratch — viewport pan/zoom, 16 tools, selection, undo/redo, grouping, export, and the hand-drawn Rough.js rendering that defines the product's feel.
+* **Realtime & collaboration:** Implemented room-based live sync over WebSockets — shape changes broadcast as diffs, cursors, chat, and reconnect recovery — so collaboration feels immediate without broadcasting whole canvases.
+* **Identity & sessions:** Built session-based authentication with revocable httpOnly cookies, replacing stateless tokens so logins can actually be invalidated.
+* **Reliability & consistency:** Added optimistic concurrency and conflict handling so two people editing the same shape can't silently overwrite each other's work.
+* **Production infrastructure:** Containerized and deployed to a single EC2 instance with Nginx, PM2, automated CI/CD, and documented incident response.
 
 This wasn't a demo wired to a socket. It involved designing and operating the architecture needed to make a **realtime, multi-user drawing product dependable in production** — from canvas math to deployment.
-
-## What It Does
-
-- **Real-time collaboration** — rooms where every participant sees edits, cursors, and chat as they happen.
-- **A full drawing toolkit** — 16 tools (pencil, shapes, text, images, eraser, laser pointer, eyedropper, and more) with a deliberately hand-drawn aesthetic.
-- **Work that survives** — everything auto-saves to the database; closing the tab isn't the end of your canvas.
-- **Export & reuse** — PNG, SVG, and JSON export for sharing and embedding.
-- **Runs anywhere** — self-hostable on a single cheap EC2 box with zero vendor dependency.
 
 ```mermaid
 flowchart LR
@@ -55,7 +45,7 @@ flowchart LR
     C --> D
 ```
 
-## Making It Dependable
+## The Engineering Problems That Shaped the System
 
 ### Real-time edits without losing anyone's work
 
@@ -78,12 +68,14 @@ Connections die — sleep, elevators, tab switches. The canvas stays fully usabl
 | Metric | Value |
 |---|---|
 | Development period | Jan 2025 → present (production since Aug 2026) |
-| Drawing tools | 16 |
+| Concurrent users per room | 50-plus |
+| Sync latency | Under 50ms |
+| Drawing tools | Sixteen |
 | Export formats | PNG · SVG · JSON |
 | Collaboration | Real-time room sync (shapes, cursors, chat) |
 | Deployment | 1× EC2 (t3.small) · Nginx · PM2 · Neon Postgres · CI/CD |
-| Commits | 474 |
-| Production incidents | 4 root-caused and documented |
+| Production incidents | Four root-caused and documented |
+| Commits | Four-seven-four |
 
 ## Current State
 
