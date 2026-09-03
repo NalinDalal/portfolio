@@ -36,14 +36,12 @@ This fully resolves [Issue #3586](https://github.com/asyncapi/website/issues/358
 - Refactored and expanded the test suite for `check-edit-links.ts`.
 - Achieved 100% code coverage:
   - Functions tested: `generatePaths`, `processBatch`, `checkUrls`, `determineEditLink`.
-
 - Covered edge cases:
   - Invalid paths
   - Empty directories
   - Broken links
   - Nested folders
   - Network timeouts
-
 - Modernized test mocking using `fs.readdir` and `fs.Dirent`.
 
 ---
