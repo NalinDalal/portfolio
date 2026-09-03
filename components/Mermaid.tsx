@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useId } from "react";
 import mermaid from "mermaid";
 
 mermaid.initialize({
@@ -18,6 +18,20 @@ mermaid.initialize({
   },
 });
 
+function MermaidSkeleton() {
+  return (
+    <div className="w-full space-y-3 py-2">
+      <div className="skeleton h-4 w-3/4 mx-auto rounded" />
+      <div className="flex justify-center gap-4">
+        <div className="skeleton h-8 w-24 rounded-lg" />
+        <div className="skeleton h-8 w-4 rounded" />
+        <div className="skeleton h-8 w-28 rounded-lg" />
+      </div>
+      <div className="skeleton h-4 w-1/2 mx-auto rounded" />
+    </div>
+  );
+}
+
 export function Mermaid({
   chart,
   title,
@@ -26,26 +40,38 @@ export function Mermaid({
   title?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const id = useRef(`mermaid-${Math.random().toString(36).slice(2, 9)}`);
+  const uid = useId();
+  const chartRef = useRef(chart);
+  chartRef.current = chart;
 
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.innerHTML = "";
-      mermaid
-        .render(id.current, chart)
-        .then(({ svg }) => {
-          if (ref.current) {
-            ref.current.innerHTML = svg;
-          }
-        })
-        .catch((err) => {
-          console.error("Mermaid render error:", err);
-          if (ref.current) {
-            ref.current.innerHTML = `<pre class="text-text-secondary text-sm">${chart}</pre>`;
-          }
-        });
-    }
-  }, [chart]);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const diagramId = `mermaid-${uid.replace(/:/g, "")}`;
+
+    let cancelled = false;
+
+    mermaid
+      .render(diagramId, chartRef.current)
+      .then(({ svg }) => {
+        if (cancelled) return;
+        if (el === ref.current) {
+          el.innerHTML = svg;
+        }
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error("Mermaid render error:", err);
+        if (el === ref.current) {
+          el.innerHTML = `<pre class="text-text-secondary text-sm">${chartRef.current}</pre>`;
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [uid, chart]);
 
   return (
     <div className="mermaid-wrapper group my-8 overflow-x-auto">
@@ -78,7 +104,9 @@ export function Mermaid({
             {title}
           </p>
         )}
-        <div ref={ref} className="flex justify-center" />
+        <div ref={ref} className="flex justify-center min-h-[60px]">
+          <MermaidSkeleton />
+        </div>
       </div>
     </div>
   );

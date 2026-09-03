@@ -69,24 +69,30 @@ const mdxComponents = {
   h1: (props: any) => (
     <h1
       {...props}
-      className="font-display text-4xl font-bold text-text-primary mb-6 mt-8 scroll-mt-20"
+      className="font-display text-4xl font-bold text-text-primary mb-6 mt-10 scroll-mt-20"
     />
   ),
   h2: (props: any) => (
     <h2
       {...props}
-      className="font-display text-3xl font-bold text-text-primary mb-4 mt-8 scroll-mt-20"
+      className="font-display text-2xl font-bold text-text-primary mb-4 mt-10 pb-2 border-b border-border scroll-mt-20"
+    />
+  ),
+  h3: (props: any) => (
+    <h3
+      {...props}
+      className="font-display text-xl font-semibold text-text-primary mb-3 mt-8 scroll-mt-20"
     />
   ),
   p: (props: any) => (
-    <p {...props} className="text-text-secondary mb-4 leading-relaxed text-base" />
+    <p {...props} className="text-text-secondary mb-5 leading-relaxed text-[15px]" />
   ),
   a: (props: any) => {
     const isAnchor = props.href?.startsWith("#");
     return (
       <a
         {...props}
-        className={`text-accent hover:text-accent/80 underline ${
+        className={`text-accent hover:text-accent/80 underline underline-offset-2 decoration-accent/30 hover:decoration-accent/60 transition-colors ${
           isAnchor ? "cursor-pointer" : ""
         }`}
         target={isAnchor ? undefined : "_blank"}
@@ -97,16 +103,24 @@ const mdxComponents = {
   ul: (props: any) => (
     <ul
       {...props}
-      className="list-disc list-inside text-text-secondary mb-4 space-y-2 ml-4"
+      className="text-text-secondary mb-5 space-y-1.5 ml-1 list-disc marker:text-text-secondary/40"
     />
   ),
-  li: (props: any) => <li {...props} className="text-text-secondary ml-2" />,
+  ol: (props: any) => (
+    <ol
+      {...props}
+      className="text-text-secondary mb-5 space-y-1.5 ml-1 list-decimal marker:text-text-secondary/40"
+    />
+  ),
+  li: (props: any) => (
+    <li {...props} className="text-text-secondary pl-1 leading-relaxed text-[15px]" />
+  ),
   code: (props: any) => {
     const { className, children } = props;
     const isInline = !className;
     if (isInline)
       return (
-        <code className="bg-surface text-teal px-1.5 py-0.5 rounded text-sm font-mono">
+        <code className="bg-surface text-teal px-1.5 py-0.5 rounded text-[13px] font-mono border border-border/50">
           {children}
         </code>
       );
@@ -118,9 +132,7 @@ const mdxComponents = {
   },
   pre: (props: any) => {
     const child = props.children as any;
-    if (
-      child?.props?.className?.includes("language-mermaid")
-    ) {
+    if (child?.props?.className?.includes("language-mermaid")) {
       return <Mermaid chart={child.props.children} />;
     }
     return (
@@ -133,8 +145,26 @@ const mdxComponents = {
   blockquote: (props: any) => (
     <blockquote
       {...props}
-      className="border-l-4 border-accent pl-4 italic text-text-secondary my-6 bg-surface py-2"
+      className="border-l-4 border-accent pl-4 italic text-text-secondary my-6 bg-surface/50 py-2 rounded-r-lg"
     />
+  ),
+  hr: (props: any) => (
+    <hr {...props} className="border-border my-10" />
+  ),
+  table: (props: any) => (
+    <div className="overflow-x-auto my-6 rounded-lg border border-border">
+      <table {...props} className="min-w-full text-sm" />
+    </div>
+  ),
+  thead: (props: any) => <thead {...props} className="bg-surface" />,
+  tbody: (props: any) => <tbody {...props} />,
+  tr: (props: any) => <tr {...props} className="border-b border-border last:border-0" />,
+  th: (props: any) => (
+    <th {...props} className="px-4 py-2.5 text-left text-text-primary font-semibold text-sm" />
+  ),
+  td: (props: any) => <td {...props} className="px-4 py-2.5 text-text-secondary" />,
+  strong: (props: any) => (
+    <strong {...props} className="font-semibold text-text-primary" />
   ),
   Callout,
 };
@@ -255,20 +285,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string; subslug: string }>;
 }) {
   const { slug, subslug } = await params;
-  const mdPath = path.join(
-    process.cwd(),
-    "blogs",
-    slug,
-    `${subslug}.md`,
-  );
-  try {
-    const raw = await fs.readFile(mdPath, "utf8");
-    const parsed = matter(raw);
-    return {
-      title: parsed.data.title || subslug,
-      description: parsed.data.description || "",
-    };
-  } catch {
-    return { title: "Blog Not Found" };
+  const mdDir = path.join(process.cwd(), "blogs", slug);
+  const possiblePaths = [
+    path.join(mdDir, `${subslug}.mdx`),
+    path.join(mdDir, `${subslug}.md`),
+  ];
+
+  for (const mdPath of possiblePaths) {
+    try {
+      const raw = await fs.readFile(mdPath, "utf8");
+      const parsed = matter(raw);
+      return {
+        title: parsed.data.title || subslug,
+        description: parsed.data.description || "",
+      };
+    } catch {}
   }
+  return { title: "Blog Not Found" };
 }
