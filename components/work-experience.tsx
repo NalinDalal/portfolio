@@ -32,7 +32,7 @@ function WorkExperience() {
                   </div>
                   <div className="flex items-center gap-1.5 text-sm text-text-secondary">
                     <Calendar className="w-4 h-4" />
-                    {exp.startDate} — {exp.endDate}
+                    {exp.startDate} to {exp.endDate}
                   </div>
                 </div>
                 <ul className="list-disc list-inside text-text-secondary text-sm space-y-1.5 ml-2">

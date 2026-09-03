@@ -1,6 +1,6 @@
 ---
 title: "Modheshwari - Community Management Platform"
-description: "Community platform for 10-15k members — families, events, approvals, realtime chat, and notifications. Built end-to-end as a solo engineer."
+description: "Community platform for 10-15k members to families, events, approvals, realtime chat, and notifications. Built end-to-end as a solo engineer."
 date: "2026-08-10"
 tags: ["community", "realtime", "event-driven", "bun", "docker"]
 ---
@@ -8,14 +8,14 @@ tags: ["community", "realtime", "event-driven", "bun", "docker"]
 # Modheshwari
 
 <Callout type="info">
-**Type:** Self-initiated personal project — built for the Modheshwari community. **Live at** [modheshwari.nerdev.in](https://modheshwari.nerdev.in/) · **Source** [github.com/NalinDalal/modheshwari](https://github.com/NalinDalal/modheshwari)
+**Type:** Self-initiated personal project to built for the Modheshwari community. **Live at** [modheshwari.nerdev.in](https://modheshwari.nerdev.in/) · **Source** [github.com/NalinDalal/modheshwari](https://github.com/NalinDalal/modheshwari)
 </Callout>
 
 ## The Problem
 
-A community of **10,000-15,000 members** was being run on spreadsheets, group chats, and manual follow-ups. Family records, event registrations, approvals, and announcements lived in tools that didn't talk to each other — so organizers spent their time chasing information and pinging people instead of serving the community.
+A community of **10,000-15,000 members** was being run on spreadsheets, group chats, and manual follow-ups. Family records, event registrations, approvals, and announcements lived in tools that didn't talk to each other to so organizers spent their time chasing information and pinging people instead of serving the community.
 
-The goal: one platform where the right people see the right things at the right time —
+The goal: one platform where the right people see the right things at the right time, specifically:
 
 - members can find families and know who's who in the community
 - events, resource requests, and status updates move through proper approval workflows
@@ -37,18 +37,18 @@ The system was structured as a distributed, event-driven application spanning:
 * **Reliability & consistency:** introduced a transactional outbox, idempotent consumers, reconnect reconciliation, and audit logging to handle failures, retries, duplicate events, and inconsistent client state.
 * **Production infrastructure:** containerized the services and established deployment, observability, logging, and operational tooling.
 
-This wasn't simply a full-stack application with a backend attached. It involved designing and operating the underlying architecture needed to make a **realtime, role-aware, event-driven product reliable in production** — with full ownership from domain modeling through infrastructure and deployment.
+This wasn't simply a full-stack application with a backend attached. It involved designing and operating the underlying architecture needed to make a **realtime, role-aware, event-driven product reliable in production**: with full ownership from domain modeling through infrastructure and deployment.
 
 ## What It Does
 
 A members-first community platform:
 
-- **Family directory & discovery** — searchable profiles, family trees, and member relations with privacy controls per role.
-- **Events** — create, submit for approval, register, and pay, with organizers notified as decisions happen.
-- **Resource requests** — multi-step approvals (e.g. hall bookings) that move up the chain automatically.
-- **Health & status tracking** — per-member medical records and status updates, with an approval workflow for sensitive changes.
-- **Realtime chat** — direct messaging with typing indicators, read receipts, and no lost messages.
-- **Notifications on your terms** — in-app, email, SMS, and push, escalating to a stronger channel only if you haven't read the message.
+- **Family directory & discovery**: searchable profiles, family trees, and member relations with privacy controls per role.
+- **Events**: create, submit for approval, register, and pay, with organizers notified as decisions happen.
+- **Resource requests**: multi-step approvals (e.g. hall bookings) that move up the chain automatically.
+- **Health & status tracking**: per-member medical records and status updates, with an approval workflow for sensitive changes.
+- **Realtime chat**: direct messaging with typing indicators, read receipts, and no lost messages.
+- **Notifications on your terms**: in-app, email, SMS, and push, escalating to a stronger channel only if you haven't read the message.
 
 ```mermaid
 flowchart LR
@@ -66,19 +66,19 @@ Building the features was the easy part. The hard part was making them **keep wo
 
 ### Messages that never silently disappear
 
-If a notification is saved to the database and the system crashes before the worker picks it up, the message is gone — and with 4 channels and thousands of members, "gone" means someone misses a funeral, a vaccination drive, or an approval deadline. A **transactional outbox** solves this: the message and the business change are written together in a single transaction, so a crash can never split them. Delivery is retried with backoff, and anything still failing lands in a dead-letter queue where it can be inspected instead of lost.
+If a notification is saved to the database and the system crashes before the worker picks it up, the message is gone to and with 4 channels and thousands of members, "gone" means someone misses a funeral, a vaccination drive, or an approval deadline. A **transactional outbox** solves this: the message and the business change are written together in a single transaction, so a crash can never split them. Delivery is retried with backoff, and anything still failing lands in a dead-letter queue where it can be inspected instead of lost.
 
 ### Notifications that respect your attention (and the budget)
 
-Blasting every message to every channel is expensive — SMS costs real money, and most people read in-app notifications within 5 minutes anyway. So the platform **escalates** instead: start with a gentle in-app notification, and only escalate to SMS (10 minutes) then email (40 minutes) if the member still hasn't read it. Members read what matters, organizers save spend, and nothing urgent slips.
+Blasting every message to every channel is expensive to SMS costs real money, and most people read in-app notifications within 5 minutes anyway. So the platform **escalates** instead: start with a gentle in-app notification, and only escalate to SMS (10 minutes) then email (40 minutes) if the member still hasn't read it. Members read what matters, organizers save spend, and nothing urgent slips.
 
 ### Realtime chat that survives bad networks
 
-Chat messages are saved **before** they're delivered, so a dropped connection never loses them. When members reconnect, they automatically catch up: pending notifications come back immediately, and missed chat messages sync with pagination and de-duplication. Reconnecting isn't a gamble — it's a resume.
+Chat messages are saved **before** they're delivered, so a dropped connection never loses them. When members reconnect, they automatically catch up: pending notifications come back immediately, and missed chat messages sync with pagination and de-duplication. Reconnecting isn't a gamble to it's a resume.
 
 ### Roles that match how the community actually runs
 
-Five levels — Member, Family Head, Gotra Head, Subhead, and Community Head — with approvals flowing upward and every role change written to an immutable audit log. Organizers can delegate without losing oversight, and sensitive changes are traceable.
+Five levels to Member, Family Head, Gotra Head, Subhead, and Community Head to with approvals flowing upward and every role change written to an immutable audit log. Organizers can delegate without losing oversight, and sensitive changes are traceable.
 
 ```mermaid
 flowchart TD
@@ -90,7 +90,7 @@ flowchart TD
 
 ## Operating It, Not Just Shipping It
 
-The platform runs in production on AWS, deployed continuously from GitHub Actions with health checks, automatic rollback, automated database backups to S3, and Prometheus/Grafana monitoring. Four real production incidents (a build disk exhaustion, two Nginx resolution failures, a container crash) were root-caused, fixed at the architectural level, and written up as incident reports — the proper fix, not the symptom patch. The same care went into "it deploys and stays up" as into the features themselves.
+The platform runs in production on AWS, deployed continuously from GitHub Actions with health checks, automatic rollback, automated database backups to S3, and Prometheus/Grafana monitoring. Four real production incidents (a build disk exhaustion, two Nginx resolution failures, a container crash) were root-caused, fixed at the architectural level, and written up as incident reports to the proper fix, not the symptom patch. The same care went into "it deploys and stays up" as into the features themselves.
 
 ## Results
 
@@ -106,7 +106,7 @@ The platform runs in production on AWS, deployed continuously from GitHub Action
 
 ## Current State
 
-The platform is live with real workflows, a reliable event-driven core, and operating tooling — the kind of project that survives contact with production. Ongoing work: test coverage, an outbox replay UI, and a notification-preferences page.
+The platform is live with real workflows, a reliable event-driven core, and operating tooling to the kind of project that survives contact with production. Ongoing work: test coverage, an outbox replay UI, and a notification-preferences page.
 
 ---
 

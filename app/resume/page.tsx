@@ -148,7 +148,7 @@ export default function ResumePage() {
                 <h4 className="font-semibold text-text-primary">Oriental Institute of Science & Technology</h4>
                 <p className="text-text-secondary">B.Tech in Computer Science & Engineering</p>
               </div>
-              <span className="text-sm text-text-secondary">Bhopal, MP • 2022 — 2026</span>
+              <span className="text-sm text-text-secondary">Bhopal, MP • 2022 to 2026</span>
             </div>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
@@ -183,7 +183,7 @@ export default function ResumePage() {
                     <h4 className="font-semibold text-text-primary">{exp.position}</h4>
                     <p className="text-accent text-sm">{exp.company}</p>
                   </div>
-                  <span className="text-sm text-text-secondary">{exp.startDate} — {exp.endDate}</span>
+                  <span className="text-sm text-text-secondary">{exp.startDate} to {exp.endDate}</span>
                 </div>
                 <ul className="list-disc list-inside text-text-secondary text-sm space-y-1 ml-2">
                   {exp.highlights.map((highlight, i) => (

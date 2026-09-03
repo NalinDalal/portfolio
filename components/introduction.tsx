@@ -82,7 +82,7 @@ function Introduction() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
             >
-              Book a Call — Freelance
+              Book a Call, Freelance
             </a>
             <a
               href="mailto:nalin@nerdev.in?subject=Full-Time%20Opportunity"
@@ -152,7 +152,7 @@ function Introduction() {
                   Modheshwari
                 </h3>
                 <p className="text-sm text-text-secondary max-w-md leading-relaxed">
-                  Community management platform I built for my local community — designed for 10-15k members, multi-service architecture with Kafka, WebSockets, and full DevOps pipeline.
+                  Community management platform I built for my local community. Designed for 10-15k members, multi-service architecture with Kafka, WebSockets, and full DevOps pipeline.
                 </p>
                 <div className="flex flex-wrap gap-1.5 mt-4">
                   {["Bun", "Next.js", "Prisma", "PostgreSQL", "Redis", "Kafka", "Docker"].map((t) => (

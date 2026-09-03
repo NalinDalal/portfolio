@@ -32,7 +32,7 @@ export function EnhancedProjectCard({
       href={repository.caseStudy || repository.githubLink || "#"}
       className="group block"
     >
-      <div className="relative h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-300 hover:shadow-lg hover:shadow-accent/5">
+      <div className="project-card relative h-full p-5 rounded-xl border border-border bg-surface transition-all duration-300">
         {/* Gradient accent line */}
         <div className={`absolute top-0 left-4 right-4 h-px bg-gradient-to-r ${accent} opacity-0 group-hover:opacity-100 transition-opacity`} />
 

@@ -62,7 +62,7 @@ export const experiences: WorkExperience[] = [
   },
   {
     startDate: "July 2024",
-    endDate: "Present",
+    endDate: "Jun 2026",
     company: "DEBUG (OIST)",
     position: "Open Source Maintainer",
     highlights: [

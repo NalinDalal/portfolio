@@ -37,7 +37,11 @@ function Skills() {
         ))}
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div
+        key={activeCategory}
+        className="flex flex-wrap gap-2"
+        style={{ animation: "reveal-child 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards" }}
+      >
         {skillCategories[activeCategory as keyof typeof skillCategories].map((skill) => (
           <span
             key={skill}
