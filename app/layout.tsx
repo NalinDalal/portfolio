@@ -89,7 +89,7 @@ export const metadata: Metadata = {
     description:
       "Software engineer, open-source contributor, and builder of things that matter.",
     images: [{ url: "https://nalin.nerdev.in/og-image.png" }],
-    creator: "@nalindalal",
+    creator: "@nalin82929",
   },
   verification: {
     google: "google-site-verification-code",

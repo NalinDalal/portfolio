@@ -1,37 +1,41 @@
 import Link from "next/link";
 import BlogSection from "@/components/blog-section";
+import FeaturedProjects from "@/components/FeaturedProjects";
 import GetInTouch from "@/components/get-in-touch";
 import Introduction from "@/components/introduction";
 import ProofOfWork from "@/components/proof-of-work";
 import WorkExperience from "@/components/work-experience";
 import Skills from "@/components/skills";
 import { ArrowRight } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
+import { SmoothReveal } from "@/components/SmoothReveal";
 
 export default function Home() {
   return (
     <main className="flex flex-col gap-y-12 justify-center items-start mx-auto">
       <Introduction />
-      <Reveal>
+      <SmoothReveal delay={100}>
         <ProofOfWork />
-      </Reveal>
-      <Reveal delay={60}>
+      </SmoothReveal>
+      <SmoothReveal delay={200}>
         <WorkExperience />
-      </Reveal>
-      <Reveal delay={120}>
+      </SmoothReveal>
+      <SmoothReveal delay={300}>
+        <FeaturedProjects />
+      </SmoothReveal>
+      <SmoothReveal delay={400}>
         <BlogSection />
-      </Reveal>
-      <Reveal delay={180}>
+      </SmoothReveal>
+      <SmoothReveal delay={500}>
         <Skills />
-      </Reveal>
+      </SmoothReveal>
 
       {/* Projects CTA */}
-      <Reveal delay={240}>
+      <SmoothReveal delay={600}>
         <Link href="/projects" className="group w-full">
           <div className="flex items-center justify-between p-6 rounded-xl border border-border bg-surface hover:border-accent/50 transition-all duration-300">
             <div>
               <h2 className="font-display font-bold text-xl text-text-primary group-hover:text-accent transition-colors">
-                Projects & Case Studies
+                All Projects & Case Studies
               </h2>
               <p className="text-sm text-text-secondary mt-1">
                 Full-stack apps, distributed systems, and open source work
@@ -40,12 +44,12 @@ export default function Home() {
             <ArrowRight className="w-5 h-5 text-border group-hover:text-accent transition-colors" />
           </div>
         </Link>
-      </Reveal>
+      </SmoothReveal>
 
       <hr className="border-border border w-full" />
-      <Reveal delay={300}>
+      <SmoothReveal delay={700}>
         <GetInTouch />
-      </Reveal>
+      </SmoothReveal>
     </main>
   );
 }

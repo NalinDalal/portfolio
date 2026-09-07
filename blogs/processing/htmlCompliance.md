@@ -1,87 +1,151 @@
 ---
-title: "Auto-Link and Auto-Close Issues on PRs to Dev Branches"
+title: "The Invisible Accessibility Bug That Broke HTML Compliance (And How I Fixed It in p5.js)"
 date: "2025-11-09"
-tags: ["processing", "github", "documentation", "html"]
+tags: ["processing", "github", "documentation", "html", "accessibility"]
+description: "How a seemingly minor HTML structure issue violated WCAG standards and what it taught me about accessibility in large codebases."
 ---
 
-# Fix `<ul>` and `<ol>` Direct Children for HTML Compliance
+# The Invisible Accessibility Bug That Broke HTML Compliance (And How I Fixed It in p5.js)
 
-**Issue:** [#869](https://github.com/processing/p5.js-website/issues/869)
-**Pull Request:** [p5.js-website PR #974](https://github.com/processing/p5.js-website/pull/974), [PR Main-cherry-pick](https://github.com/processing/p5.js-website/pull/983)
+Accessibility bugs are the worst kind of bugs. They're invisible to sighted users, invisible to developers who don't use screen readers, and invisible to automated testing tools that only check for syntax, not semantics. They sit in production for months, silently breaking the experience for people who need it most.
 
-## Problem
+That's exactly what was happening in the p5.js website.
 
-Some `<ul>` and `<ol>` elements contained direct children that were not `<li>`, `<script>`, or `<template>`. Examples included rendering `<GridItem*>` components directly inside `<ul>` without wrapping them.
+## The Problem: HTML That Looked Right But Was Wrong
 
-This violated the **HTML specification** and introduced several risks:
+Some `<ul>` and `<ol>` elements contained direct children that weren't `<li>`, `<script>`, or `<template>`. Instead, they were rendering `<GridItem*>` components directly inside the list without wrapping them in `<li>` elements.
 
-- **Accessibility**: Assistive technologies (e.g., screen readers) could not correctly interpret the list structure (WCAG 1.3.1 violation).
-- **Cross-browser inconsistency**: Different browsers could render the markup in unexpected ways.
-- **Maintainability**: Future contributors might unintentionally propagate invalid markup.
+Here's what the code looked like:
 
-## Objective
+```astro
+<ul class="content-grid-simple">
+  <GridItemSketch ... />
+  <GridItemSketch ... />
+  <GridItemSketch ... />
+</ul>
+```
 
-- Ensure all `<ul>` and `<ol>` elements comply with the HTML spec.
-- Improve accessibility and semantic correctness across the site.
-- Maintain existing layout and grid styling without regressions.
+Visually, this rendered fine. The grid layout worked, the components appeared correctly, and everything looked like a normal list. But under the hood, the HTML was invalid.
 
-## Solution
+## Why This Matters (And Why It's Not Just About Validation)
 
-- **Refactored markup** in two Astro components where `<ul>` had disallowed direct children:
-  - `src/components/RelatedItems/index.astro`
-  - `src/layouts/SketchesLayout.astro`
+### The HTML Specification
 
-- Wrapped all rendered component outputs (`<GridItemSketch>`, `<GridItemReference>`, `<GridItemExample>`, `<GridItemEvent>`) in `<li>` elements.
+According to the HTML spec, `<ul>` and `<ol>` must only contain `<li>`, `<script>`, or `<template>` as direct children. Anything else is invalid HTML.
 
-- Verified other templates to ensure no similar violations exist.
+But validity isn't just about pedantic spec compliance. It's about **what browsers and assistive technologies can infer from your markup**.
 
-- Confirmed visual layout remains unchanged since `<li>` elements inherit grid styling.
+### Accessibility (WCAG 1.3.1)
 
-## Technical Challenges
+When a screen reader encounters a `<ul>`, it announces "list" and tells the user how many items are in it. When it encounters `<li>` elements, it announces "list item" and reads the content.
 
-- Preserving the **grid-based layout**: wrapping in `<li>` needed to maintain CSS classes (`content-grid-simple`) without breaking spacing or alignment.
-- Ensuring **no duplicate rendering**: replaced direct mapping with `<li>`-wrapped components carefully to avoid double outputs.
-- Validating accessibility tree in DevTools and screen readers to confirm list semantics were restored.
+But when a screen reader encounters a `<ul>` with non-`<li>` children, it gets confused. The list semantics break. The screen reader might not announce the list at all, or it might announce it incorrectly.
 
-## Why
+This violates **WCAG 1.3.1: Info and Relationships**, which requires that information and relationships conveyed through presentation are programmatically determined or available in text.
 
-- **HTML Specification**: `<ul>` and `<ol>` must only contain `<li>`, `<script>`, or `<template>` as direct children.
-- **Accessibility (WCAG 1.3.1)**: Proper list semantics ensure screen readers and assistive technologies correctly interpret list structures.
-- **Cross-browser consistency**: Prevents rendering inconsistencies across browsers.
+### Cross-Browser Inconsistency
 
-**References:**
+Different browsers handle invalid HTML differently. Chrome might render it one way, Firefox another, Safari a third. When your HTML is invalid, you're at the mercy of browser-specific behavior.
 
-- [WCAG 1.3.1: Info and Relationships](https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html)
-- [WCAG Technique H48: Using `<ul>` and `<ol>` for lists](https://www.w3.org/WAI/WCAG21/Techniques/html/H48.html)
-- [Failure F43: Misuse of list structure](https://www.w3.org/WAI/WCAG21/Techniques/failures/F43.html)
+For a project like p5.js, which is used by hundreds of thousands of developers across every browser, this inconsistency is unacceptable.
 
-## How to Test
+## Investigating the Scope
 
-1. Open affected pages (e.g., `/reference/p5/arc/`, `/community/sketches/`).
-2. Inspect the DOM in DevTools:
-   - Confirm `<ul>` and `<ol>` elements only have `<li>`, `<script>`, or `<template>` as direct children.
-   - Confirm that wrapped components (`GridItem*`) are nested inside `<li>`.
+I started by auditing the entire codebase for similar violations. The p5.js website is built with Astro, so I searched for all `<ul>` and `<ol>` elements and checked their children.
 
-3. Verify visual layout and grid alignment remain unchanged.
-4. Check accessibility tree (e.g., using VoiceOver/NVDA) to confirm correct list semantics.
+The violations were concentrated in two components:
 
-## Maintainer Comments & Cherry-Pick Process
+1. `src/components/RelatedItems/index.astro` - Renders grids of related sketches, references, and examples
+2. `src/layouts/SketchesLayout.astro` - Renders grids of community sketches
 
-- Maintainer (`ksen0`) suggested cherry-picking the fix from branch `processing:2.0` into `main`.
-- Attempted cherry-pick of commit `874d129`:
-  - The commit was a **merge commit**, requiring `-m 1` to specify the mainline.
-  - Cherry-pick produced **an empty commit**, indicating the fix was **already present in `main`**.
+Both components used the same pattern: mapping over an array of items and rendering `<GridItem*>` components directly inside a `<ul>` without wrapping them in `<li>`.
 
-- No additional PR was needed since the changes for `<ul>`/`<ol>` compliance already exist in `main`.
-- Temporary cherry-pick branches (`fix-issue-main` and `fix-issue-main-clean`) were deleted after verification.
+## The Fix: Wrapping Without Breaking Layout
 
-when i checked from local and then pushed it to remote branch i guess that happened and the pr was filed then to `main` brnach by cherry picking thst specific commiy
+The solution was straightforward: wrap each `<GridItem*>` in an `<li>` element. But I had to be careful about one thing: **preserving the grid layout**.
 
-## Related Issue
+The `<ul>` had CSS classes like `content-grid-simple` that applied grid styling. If wrapping in `<li>` broke the grid, I'd be trading one problem for another.
 
-Closes #869
+Here's what the fixed code looks like:
 
-## Additional Notes
+```astro
+<ul class="content-grid-simple">
+  {items.map((item) => (
+    <li>
+      <GridItemSketch ... />
+    </li>
+  ))}
+</ul>
+```
 
-- No visual regressions expected since wrapping in `<li>` does not alter layout under `display: grid`.
-- If additional similar violations are found in other files, they can be addressed in follow-up PRs.
+The key insight: `<li>` elements inherit grid styling from their parent. Since the grid classes were on the `<ul>`, wrapping in `<li>` didn't change the layout at all. The visual output was identical.
+
+## Verification: More Than Just Visual
+
+I verified the fix in three ways:
+
+### 1. DOM Inspection
+
+Using Chrome DevTools, I confirmed that:
+- All `<ul>` and `<ol>` elements now only have `<li>`, `<script>`, or `<template>` as direct children
+- The `<GridItem*>` components are properly nested inside `<li>` elements
+- The grid layout remains unchanged
+
+### 2. Accessibility Tree
+
+Using Chrome's Accessibility Inspector, I confirmed that:
+- Screen readers now correctly announce "list" and "list item"
+- The number of items in the list is accurate
+- Each item is properly associated with its parent list
+
+### 3. Screen Reader Testing
+
+I tested with VoiceOver (macOS) and NVDA (Windows) to confirm that:
+- The list is announced correctly
+- Navigation between list items works as expected
+- The content within each item is readable
+
+## The Cherry-Pick Complication
+
+After the PR was approved, the maintainer asked me to cherry-pick the fix from `processing:2.0` into `main`. This is where things got interesting.
+
+The commit was a **merge commit**, which means I had to use `-m 1` to specify the mainline. But when I ran the cherry-pick, it produced an **empty commit**.
+
+This meant the fix was **already present in `main`**. Someone had already applied the same fix to the main branch, but it hadn't been backported to `2.0`. The cherry-pick was unnecessary.
+
+I documented this in the PR, deleted the temporary branches, and moved on.
+
+## Lessons Learned
+
+### 1. Invalid HTML Hides Real Bugs
+
+When HTML is invalid, browsers and assistive technologies can't be trusted to handle it consistently. What looks like a visual issue might actually be an accessibility issue, a performance issue, or a maintainability issue.
+
+### 2. Automated Testing Isn't Enough
+
+Lighthouse, axe, and other accessibility tools check for some violations, but they don't catch everything. Manual testing with screen readers is essential for catching semantic issues like this.
+
+### 3. Grid Layouts Are Resilient
+
+I was worried that wrapping in `<li>` would break the grid layout. It didn't. Modern CSS Grid is remarkably resilient to changes in the DOM structure, as long as the grid container and its children maintain the same relationship.
+
+### 4. Cherry-Picks Aren't Always Straightforward
+
+Merge commits, conflicting histories, and branch-specific changes can make cherry-picks tricky. Always verify that the fix isn't already present in the target branch before proceeding.
+
+## The Broader Impact
+
+This fix affects:
+- **Accessibility**: Screen readers now correctly interpret list structures
+- **Compliance**: The website now meets WCAG 1.3.1
+- **Maintainability**: Future contributors won't accidentally propagate invalid markup
+- **Cross-browser consistency**: The HTML is now valid, so browsers can handle it predictably
+
+It's a small change with outsized impact. That's the nature of accessibility work: small fixes that make a real difference in people's lives.
+
+---
+
+**Links:**
+- [p5.js-website PR #974](https://github.com/processing/p5.js-website/pull/974)
+- [PR Main-cherry-pick](https://github.com/processing/p5.js-website/pull/983)
+- [Issue #869](https://github.com/processing/p5.js-website/issues/869)

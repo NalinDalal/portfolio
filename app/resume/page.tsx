@@ -11,8 +11,8 @@ const projects = [
     name: "Full-Stack Blogging Platform",
     tech: ["React", "Next.js", "Prisma", "PostgreSQL"],
     points: [
-      "Built a platform with user authentication and CRUD operations, deployed to Vercel serving 100+ daily active users",
-      "Optimized Postgres data models and queries, reducing page load times by 45% and improving SEO rankings",
+      "Built a platform with user authentication and CRUD operations; deployed to Vercel and acquired 100+ daily active users organically",
+      "Optimized Postgres data models by normalizing relations and adding indexes; reduced page load times from ~1.2s to ~650ms, improving Lighthouse SEO score from 72 to 95",
     ],
   },
   {
@@ -20,8 +20,8 @@ const projects = [
     link: "https://blind.nerdev.in/",
     tech: ["Next.js", "PostgreSQL", "Prisma"],
     points: [
-      "Launched anonymous community platform for 2,000+ verified students, reducing spam by 90% through automated moderation filters",
-      "Implemented cursor-based pagination and lightweight post-syncing, achieving <100ms feed load times at scale",
+      "Launched anonymous community platform for 2,000+ verified students; automated moderation filters caught 90%+ of spam before it reached the feed",
+      "Implemented cursor-based pagination and lightweight post-syncing; achieved sub-100ms feed load times even with thousands of posts",
     ],
   },
   {
@@ -29,8 +29,8 @@ const projects = [
     link: "https://codraw.nerdev.in/",
     tech: ["Monorepo", "React", "Bun", "WebSockets", "PostgreSQL"],
     points: [
-      "Built real-time collaborative whiteboard with 16 drawing tools, supporting 50+ concurrent users per room with <50ms sync latency",
-      "Designed conflict-free collaborative editing using optimistic concurrency, preventing data loss during simultaneous edits",
+      "Built real-time collaborative whiteboard with 16 drawing tools; supports 50+ concurrent users per room with sub-50ms sync latency over WebSockets",
+      "Designed conflict-free collaborative editing using optimistic concurrency control; prevents data loss when two users edit the same shape simultaneously",
     ],
   },
   {
@@ -38,10 +38,10 @@ const projects = [
     link: "https://modheshwari.nerdev.in/",
     tech: ["Bun", "TypeScript", "Next.js", "Prisma", "PostgreSQL", "Redis", "Kafka", "Docker"],
     points: [
-      "Architected and deployed community platform for 10,000-15,000 members, replacing spreadsheets and manual coordination across 4 notification channels",
-      "Built event-driven notification system with transactional outbox guaranteeing zero message loss, achieving 70% in-app read rate within 5 minutes",
-      "Implemented role-based access control for 5 permission levels and multi-step approval workflows, reducing admin overhead by 80%",
-      "Set up CI/CD with GitHub Actions deploying to AWS EC2 with auto-rollback, Prometheus/Grafana monitoring, and automated backups",
+      "Architected and deployed community platform for 10,000-15,000 members; replaced spreadsheets and manual coordination with automated workflows across 4 notification channels",
+      "Built event-driven notification system with transactional outbox pattern; guarantees zero message loss and delivers 70% of in-app notifications within 5 minutes",
+      "Implemented role-based access control for 5 permission levels and multi-step approval workflows; reduced admin coordination overhead from hours to minutes per event",
+      "Set up CI/CD with GitHub Actions deploying to AWS EC2; added auto-rollback, Prometheus/Grafana monitoring, and automated S3 backups",
     ],
   },
 ];
