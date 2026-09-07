@@ -81,6 +81,33 @@ Case studies are read by lazy, non-technical readers (recruiters, founders). The
 5. **Every link verified before finishing.** `curl -s -o /dev/null -w "%{http_code}" -L <url>` on each URL in the file (and in `data/projects.json`); anything that isn't 200 gets fixed or dropped. Also check bare domains in Markdown links — `[x](codraw.nerdev.in)` without `https://` renders as a broken relative link.
 6. **Frontmatter** stays `title` + `date` + optional `tags`/`description`, per the schemas above.
 
+### Writing resume bullets (`data/index.ts` and `app/resume/page.tsx`)
+
+Every bullet follows **what → how → impact**, separated by semicolons:
+
+```
+[What you did]; [How you did it]; [What result it got]
+```
+
+Bad — vague, no method, no result:
+> "Optimized API response times through query optimization and caching, measurably improving page load performance"
+
+Bad — inflated percentage you can't defend:
+> "Reduced issue resolution time by 30%"
+
+Good — concrete method, defensible before/after:
+> "Optimized API response times by adding query-level caching and rewriting N+1 queries; reduced average p95 latency from ~800ms to ~320ms"
+
+Good — when the number is verifiable from case study data:
+> "Built event-driven notification system with transactional outbox pattern; guarantees zero message loss and delivers 70% of in-app notifications within 5 minutes"
+
+Rules:
+- **Every claim must be traceable** — to the case studies, the repos, or confirmed by the user (AGENTS.md rule 5 applies here too).
+- **Before/after beats percentage** — "from ~800ms to ~320ms" is harder to fake than "reduced by 60%".
+- **Soft numbers are fine when measurement is fuzzy** — "roughly a third", "from hours to minutes" are honest.
+- **Round numbers are suspect** — if the only evidence is vibes, don't use 30%, 40%, 60%, 80%. Either find the real number or soften to a qualitative description.
+- **Never invent metrics** — if you don't know the before number, say what you did and how, skip the impact rather than making one up.
+
 ## A note from the author
 
 [inferred — replace with your own if you want] This site started as a student portfolio and grew around my open-source work (GSSoC, AsyncAPI, Processing/p5.js). Rule of thumb: content outlives code here. If you're touching rendering or routing, keep `data/projects.json`'s shape and the frontmatter schemas frozen — there's a lot of hand-written MDX depending on them, and the last two "clever" refactors (manifest, `-pr` folders) both had to be unwound.
