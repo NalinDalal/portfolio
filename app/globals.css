@@ -83,10 +83,21 @@ body {
   100% { transform: rotate(0deg); }
 }
 
-/* Dot grid pattern - the signature element */
+/* Dot grid pattern - signature element */
 .dot-grid {
   background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+/* Section label - uppercase tracking-widest pattern */
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  margin-bottom: 0.75rem;
 }
 
 /* Gradient text utility */
@@ -103,7 +114,7 @@ body {
   background-clip: text;
 }
 
-/* Card hover glow effect */
+/* Card hover glow effect - refined */
 .card-glow {
   position: relative;
 }
@@ -114,7 +125,7 @@ body {
   border-radius: inherit;
   background: linear-gradient(135deg, var(--color-accent-muted), var(--color-teal-muted));
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: -1;
 }
 .card-glow:hover::before {
@@ -134,7 +145,7 @@ body {
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--color-accent), var(--color-teal));
-  transition: width 0.3s ease;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .accent-underline:hover::after {
   width: 100%;
@@ -181,6 +192,38 @@ body {
 @keyframes reveal-child {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gradient border - for accent-topped cards */
+.gradient-border-top {
+  position: relative;
+}
+.gradient-border-top::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-teal));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.gradient-border-top:hover::before {
+  opacity: 1;
+}
+
+/* Stat number - big dramatic gradient */
+.stat-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Reduced motion: keep opacity, drop transforms */
