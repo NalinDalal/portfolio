@@ -89,7 +89,10 @@ export default function ResumePage() {
   return (
     <main className="max-w-3xl mx-auto py-8">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display font-bold text-4xl md:text-5xl text-text-primary">Resume</h1>
+        <div>
+          <p className="section-label">Resume</p>
+          <h1 className="font-display font-bold text-4xl md:text-5xl text-text-primary">Resume</h1>
+        </div>
         <a
           href="/Resume.pdf/"
           download="Nalin_Dalal_Resume.pdf"

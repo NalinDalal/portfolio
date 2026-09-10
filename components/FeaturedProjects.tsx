@@ -29,7 +29,7 @@ export default function FeaturedProjects() {
             href={project.caseStudy || `/projects/${project.slug}`}
             className="group block"
           >
-            <div className="h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/50 transition-all duration-200 flex flex-col gradient-border-top">
+            <div className="h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-150 flex flex-col">
               <div className="flex-1">
                 <h3 className="font-display font-semibold text-lg text-text-primary group-hover:text-accent transition-colors mb-2">
                   {project.projectName}

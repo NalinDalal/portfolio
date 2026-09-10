@@ -11,7 +11,7 @@ import { SmoothReveal } from "@/components/SmoothReveal";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-y-12 justify-center items-start mx-auto">
+    <main className="flex flex-col gap-y-24 justify-center items-start mx-auto">
       <Introduction />
       <SmoothReveal delay={100}>
         <ProofOfWork />
@@ -32,7 +32,7 @@ export default function Home() {
       {/* Projects CTA */}
       <SmoothReveal delay={600}>
         <Link href="/projects" className="group w-full">
-          <div className="flex items-center justify-between p-6 rounded-xl border border-border bg-surface hover:border-accent/50 transition-all duration-300">
+          <div className="flex items-center justify-between p-6 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-150">
             <div>
               <h2 className="font-display font-bold text-xl text-text-primary group-hover:text-accent transition-colors">
                 All Projects & Case Studies
@@ -46,7 +46,9 @@ export default function Home() {
         </Link>
       </SmoothReveal>
 
-      <hr className="border-border border w-full" />
+      <div className="w-full">
+        <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      </div>
       <SmoothReveal delay={700}>
         <GetInTouch />
       </SmoothReveal>

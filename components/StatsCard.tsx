@@ -38,7 +38,7 @@ export function StatsCard({
         )}
       </CardHeader>
       <CardContent>
-        <p className="text-4xl font-display font-bold gradient-text-accent">{value}</p>
+        <p className="text-4xl font-display font-bold text-accent">{value}</p>
       </CardContent>
     </Card>
   );

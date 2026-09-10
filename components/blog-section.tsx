@@ -10,7 +10,7 @@ function BlogCard({ post }: { post: BlogPost }) {
   return (
     <Link
       href={`/blogs/${post.slug}/${post.file}`}
-      className="group flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-300"
+      className="group flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-150"
     >
       <div className="flex items-center gap-3">
         <div className="p-2 bg-surface-light rounded-lg border border-border">
@@ -35,6 +35,7 @@ export default function BlogSection() {
     <section className="py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
+          <p className="section-label">Writing</p>
           <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight mb-2 text-text-primary">
             Blog
           </h2>

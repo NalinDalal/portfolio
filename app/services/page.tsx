@@ -109,7 +109,7 @@ const whyChooseMe = [
 
 export default function ServicesPage() {
     return (
-        <main className="flex flex-col gap-y-12 justify-center items-start mx-auto">
+        <main className="flex flex-col gap-y-24 justify-center items-start mx-auto">
             {/* Hero */}
             <section className="py-8">
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -128,7 +128,7 @@ export default function ServicesPage() {
                 {/* Quick Stats */}
                 <div className="flex flex-wrap gap-6 mb-8 text-sm">
                     <div>
-                        <span className="font-display font-bold text-2xl gradient-text-accent">{stats.rate}</span>
+                        <span className="font-display font-bold text-2xl text-accent">{stats.rate}</span>
                         <span className="text-text-secondary ml-1">hourly</span>
                     </div>
                     <div className="w-px h-8 bg-border" />
@@ -161,6 +161,7 @@ export default function ServicesPage() {
 
             {/* Tech Stack */}
             <section className="w-full">
+                <p className="section-label">Technology</p>
                 <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
                     Tech Stack
                 </h2>
@@ -182,6 +183,7 @@ export default function ServicesPage() {
 
             {/* Services */}
             <section id="services" className="w-full">
+                <p className="section-label">Services</p>
                 <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
                     What I Do
                 </h2>
@@ -189,7 +191,7 @@ export default function ServicesPage() {
                     {services.map((service, index) => (
                         <div
                             key={index}
-                            className="p-6 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-300"
+                            className="p-6 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-150"
                         >
                             <div className="flex items-center gap-3 mb-4 text-text-primary">
                                 <div className="p-2 bg-surface-light rounded-lg border border-border text-accent">
@@ -233,13 +235,14 @@ export default function ServicesPage() {
 
             {/* Process */}
             <section className="w-full">
+                <p className="section-label">Process</p>
                 <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
                     How I Work
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {processSteps.map((item, index) => (
                         <div key={index} className="p-4">
-                            <span className="font-display font-bold text-4xl gradient-text-accent">{item.step}</span>
+                            <span className="font-display font-bold text-4xl text-accent">{item.step}</span>
                             <h3 className="font-display font-bold text-lg text-text-primary mt-2">{item.title}</h3>
                             <p className="text-sm text-text-secondary mt-1">{item.description}</p>
                         </div>
@@ -249,6 +252,7 @@ export default function ServicesPage() {
 
             {/* Why Choose Me */}
             <section className="w-full">
+                <p className="section-label">Why Me</p>
                 <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
                     Why Work With Me
                 </h2>
@@ -269,19 +273,19 @@ export default function ServicesPage() {
             <section className="w-full py-8">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-xl bg-surface border border-border">
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl gradient-text-accent">{stats.projects}+</div>
+                        <div className="font-display font-bold text-3xl text-accent">{stats.projects}+</div>
                         <div className="text-sm text-text-secondary">Projects Built</div>
                     </div>
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl gradient-text-accent">{stats.experience}</div>
+                        <div className="font-display font-bold text-3xl text-accent">{stats.experience}</div>
                         <div className="text-sm text-text-secondary">Experience</div>
                     </div>
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl gradient-text-accent">{stats.leetcode}+</div>
+                        <div className="font-display font-bold text-3xl text-accent">{stats.leetcode}+</div>
                         <div className="text-sm text-text-secondary">LeetCode Problems</div>
                     </div>
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl gradient-text-accent">{stats.codeforces}+</div>
+                        <div className="font-display font-bold text-3xl text-accent">{stats.codeforces}+</div>
                         <div className="text-sm text-text-secondary">CodeForces</div>
                     </div>
                 </div>

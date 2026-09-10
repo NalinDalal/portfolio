@@ -24,7 +24,7 @@ function ProofOfWork() {
             href={el?.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-200 group gradient-border-top"
+            className="flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-150 group"
           >
             <div className="flex items-center gap-3">
               <div className="p-2 bg-surface-light rounded-lg border border-border">

@@ -108,7 +108,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased font-body bg-bg-primary text-text-primary`}
       >
         <Navbar />
-        <main className="min-h-screen max-w-4xl mx-auto px-6 py-8">
+        <main className="min-h-screen max-w-7xl mx-auto px-6 py-8">
           {children}
         </main>
 

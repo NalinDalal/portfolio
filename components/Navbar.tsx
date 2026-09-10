@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 bg-bg-primary/80 backdrop-blur-md border-b border-border">
-      <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link
           href="/"
           className="font-display font-bold text-lg text-text-primary hover:text-accent transition-colors"

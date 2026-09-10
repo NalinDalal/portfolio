@@ -26,6 +26,7 @@ export default async function ProjectsPage() {
   return (
     <>
       <div className="mb-8">
+        <p className="section-label">Portfolio</p>
         <h1 className="font-display font-bold text-4xl md:text-5xl tracking-tight mb-3 text-text-primary">Projects</h1>
         <p className="text-text-secondary text-lg">
           A collection of my work spanning full-stack apps, tools, and challenges

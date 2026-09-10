@@ -32,7 +32,7 @@ export function EnhancedProjectCard({
       href={repository.caseStudy || repository.githubLink || "#"}
       className="group block"
     >
-      <div className="project-card relative h-full p-5 rounded-xl border border-border bg-surface transition-all duration-200 gradient-border-top">
+      <div className="project-card relative h-full p-5 rounded-xl border border-border bg-surface transition-all duration-150">
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-lg bg-gradient-to-br ${accent} bg-opacity-10`}>
