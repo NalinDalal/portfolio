@@ -9,6 +9,7 @@ function ProofOfWork() {
 
   return (
     <section className="py-8">
+      <p className="section-label">Open Source</p>
       <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight mb-2 text-text-primary">
         Proof of Work
       </h2>
@@ -23,7 +24,7 @@ function ProofOfWork() {
             href={el?.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-300 group"
+            className="flex items-center justify-between p-4 bg-surface rounded-xl border border-border hover:border-accent/30 transition-all duration-200 group gradient-border-top"
           >
             <div className="flex items-center gap-3">
               <div className="p-2 bg-surface-light rounded-lg border border-border">
