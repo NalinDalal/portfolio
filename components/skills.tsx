@@ -9,19 +9,27 @@ const skillCategories = {
   "Tools": ["Git", "Jest", "Bash/Zsh", "LazyGit", "Neovim"],
 };
 
+const categoryIcons: Record<string, string> = {
+  Languages: "</>",
+  Frameworks: "[]",
+  DevOps: "::",
+  Tools: "$",
+};
+
 function Skills() {
   const [activeCategory, setActiveCategory] = useState<string>("Languages");
 
   return (
     <section className="py-8">
+      <p className="section-label">Toolkit</p>
       <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight mb-2 text-text-primary">
         Skills
       </h2>
-      <p className="text-text-secondary mb-6">
+      <p className="text-text-secondary mb-8">
         Technologies I work with
       </p>
 
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-8">
         {Object.keys(skillCategories).map((category) => (
           <button
             key={category}
@@ -32,6 +40,7 @@ function Skills() {
                 : "bg-surface text-text-secondary border border-border hover:border-accent/30 hover:text-text-primary"
             }`}
           >
+            <span className="mr-1.5 opacity-60">{categoryIcons[category]}</span>
             {category}
           </button>
         ))}
@@ -39,16 +48,16 @@ function Skills() {
 
       <div
         key={activeCategory}
-        className="flex flex-wrap gap-2"
+        className="grid grid-cols-2 md:grid-cols-3 gap-3"
         style={{ animation: "reveal-child 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards" }}
       >
         {skillCategories[activeCategory as keyof typeof skillCategories].map((skill) => (
-          <span
+          <div
             key={skill}
-            className="px-4 py-2.5 bg-surface text-text-primary rounded-lg text-sm font-medium border border-border"
+            className="px-4 py-3 bg-surface text-text-primary rounded-lg text-sm font-medium border border-border hover:border-accent/30 transition-colors duration-200"
           >
             {skill}
-          </span>
+          </div>
         ))}
       </div>
     </section>
