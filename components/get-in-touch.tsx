@@ -11,24 +11,46 @@ function GetInTouch() {
   ];
 
   return (
-    <footer className="py-10 border-t border-border">
-      <div className="flex flex-wrap justify-center gap-5 sm:gap-6 px-4">
+    <footer className="py-16">
+      <div className="text-center mb-10">
+        <p className="section-label">Get in Touch</p>
+        <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight text-text-primary mb-4">
+          Let&apos;s build something.
+        </h2>
+        <p className="text-text-secondary max-w-md mx-auto">
+          Have a project in mind or just want to chat? I&apos;m always open to new opportunities and interesting conversations.
+        </p>
+      </div>
+
+      <div className="flex justify-center mb-10">
+        <a
+          href="mailto:nalin@nerdev.in"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
+        >
+          <Mail className="w-4 h-4" />
+          Say Hello
+        </a>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-4">
         {socialLinks.map((link, index) => (
           <Link
             key={index}
             href={link.href}
-            className="text-text-secondary hover:text-accent transition-colors p-2"
+            className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200"
             aria-label={link.label}
             target="_blank"
             rel="noopener noreferrer"
           >
             {link.icon}
+            <span className="text-sm font-medium">{link.label}</span>
           </Link>
         ))}
       </div>
 
-      <div className="mt-8 text-center text-sm text-text-secondary px-4">
-        © {new Date().getFullYear()} Nalin Dalal. All rights reserved.
+      <div className="mt-12 text-center text-sm text-text-secondary px-4">
+        <div className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto mb-6" />
+        &copy; {new Date().getFullYear()} Nalin Dalal. All rights reserved.
       </div>
     </footer>
   );
