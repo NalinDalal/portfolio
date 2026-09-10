@@ -8,9 +8,12 @@ export default function FeaturedProjects() {
   return (
     <section className="w-full">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="font-display font-bold text-2xl text-text-primary">
-          Featured Projects
-        </h2>
+        <div>
+          <p className="section-label">Work</p>
+          <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight text-text-primary">
+            Featured Projects
+          </h2>
+        </div>
         <Link
           href="/projects"
           className="text-sm text-text-secondary hover:text-accent transition-colors flex items-center gap-1"
@@ -26,12 +29,12 @@ export default function FeaturedProjects() {
             href={project.caseStudy || `/projects/${project.slug}`}
             className="group block"
           >
-            <div className="h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/50 transition-all duration-300 flex flex-col">
+            <div className="h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/50 transition-all duration-200 flex flex-col gradient-border-top">
               <div className="flex-1">
                 <h3 className="font-display font-semibold text-lg text-text-primary group-hover:text-accent transition-colors mb-2">
                   {project.projectName}
                 </h3>
-                <p className="text-sm text-text-secondary mb-4 line-clamp-3">
+                <p className="text-sm text-text-secondary mb-4 line-clamp-3 leading-relaxed">
                   {project.description}
                 </p>
               </div>
