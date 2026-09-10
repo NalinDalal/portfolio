@@ -18,18 +18,18 @@ const techStack = [
 
 function Introduction() {
   return (
-    <section className="py-16 relative">
+    <section className="pt-8 pb-16 relative">
       {/* Dot grid background - signature element */}
-      <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none rounded-2xl" />
+      <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none rounded-2xl" />
 
       {/* Hero */}
-      <div className="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+      <div className="relative flex flex-col md:flex-row justify-between items-start gap-12">
         <div className="flex-1">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-wrap items-center gap-3 mb-6"
+            className="flex flex-wrap items-center gap-3 mb-8"
           >
             <span className="flex items-center gap-2 px-3 py-1 rounded-full border border-teal/20 bg-teal/10">
               <span className="w-2 h-2 rounded-full bg-teal animate-pulse" />
@@ -45,20 +45,19 @@ function Introduction() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="font-display font-bold text-5xl md:text-6xl lg:text-7xl tracking-tight mb-6 leading-[1.05]"
+            className="font-display font-bold text-6xl md:text-7xl lg:text-8xl tracking-tight mb-8 leading-[0.95]"
           >
             <span className="text-text-primary">I build </span>
             <span className="gradient-text-accent">systems</span>
-            <span className="text-text-primary"> that</span>
             <br />
-            <span className="text-text-primary">matter.</span>
+            <span className="text-text-primary">that matter.</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-text-secondary mb-8 max-w-lg leading-relaxed"
+            className="text-lg text-text-secondary mb-10 max-w-lg leading-relaxed"
           >
             Full-stack engineer specializing in distributed systems, event-driven architectures, and platforms that serve thousands of users.
           </motion.p>
@@ -99,12 +98,12 @@ function Introduction() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="relative shrink-0"
         >
-          <div className="absolute -inset-4 bg-gradient-to-tr from-accent/20 via-transparent to-teal/20 rounded-3xl blur-2xl" />
+          <div className="absolute -inset-6 bg-gradient-to-tr from-accent/20 via-transparent to-teal/20 rounded-3xl blur-3xl" />
           <Image
             src="https://avatars.githubusercontent.com/u/116961144?v=4"
             alt="Nalin Dalal"
-            height={180}
-            width={180}
+            height={200}
+            width={200}
             className="relative object-cover rounded-2xl border-2 border-border shadow-2xl"
           />
         </motion.div>
@@ -115,9 +114,9 @@ function Introduction() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
-        className="relative mt-12"
+        className="relative mt-14"
       >
-        <p className="text-xs font-medium text-text-secondary uppercase tracking-widest mb-4 font-display">Tech Stack</p>
+        <p className="section-label">Tech Stack</p>
         <div className="flex flex-wrap gap-2">
           {techStack.map((tech) => (
             <span
@@ -135,11 +134,11 @@ function Introduction() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
-        className="relative mt-12"
+        className="relative mt-14"
       >
         <Link href="/projects/modheshwari" className="group block">
-          <div className="relative overflow-hidden rounded-xl border border-border bg-surface p-6 hover:border-accent/50 transition-all duration-300">
-            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-accent/5 via-transparent to-transparent rounded-bl-full" />
+          <div className="relative overflow-hidden rounded-xl border border-border bg-surface p-6 hover:border-accent/50 transition-all duration-200 gradient-border-top">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-accent/5 via-transparent to-transparent rounded-bl-full" />
             <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-3 mb-3">
@@ -173,7 +172,7 @@ function Introduction() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.7 }}
-        className="relative mt-10 flex flex-wrap gap-10"
+        className="relative mt-14 grid grid-cols-3 gap-8 max-w-md"
       >
         {[
           { value: "550+", label: "LeetCode" },
@@ -181,8 +180,8 @@ function Introduction() {
           { value: "30+", label: "Projects" },
         ].map((stat) => (
           <div key={stat.label}>
-            <span className="font-display font-bold text-3xl gradient-text-accent">{stat.value}</span>
-            <span className="text-text-secondary ml-2 text-sm">{stat.label}</span>
+            <span className="stat-number text-3xl">{stat.value}</span>
+            <span className="text-text-secondary text-sm block mt-1">{stat.label}</span>
           </div>
         ))}
       </motion.div>
