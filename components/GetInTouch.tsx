@@ -10,7 +10,7 @@ function GetInTouch() {
         <footer className="py-16">
             <div className="mb-10 text-center">
                 <p className="section-label">Get in Touch</p>
-                <h2 className="text-text-primary mb-4 font-display text-3xl font-bold tracking-tight md:text-4xl">
+                <h2 className="text-text-primary mb-4 font-display text-[var(--text-display)] font-bold tracking-[-0.025em]">
                     Let&apos;s build something.
                 </h2>
                 <p className="text-text-secondary mx-auto max-w-md">
@@ -22,7 +22,7 @@ function GetInTouch() {
             <div className="mb-10 flex justify-center">
                 <a
                     href="mailto:nalin@nerdev.in"
-                    className="bg-accent text-bg-primary hover:bg-accent/90 inline-flex items-center gap-2 rounded-lg px-6 py-3 font-display font-semibold transition-colors"
+                    className="bg-accent text-bg-primary inline-flex items-center gap-2 rounded-lg px-6 py-3 font-display font-semibold transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-[0.98]"
                 >
                     <Mail className="h-4 w-4" />
                     Say Hello

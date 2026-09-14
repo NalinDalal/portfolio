@@ -8,7 +8,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ section, subsection, className }: BreadcrumbProps) {
   return (
-    <div className={cn("font-mono text-xs text-text-secondary uppercase tracking-wider mb-4", className)}>
+    <div className={cn("font-mono text-[var(--text-caption)] text-text-secondary uppercase tracking-[0.05em] mb-4", className)}>
       <span>{section}</span>
       {subsection && (
         <>

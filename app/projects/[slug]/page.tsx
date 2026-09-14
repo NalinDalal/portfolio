@@ -55,29 +55,29 @@ const mdxComponents = {
   h1: (props: any) => (
     <h1
       {...props}
-      className="font-display text-4xl font-bold text-text-primary mb-6 mt-8 scroll-mt-20"
+      className="font-display text-[var(--text-display)] font-bold text-text-primary mb-6 mt-8 tracking-[-0.025em] scroll-mt-20"
     />
   ),
   h2: (props: any) => (
     <h2
       {...props}
-      className="font-display text-3xl font-bold text-text-primary mb-4 mt-8 scroll-mt-20"
+      className="font-display text-[var(--text-heading)] font-bold text-text-primary mb-4 mt-8 tracking-[-0.02em] scroll-mt-20"
     />
   ),
   h3: (props: any) => (
     <h3
       {...props}
-      className="font-display text-2xl font-semibold text-text-primary mb-3 mt-6 scroll-mt-20"
+      className="font-display text-[var(--text-lead)] font-semibold text-text-primary mb-3 mt-6 tracking-[-0.01em] scroll-mt-20"
     />
   ),
   h4: (props: any) => (
     <h4
       {...props}
-      className="font-display text-xl font-semibold text-text-primary mb-2 mt-4 scroll-mt-20"
+      className="font-display text-[var(--text-lead)] font-semibold text-text-primary mb-2 mt-4 scroll-mt-20"
     />
   ),
   p: (props: any) => (
-    <p {...props} className="text-text-secondary mb-4 leading-relaxed text-base" />
+    <p {...props} className="text-text-secondary mb-4 text-[var(--text-body)] leading-[1.6]" />
   ),
   a: (props: any) => {
     const isAnchor = props.href?.startsWith("#");
@@ -231,7 +231,7 @@ ${project.tags.map((t) => `- ${t}`).join("\n")}
 
         {/* Header */}
         <header className="mb-12 pb-8 border-b border-border">
-          <h1 className="font-display text-5xl font-bold mb-2 text-text-primary">
+          <h1 className="font-display text-[var(--text-display)] font-bold mb-2 text-text-primary tracking-[-0.025em]">
             {frontmatter.title || project.projectName}
           </h1>
 

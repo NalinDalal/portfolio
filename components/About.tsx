@@ -6,7 +6,7 @@ export default function About() {
       <Breadcrumb section="ABOUT" />
       
       <div className="max-w-2xl">
-        <p className="text-text-secondary leading-relaxed">
+        <p className="text-text-secondary text-[var(--text-body)] leading-[1.6]">
           Software engineer focused on building systems that work. I specialize in 
           full-stack development with Next.js, Node.js, and distributed architectures. 
           Most of my work involves open-source contributions, event-driven systems, 

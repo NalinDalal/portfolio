@@ -29,7 +29,7 @@ export function MobileHeader() {
       <header className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 bg-bg-primary/90 backdrop-blur-md border-b border-border z-50">
         <Link
           href="/"
-          className="font-display font-bold text-lg text-text-primary hover:text-accent transition-colors"
+          className="font-display font-bold text-lg text-text-primary hover:text-accent transition-colors duration-200"
         >
           N
         </Link>
@@ -57,7 +57,7 @@ export function MobileHeader() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-text-secondary hover:text-text-primary transition-colors"
+            className="text-text-secondary hover:text-text-primary transition-colors duration-200"
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -74,7 +74,7 @@ export function MobileHeader() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-2xl font-display font-medium text-text-secondary hover:text-text-primary transition-colors"
+                className="text-[var(--text-heading)] font-display font-medium text-text-secondary hover:text-text-primary transition-colors duration-200"
               >
                 {item.label}
               </Link>
@@ -89,7 +89,7 @@ export function MobileHeader() {
                   href={link.href}
                   target={link.href.startsWith("http") ? "_blank" : undefined}
                   rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="text-text-secondary hover:text-teal transition-colors duration-150"
+                  className="text-text-secondary hover:text-teal transition-colors duration-200"
                   title={link.label}
                 >
                   <link.icon className="w-5 h-5" />

@@ -118,26 +118,26 @@ export default function ServicesPage() {
                         Available for projects
                     </span>
                 </div>
-                <h1 className="font-display font-bold text-5xl md:text-6xl tracking-tight mb-4 text-text-primary">
+                <h1 className="font-display font-bold text-[var(--text-hero)] tracking-[-0.03em] mb-4 text-text-primary leading-[1.05]">
                     Full Stack Engineer
                 </h1>
-                <p className="text-lg md:text-xl text-text-secondary max-w-2xl mb-6">
+                <p className="text-[var(--text-lead)] text-text-secondary max-w-2xl mb-6 tracking-[-0.01em]">
                     Next.js • Node.js • React • AWS
                 </p>
 
                 {/* Quick Stats */}
                 <div className="flex flex-wrap gap-6 mb-8 text-sm">
                     <div>
-                        <span className="font-display font-bold text-2xl text-accent">{stats.rate}</span>
+                        <span className="font-display font-bold text-[var(--text-heading)] text-accent tracking-[-0.02em]">{stats.rate}</span>
                         <span className="text-text-secondary ml-1">hourly</span>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div>
-                        <span className="font-display font-bold text-2xl text-text-primary">{stats.location}</span>
+                        <span className="font-display font-bold text-[var(--text-heading)] text-text-primary tracking-[-0.02em]">{stats.location}</span>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div>
-                        <span className="font-display font-bold text-2xl text-text-primary">{stats.experience}</span>
+                        <span className="font-display font-bold text-[var(--text-heading)] text-text-primary tracking-[-0.02em]">{stats.experience}</span>
                         <span className="text-text-secondary ml-1">experience</span>
                     </div>
                 </div>
@@ -145,14 +145,14 @@ export default function ServicesPage() {
                 <div className="flex flex-wrap gap-3">
                     <a
                         href="#services"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-[0.98]"
                     >
                         View Services
                         <ArrowRight className="w-4 h-4" />
                     </a>
                     <a
                         href="mailto:nalin@nerdev.in"
-                        className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
+                        className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium transition-all duration-200 hover:border-accent hover:text-text-primary hover:scale-105 active:scale-[0.98]"
                     >
                         Get a Quote
                     </a>
@@ -162,7 +162,7 @@ export default function ServicesPage() {
             {/* Tech Stack */}
             <section className="w-full">
                 <p className="section-label">Technology</p>
-                <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
+                <h2 className="font-display font-bold text-[var(--text-display)] tracking-[-0.025em] mb-6 text-text-primary">
                     Tech Stack
                 </h2>
                 <div className="flex flex-wrap gap-3">
@@ -173,7 +173,7 @@ export default function ServicesPage() {
                     ].map((tech) => (
                         <span
                             key={tech}
-                            className="px-4 py-2 bg-surface text-text-primary rounded-lg text-sm font-medium border border-border"
+                            className="px-4 py-2 bg-surface text-text-primary rounded-lg text-sm font-medium border border-border transition-all duration-200 hover:border-accent/30 hover:text-accent hover:scale-105"
                         >
                             {tech}
                         </span>
@@ -184,20 +184,20 @@ export default function ServicesPage() {
             {/* Services */}
             <section id="services" className="w-full">
                 <p className="section-label">Services</p>
-                <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
+                <h2 className="font-display font-bold text-[var(--text-display)] tracking-[-0.025em] mb-6 text-text-primary">
                     What I Do
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {services.map((service, index) => (
                         <div
                             key={index}
-                            className="p-6 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-150"
+                            className="p-6 rounded-xl border border-border bg-surface transition-all duration-200 hover:border-accent/30 hover:scale-[1.02]"
                         >
                             <div className="flex items-center gap-3 mb-4 text-text-primary">
                                 <div className="p-2 bg-surface-light rounded-lg border border-border text-accent">
                                     {service.icon}
                                 </div>
-                                <h3 className="font-display font-bold text-xl">{service.title}</h3>
+                                <h3 className="font-display font-bold text-[var(--text-lead)] tracking-[-0.01em]">{service.title}</h3>
                             </div>
                             <p className="text-text-secondary mb-4">
                                 {service.description}
@@ -209,7 +209,7 @@ export default function ServicesPage() {
                                     {service.stack.map((tech) => (
                                         <span
                                             key={tech}
-                                            className="px-2 py-1 bg-surface-light text-text-secondary rounded text-xs border border-border"
+                                            className="px-2 py-1 bg-surface-light text-text-secondary rounded text-xs border border-border transition-all duration-200 hover:border-accent/30 hover:text-accent"
                                         >
                                             {tech}
                                         </span>
@@ -236,15 +236,15 @@ export default function ServicesPage() {
             {/* Process */}
             <section className="w-full">
                 <p className="section-label">Process</p>
-                <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
+                <h2 className="font-display font-bold text-[var(--text-display)] tracking-[-0.025em] mb-6 text-text-primary">
                     How I Work
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {processSteps.map((item, index) => (
-                        <div key={index} className="p-4">
-                            <span className="font-display font-bold text-4xl text-accent">{item.step}</span>
-                            <h3 className="font-display font-bold text-lg text-text-primary mt-2">{item.title}</h3>
-                            <p className="text-sm text-text-secondary mt-1">{item.description}</p>
+                        <div key={index} className="p-4 rounded-lg border border-transparent transition-all duration-200 hover:bg-surface/50 hover:border-accent/30 hover:scale-[1.02]">
+                            <span className="font-display font-bold text-[var(--text-display)] text-accent tracking-[-0.025em]">{item.step}</span>
+                            <h3 className="font-display font-bold text-[var(--text-lead)] text-text-primary mt-2 tracking-[-0.01em]">{item.title}</h3>
+                            <p className="text-[var(--text-small)] text-text-secondary mt-1">{item.description}</p>
                         </div>
                     ))}
                 </div>
@@ -253,12 +253,12 @@ export default function ServicesPage() {
             {/* Why Choose Me */}
             <section className="w-full">
                 <p className="section-label">Why Me</p>
-                <h2 className="font-display font-bold text-3xl tracking-tight mb-6 text-text-primary">
+                <h2 className="font-display font-bold text-[var(--text-display)] tracking-[-0.025em] mb-6 text-text-primary">
                     Why Work With Me
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {whyChooseMe.map((item, index) => (
-                        <div key={index} className="flex items-start gap-3 p-4">
+                        <div key={index} className="flex items-start gap-3 p-4 rounded-lg border border-transparent transition-all duration-200 hover:bg-surface/50 hover:border-accent/30 hover:scale-[1.02]">
                             <CheckCircle className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
                             <div>
                                 <h3 className="font-display font-semibold text-text-primary">{item.title}</h3>
@@ -273,19 +273,19 @@ export default function ServicesPage() {
             <section className="w-full py-8">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 rounded-xl bg-surface border border-border">
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl text-accent">{stats.projects}+</div>
+                        <div className="font-display font-bold text-[var(--text-heading)] text-accent tracking-[-0.02em]">{stats.projects}+</div>
                         <div className="text-sm text-text-secondary">Projects Built</div>
                     </div>
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl text-accent">{stats.experience}</div>
+                        <div className="font-display font-bold text-[var(--text-heading)] text-accent tracking-[-0.02em]">{stats.experience}</div>
                         <div className="text-sm text-text-secondary">Experience</div>
                     </div>
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl text-accent">{stats.leetcode}+</div>
+                        <div className="font-display font-bold text-[var(--text-heading)] text-accent tracking-[-0.02em]">{stats.leetcode}+</div>
                         <div className="text-sm text-text-secondary">LeetCode Problems</div>
                     </div>
                     <div className="text-center">
-                        <div className="font-display font-bold text-3xl text-accent">{stats.codeforces}+</div>
+                        <div className="font-display font-bold text-[var(--text-heading)] text-accent tracking-[-0.02em]">{stats.codeforces}+</div>
                         <div className="text-sm text-text-secondary">CodeForces</div>
                     </div>
                 </div>
@@ -294,8 +294,8 @@ export default function ServicesPage() {
             {/* CTA */}
             <section className="w-full py-8">
                 <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-8 rounded-xl bg-surface border border-border text-center">
-                        <h2 className="font-display font-bold text-xl text-text-primary mb-2">
+                    <div className="p-8 rounded-xl bg-surface border border-border text-center transition-all duration-200 hover:border-accent/30 hover:scale-[1.02]">
+                        <h2 className="font-display font-bold text-[var(--text-lead)] text-text-primary mb-2 tracking-[-0.01em]">
                             Have a freelance project?
                         </h2>
                         <p className="text-text-secondary mb-6">
@@ -305,13 +305,13 @@ export default function ServicesPage() {
                             href="https://cal.com/nerdev"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-[0.98]"
                         >
                             Book a Call
                         </a>
                     </div>
-                    <div className="p-8 rounded-xl bg-surface border border-border text-center">
-                        <h2 className="font-display font-bold text-xl text-text-primary mb-2">
+                    <div className="p-8 rounded-xl bg-surface border border-border text-center transition-all duration-200 hover:border-accent/30 hover:scale-[1.02]">
+                        <h2 className="font-display font-bold text-[var(--text-lead)] text-text-primary mb-2 tracking-[-0.01em]">
                             Hiring full-time?
                         </h2>
                         <p className="text-text-secondary mb-6">
@@ -319,7 +319,7 @@ export default function ServicesPage() {
                         </p>
                         <a
                             href="mailto:nalin@nerdev.in?subject=Full-Time%20Opportunity"
-                            className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium hover:border-accent hover:text-text-primary transition-colors"
+                            className="inline-flex items-center gap-2 px-6 py-3 border border-border text-text-secondary rounded-lg font-medium transition-all duration-200 hover:border-accent hover:text-text-primary hover:scale-105 active:scale-[0.98]"
                         >
                             Get In Touch
                         </a>

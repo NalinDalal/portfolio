@@ -69,23 +69,23 @@ const mdxComponents = {
   h1: (props: any) => (
     <h1
       {...props}
-      className="font-display text-4xl font-bold text-text-primary mb-6 mt-10 scroll-mt-20"
+      className="font-display text-[var(--text-display)] font-bold text-text-primary mb-6 mt-10 tracking-[-0.025em] scroll-mt-20"
     />
   ),
   h2: (props: any) => (
     <h2
       {...props}
-      className="font-display text-2xl font-bold text-text-primary mb-4 mt-10 pb-2 border-b border-border scroll-mt-20"
+      className="font-display text-[var(--text-heading)] font-bold text-text-primary mb-4 mt-10 pb-2 border-b border-border tracking-[-0.02em] scroll-mt-20"
     />
   ),
   h3: (props: any) => (
     <h3
       {...props}
-      className="font-display text-xl font-semibold text-text-primary mb-3 mt-8 scroll-mt-20"
+      className="font-display text-[var(--text-lead)] font-semibold text-text-primary mb-3 mt-8 tracking-[-0.01em] scroll-mt-20"
     />
   ),
   p: (props: any) => (
-    <p {...props} className="text-text-secondary mb-5 leading-relaxed text-[15px]" />
+    <p {...props} className="text-text-secondary mb-5 text-[var(--text-body)] leading-[1.6]" />
   ),
   a: (props: any) => {
     const isAnchor = props.href?.startsWith("#");
@@ -113,14 +113,14 @@ const mdxComponents = {
     />
   ),
   li: (props: any) => (
-    <li {...props} className="text-text-secondary pl-1 leading-relaxed text-[15px]" />
+    <li {...props} className="text-text-secondary pl-1 text-[var(--text-body)] leading-[1.6]" />
   ),
   code: (props: any) => {
     const { className, children } = props;
     const isInline = !className;
     if (isInline)
       return (
-        <code className="bg-surface text-teal px-1.5 py-0.5 rounded text-[13px] font-mono border border-border/50">
+        <code className="bg-surface text-teal px-1.5 py-0.5 rounded text-[var(--text-small)] font-mono border border-border/50">
           {children}
         </code>
       );
@@ -224,7 +224,7 @@ export default async function BlogPage({
           </Link>
 
           <header className="mb-12 pb-8 border-b border-border">
-            <h1 className="font-display text-5xl font-bold mb-2 text-text-primary">
+            <h1 className="font-display text-[var(--text-display)] font-bold mb-2 text-text-primary tracking-[-0.025em]">
               {data.title || subslug}
             </h1>
 

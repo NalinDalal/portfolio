@@ -17,10 +17,10 @@ function Introduction() {
                     className="mb-4 flex items-center gap-6"
                 >
                     <div>
-                        <h1 className="text-text-primary font-display text-4xl leading-[1.1] font-bold tracking-tight md:text-5xl lg:text-6xl">
+                        <h1 className="text-text-primary font-display text-[var(--text-hero)] leading-[1.05] font-bold tracking-[-0.03em]">
                             Nalin Dalal
                         </h1>
-                        <p className="text-text-secondary mt-3 text-lg font-medium">
+                        <p className="text-text-secondary mt-3 text-[var(--text-lead)] font-medium">
                             Software Engineer
                         </p>
                     </div>
@@ -54,7 +54,7 @@ function Introduction() {
                     }}
                     className="mb-8 max-w-xl"
                 >
-                    <p className="text-text-secondary leading-relaxed">
+                    <p className="text-text-secondary text-[var(--text-body)] leading-[1.6]">
                         Building software.
                         <br />
                         Contributing to software.
@@ -80,6 +80,12 @@ function Introduction() {
                     >
                         View Work
                         <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link
+                        href="/services"
+                        className="border-border text-text-secondary hover:border-accent hover:text-text-primary inline-flex items-center gap-2 rounded-lg border px-5 py-2.5 text-sm font-medium transition-all duration-200 hover:scale-105 active:scale-[0.98]"
+                    >
+                        Services
                     </Link>
                     <a
                         href="https://github.com/nalindalal"
@@ -111,26 +117,26 @@ function Introduction() {
                     className="flex gap-10"
                 >
                     <div className="flex items-baseline gap-2">
-                        <span className="text-text-secondary font-mono text-xs">
+                        <span className="text-text-secondary font-mono text-[var(--text-caption)] tracking-[0.05em]">
                             WORK
                         </span>
-                        <span className="text-text-primary font-display text-2xl font-bold">
+                        <span className="text-text-primary font-display text-[var(--text-heading)] font-bold tracking-[-0.02em]">
                             05
                         </span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-text-secondary font-mono text-xs">
+                        <span className="text-text-secondary font-mono text-[var(--text-caption)] tracking-[0.05em]">
                             OSS
                         </span>
-                        <span className="text-text-primary font-display text-2xl font-bold">
+                        <span className="text-text-primary font-display text-[var(--text-heading)] font-bold tracking-[-0.02em]">
                             12
                         </span>
                     </div>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-text-secondary font-mono text-xs">
+                        <span className="text-text-secondary font-mono text-[var(--text-caption)] tracking-[0.05em]">
                             WRITING
                         </span>
-                        <span className="text-text-primary font-display text-2xl font-bold">
+                        <span className="text-text-primary font-display text-[var(--text-heading)] font-bold tracking-[-0.02em]">
                             08
                         </span>
                     </div>

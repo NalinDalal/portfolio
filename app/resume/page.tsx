@@ -91,12 +91,12 @@ export default function ResumePage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <p className="section-label">Resume</p>
-          <h1 className="font-display font-bold text-4xl md:text-5xl text-text-primary">Resume</h1>
+          <h1 className="font-display font-bold text-[var(--text-display)] tracking-[-0.025em] text-text-primary">Resume</h1>
         </div>
         <a
           href="/Resume.pdf/"
           download="Nalin_Dalal_Resume.pdf"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent text-bg-primary rounded-lg font-display font-semibold transition-all duration-200 hover:scale-105 hover:opacity-90 active:scale-[0.98]"
         >
           <Download className="w-4 h-4" />
           Download PDF
@@ -106,36 +106,36 @@ export default function ResumePage() {
       <div className="space-y-8">
         {/* Header */}
         <section className="border-b border-border pb-6">
-          <h2 className="font-display text-2xl font-bold text-text-primary mb-2">Nalin Dalal</h2>
+          <h2 className="font-display text-[var(--text-heading)] font-bold text-text-primary mb-2 tracking-[-0.02em]">Nalin Dalal</h2>
           <p className="text-text-secondary mb-3">
             Software engineer &amp; open-source contributor building systems that matter.
           </p>
           <div className="flex flex-wrap gap-3 text-sm text-text-secondary">
-            <a href="tel:+917440620675" className="flex items-center gap-1 hover:text-accent transition-colors">
+            <a href="tel:+917440620675" className="flex items-center gap-1 hover:text-accent transition-colors duration-200">
               +91 7440620675
             </a>
             <span>•</span>
-            <a href="mailto:nalin@nerdev.in" className="flex items-center gap-1 hover:text-accent transition-colors">
+            <a href="mailto:nalin@nerdev.in" className="flex items-center gap-1 hover:text-accent transition-colors duration-200">
               <Mail className="w-4 h-4" />
               nalin@nerdev.in
             </a>
             <span>•</span>
-            <a href="https://github.com/nalindalal" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors">
+            <a href="https://github.com/nalindalal" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors duration-200">
               <Github className="w-4 h-4" />
               GitHub
             </a>
             <span>•</span>
-            <a href="https://www.linkedin.com/in/nalin-dalal" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors">
+            <a href="https://www.linkedin.com/in/nalin-dalal" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors duration-200">
               <Linkedin className="w-4 h-4" />
               LinkedIn
             </a>
             <span>•</span>
-            <a href="https://leetcode.com/Nalindalal2004/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors">
+            <a href="https://leetcode.com/Nalindalal2004/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors duration-200">
               <Code className="w-4 h-4" />
               LeetCode
             </a>
             <span>•</span>
-            <a href="https://codeforces.com/profile/nalindalal2004" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors">
+            <a href="https://codeforces.com/profile/nalindalal2004" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-accent transition-colors duration-200">
               <Code className="w-4 h-4" />
               CodeForces
             </a>

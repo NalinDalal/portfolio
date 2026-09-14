@@ -11,7 +11,7 @@ function ProofOfWork() {
         <section id="contributions" className="py-12">
             <Breadcrumb section="OSS" subsection="CONTRIBUTIONS" />
 
-            <h2 className="text-text-primary mb-2 font-display text-2xl font-bold tracking-tight md:text-3xl">
+            <h2 className="text-text-primary mb-2 font-display text-[var(--text-display)] font-bold tracking-[-0.025em]">
                 Open Source
             </h2>
             <p className="text-text-secondary mb-8">

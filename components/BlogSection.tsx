@@ -9,7 +9,7 @@ const blogPosts = getAllBlogPosts();
 function BlogCard({ post }: { post: BlogPost }) {
     return (
         <Link href={`/blogs/${post.slug}/${post.file}`} className="group block">
-            <div className="border-border/50 hover:border-border border-b py-4 transition-colors duration-150">
+            <div className="border-border/50 hover:border-border border-b py-4 transition-all duration-200">
                 <div className="flex items-center justify-between gap-4">
                     <h3 className="text-text-primary group-hover:text-accent text-sm font-medium transition-colors hover:scale-102 hover:underline">
                         {post.title}
@@ -29,7 +29,7 @@ export default function BlogSection() {
             <Breadcrumb section="NOTES" subsection="ARTICLES" />
 
             <div className="mb-8 flex items-center justify-between">
-                <h2 className="text-text-primary font-display text-2xl font-bold tracking-tight md:text-3xl">
+                <h2 className="text-text-primary font-display text-[var(--text-display)] font-bold tracking-[-0.025em]">
                     Writing
                 </h2>
                 <Link

@@ -28,6 +28,15 @@
   --color-state-hover: #38b2ac15;
   --color-hero-glow: #38b2ac;
 
+  /* Fluid type scale */
+  --text-caption: clamp(0.75rem, 0.7rem + 0.15vw, 0.8rem);
+  --text-small: clamp(0.875rem, 0.83rem + 0.15vw, 0.9rem);
+  --text-body: clamp(1rem, 0.95rem + 0.2vw, 1.1rem);
+  --text-lead: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --text-heading: clamp(1.75rem, 1.5rem + 1vw, 2.5rem);
+  --text-display: clamp(2.5rem, 2rem + 2vw, 4rem);
+  --text-hero: clamp(3rem, 2.2rem + 3.5vw, 6rem);
+
   @keyframes shimmer {
     from { background-position: 0 0; }
     to { background-position: -200% 0; }
@@ -94,7 +103,7 @@ body {
 
 /* Section label - uppercase tracking-widest pattern */
 .section-label {
-  font-size: 0.75rem;
+  font-size: var(--text-caption);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.15em;

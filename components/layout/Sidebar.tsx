@@ -64,7 +64,7 @@ export function Sidebar() {
                             key={item.id}
                             href={item.href}
                             className={cn(
-                                "relative text-xs font-medium transition-all duration-200 hover:scale-150",
+                                "relative text-xs font-medium transition-all duration-200 hover:scale-125",
                                 isActive
                                     ? "text-text-primary"
                                     : "text-text-secondary hover:text-text-primary",
@@ -98,7 +98,7 @@ export function Sidebar() {
                                 : undefined
                         }
                         className={cn(
-                            "text-text-secondary transition-all duration-200 hover:scale-150",
+                            "text-text-secondary transition-all duration-200 hover:scale-125",
                             link.hoverColor,
                         )}
                         title={link.label}

@@ -11,7 +11,7 @@ export default function FeaturedProjects() {
             <Breadcrumb section="WORK" subsection="PROJECTS" />
 
             <div className="mb-8 flex items-center justify-between">
-                <h2 className="text-text-primary font-display text-2xl font-bold tracking-tight md:text-3xl">
+                <h2 className="text-text-primary font-display text-[var(--text-display)] font-bold tracking-[-0.025em]">
                     Selected Work
                 </h2>
                 <Link
@@ -36,7 +36,7 @@ export default function FeaturedProjects() {
                                         <span className="text-text-secondary font-mono text-xs">
                                             {String(index + 1).padStart(2, "0")}
                                         </span>
-                                        <h3 className="text-text-primary group-hover:text-accent font-display text-lg font-semibold transition-colors duration-150">
+                                        <h3 className="text-text-primary group-hover:text-accent font-display text-[var(--text-lead)] font-semibold tracking-[-0.01em] transition-colors duration-150">
                                             {project.projectName}
                                         </h3>
                                         <span className="text-text-secondary font-mono text-xs">

@@ -6,7 +6,7 @@ function WorkExperience() {
   return (
     <section id="work-experience" className="py-8">
       <p className="section-label">Experience</p>
-      <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight mb-2 text-text-primary">
+      <h2 className="font-display font-bold text-[var(--text-display)] tracking-[-0.025em] mb-2 text-text-primary">
         Work Experience
       </h2>
       <p className="text-text-secondary mb-8">
@@ -21,7 +21,7 @@ function WorkExperience() {
             <div key={index} className="relative pl-12">
               <div className="absolute left-2.5 w-3 h-3 rounded-full bg-accent border-4 border-bg-primary" />
               
-              <div className="bg-surface rounded-xl p-5 border border-border hover:border-accent/30 transition-colors duration-150">
+              <div className="bg-surface rounded-xl p-5 border border-border transition-all duration-200 hover:border-accent/30 hover:scale-[1.02]">
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                   <div>
                     <h3 className="font-display font-semibold text-lg text-text-primary">
