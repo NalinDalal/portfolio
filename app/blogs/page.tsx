@@ -1,5 +1,5 @@
-import { BlogNavigation } from "@/components/blog-navigation";
-import BlogSection from "@/components/blog-section";
+import { BlogNavigation } from "@/components/BlogNavigation";
+import BlogSection from "@/components/BlogSection";
 import { Metadata } from "next";
 
 const title = "Blog Posts";

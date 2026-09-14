@@ -1,10 +1,10 @@
 import Link from "next/link";
-import BlogSection from "@/components/blog-section";
+import BlogSection from "@/components/BlogSection";
 import FeaturedProjects from "@/components/FeaturedProjects";
-import Introduction from "@/components/introduction";
-import ProofOfWork from "@/components/proof-of-work";
-import About from "@/components/about";
-import Footer from "@/components/footer";
+import Introduction from "@/components/Introduction";
+import ProofOfWork from "@/components/ProofOfWork";
+import About from "@/components/About";
+import Footer from "@/components/Footer";
 import { SmoothReveal } from "@/components/SmoothReveal";
 
 export default function Home() {

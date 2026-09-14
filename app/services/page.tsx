@@ -1,5 +1,5 @@
 import { Code, Server, Database, Zap, CheckCircle, ArrowRight } from "lucide-react";
-import GetInTouch from "@/components/get-in-touch";
+import GetInTouch from "@/components/GetInTouch";
 
 export const metadata = {
     title: "Services - Nalin Dalal | Full Stack Engineer",

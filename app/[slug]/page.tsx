@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { MarkdownRenderer } from "@/components/markdown-renderer";
-import { BlogNavigation } from "@/components/blog-navigation";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { BlogNavigation } from "@/components/BlogNavigation";
 import matter from "gray-matter";
 import fs from "fs";
 import path from "path";

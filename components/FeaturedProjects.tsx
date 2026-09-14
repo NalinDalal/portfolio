@@ -1,79 +1,58 @@
 import Link from "next/link";
-import { ArrowRight, ExternalLink, Github } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import projectsData from "@/data/projects.json";
 import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 const featuredProjects = projectsData.filter((p) => p.featured);
 
 export default function FeaturedProjects() {
-  return (
-    <section id="work" className="py-12">
-      <Breadcrumb section="WORK" subsection="PROJECTS" />
-      
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="font-display font-bold text-2xl md:text-3xl tracking-tight text-text-primary">
-          Selected Work
-        </h2>
-        <Link
-          href="/projects"
-          className="text-sm text-text-secondary hover:text-accent transition-colors flex items-center gap-1"
-        >
-          View all <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
+    return (
+        <section id="work" className="py-12">
+            <Breadcrumb section="WORK" subsection="PROJECTS" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {featuredProjects.map((project) => (
-          <Link
-            key={project.slug}
-            href={project.caseStudy || `/projects/${project.slug}`}
-            className="group block"
-          >
-            <div className="h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-200 hover:scale-150 flex flex-col">
-              <div className="flex-1">
-                <h3 className="font-display font-semibold text-lg text-text-primary group-hover:text-accent transition-colors mb-2">
-                  {project.projectName}
-                </h3>
-                <p className="text-sm text-text-secondary mb-4 line-clamp-3 leading-relaxed">
-                  {project.description}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.tags.slice(0, 4).map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2 py-1 text-xs rounded-md bg-accent/10 text-accent"
-                  >
-                    {tag}
-                  </span>
-                ))}
-                {project.tags.length > 4 && (
-                  <span className="px-2 py-1 text-xs rounded-md bg-accent/10 text-accent">
-                    +{project.tags.length - 4}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex items-center gap-3 pt-3 border-t border-border">
-                {project.liveLink && (
-                  <span className="flex items-center gap-1 text-xs text-text-secondary hover:text-accent transition-colors">
-                    <ExternalLink className="w-3 h-3" />
-                    Live
-                  </span>
-                )}
-                {project.githubLink && (
-                  <span className="flex items-center gap-1 text-xs text-text-secondary hover:text-accent transition-colors">
-                    <Github className="w-3 h-3" />
-                    Source
-                  </span>
-                )}
-                <ArrowRight className="w-4 h-4 text-border group-hover:text-accent transition-colors ml-auto" />
-              </div>
+            <div className="mb-8 flex items-center justify-between">
+                <h2 className="text-text-primary font-display text-2xl font-bold tracking-tight md:text-3xl">
+                    Selected Work
+                </h2>
+                <Link
+                    href="/projects"
+                    className="text-text-secondary hover:text-accent flex items-center gap-1 text-sm transition-colors"
+                >
+                    View all <ArrowRight className="h-4 w-4" />
+                </Link>
             </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
+
+            <div className="space-y-0">
+                {featuredProjects.map((project, index) => (
+                    <Link
+                        key={project.slug}
+                        href={project.caseStudy || `/projects/${project.slug}`}
+                        className="group block"
+                    >
+                        <div className="border-border/50 hover:border-border border-b py-5 transition-all duration-200 hover:scale-[1.1]">
+                            <div className="flex items-start justify-between gap-4">
+                                <div className="min-w-0 flex-1">
+                                    <div className="mb-1 flex items-center gap-3">
+                                        <span className="text-text-secondary font-mono text-xs">
+                                            {String(index + 1).padStart(2, "0")}
+                                        </span>
+                                        <h3 className="text-text-primary group-hover:text-accent font-display text-lg font-semibold transition-colors duration-150">
+                                            {project.projectName}
+                                        </h3>
+                                        <span className="text-text-secondary font-mono text-xs">
+                                            {project.tags[0]}
+                                        </span>
+                                    </div>
+                                    <p className="text-text-secondary ml-8 text-sm">
+                                        {project.description}
+                                    </p>
+                                </div>
+                                <ArrowRight className="text-border group-hover:text-accent mt-1 h-4 w-4 shrink-0 transition-all duration-150 group-hover:translate-x-0.5" />
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+            </div>
+        </section>
+    );
 }

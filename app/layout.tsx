@@ -40,6 +40,9 @@ export const metadata: Metadata = {
   },
   description:
     "Software engineer, open-source contributor, and builder of things that matter. Full-stack developer specializing in Next.js, Node.js, React Native, and AWS.",
+  icons: {
+    icon: "/favicon.svg",
+  },
   keywords: [
     "Nalin Dalal",
     "full stack developer",
