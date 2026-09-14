@@ -6,54 +6,60 @@ import TwitterHoverCard from "@/components/TwitterHoverCard";
 import LinkedinHoverCard from "@/components/LinkedinHoverCard";
 
 function GetInTouch() {
-  return (
-    <footer className="py-16">
-      <div className="text-center mb-10">
-        <p className="section-label">Get in Touch</p>
-        <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight text-text-primary mb-4">
-          Let&apos;s build something.
-        </h2>
-        <p className="text-text-secondary max-w-md mx-auto">
-          Have a project in mind or just want to chat? I&apos;m always open to new opportunities and interesting conversations.
-        </p>
-      </div>
+    return (
+        <footer className="py-16">
+            <div className="mb-10 text-center">
+                <p className="section-label">Get in Touch</p>
+                <h2 className="text-text-primary mb-4 font-display text-3xl font-bold tracking-tight md:text-4xl">
+                    Let&apos;s build something.
+                </h2>
+                <p className="text-text-secondary mx-auto max-w-md">
+                    Have a project in mind or just want to chat? I&apos;m always
+                    open to new opportunities and interesting conversations.
+                </p>
+            </div>
 
-      <div className="flex justify-center mb-10">
-        <a
-          href="mailto:nalin@nerdev.in"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-bg-primary rounded-lg font-display font-semibold hover:bg-accent/90 transition-colors"
-        >
-          <Mail className="w-4 h-4" />
-          Say Hello
-        </a>
-      </div>
+            <div className="mb-10 flex justify-center">
+                <a
+                    href="mailto:nalin@nerdev.in"
+                    className="bg-accent text-bg-primary hover:bg-accent/90 inline-flex items-center gap-2 rounded-lg px-6 py-3 font-display font-semibold transition-colors"
+                >
+                    <Mail className="h-4 w-4" />
+                    Say Hello
+                </a>
+            </div>
 
-      <div className="flex flex-wrap justify-center gap-4">
-        <div className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200">
-          <GithubHoverCard username="nalindalal" />
-        </div>
-        <Link
-          href="mailto:nalin@nerdev.in"
-          className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200"
-          aria-label="Email"
-        >
-          <Mail className="w-5 h-5" />
-          <span className="text-sm font-medium">Email</span>
-        </Link>
-        <div className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200">
-          <LinkedinHoverCard username="nalin-dalal" />
-        </div>
-        <div className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200">
-          <TwitterHoverCard username="nalin82929" />
-        </div>
-      </div>
+            <div className="flex flex-wrap justify-center gap-4">
+                <GithubHoverCard username="nalindalal" variant="card" />
+                <Link
+                    href="mailto:nalin@nerdev.in"
+                    className="text-text-secondary hover:text-accent border-border hover:border-accent/30 flex items-center gap-2 rounded-lg border px-4 py-2.5 transition-all duration-200"
+                    aria-label="Email"
+                >
+                    <Mail className="h-5 w-5" />
+                </Link>
+                <LinkedinHoverCard
+                    username="nalin-dalal"
+                    name="Nalin Dalal"
+                    headline="Full Stack Engineer"
+                    connections="500+"
+                    location="India"
+                    variant="card"
+                />
+                <TwitterHoverCard
+                    username="nalin82929"
+                    name="Nalin Dalal"
+                    variant="card"
+                />
+            </div>
 
-      <div className="mt-12 text-center text-sm text-text-secondary px-4">
-        <div className="w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent mx-auto mb-6" />
-        &copy; {new Date().getFullYear()} Nalin Dalal. All rights reserved.
-      </div>
-    </footer>
-  );
+            <div className="text-text-secondary mt-12 px-4 text-center text-sm">
+                <div className="via-border mx-auto mb-6 h-px w-16 bg-gradient-to-r from-transparent to-transparent" />
+                &copy; {new Date().getFullYear()} Nalin Dalal. All rights
+                reserved.
+            </div>
+        </footer>
+    );
 }
 
 export default GetInTouch;

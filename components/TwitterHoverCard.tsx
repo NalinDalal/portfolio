@@ -9,6 +9,7 @@ interface TwitterHoverCardProps {
   username: string;
   name?: string;
   avatarUrl?: string;
+  variant?: "icon" | "card";
   className?: string;
 }
 
@@ -18,10 +19,17 @@ const formatCount = (count: number) => {
   return count.toString();
 };
 
+const TwitterIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={cn("fill-current", className)}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
 export const TwitterHoverCard = ({
   username,
   name = "Twitter User",
   avatarUrl,
+  variant = "icon",
   className,
 }: TwitterHoverCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -35,9 +43,7 @@ export const TwitterHoverCard = ({
     bio: "This user hasn't added a bio yet.",
     following: 0,
     followers: 0,
-    joinedDate: "",
     location: "",
-    website: null as { url: string; display_url: string } | null,
   });
 
   React.useEffect(() => {
@@ -52,11 +58,7 @@ export const TwitterHoverCard = ({
             bio: user.description || "This user hasn't added a bio yet.",
             following: user.following ?? 0,
             followers: user.followers ?? 0,
-            joinedDate: user.joined
-              ? `Joined ${new Date(user.joined).toLocaleDateString("en-US", { month: "long", year: "numeric" })}`
-              : "",
             location: user.location || "",
-            website: user.website || null,
           });
         }
       })
@@ -102,19 +104,25 @@ export const TwitterHoverCard = ({
 
   return (
     <div
-      className={cn("relative", className)}
+      className={cn(
+        "relative",
+        variant === "card" && "flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent rounded-lg transition-all duration-200",
+        className,
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
-      <a
-        href={profileUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-text-secondary hover:text-accent transition-colors"
-        aria-label="Twitter"
-      >
-        <Twitter className="w-5 h-5" />
-      </a>
+      <div className="cursor-pointer">
+        <a
+          href={profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-text-secondary hover:text-accent transition-colors"
+          aria-label="Twitter"
+        >
+          <Twitter className="w-5 h-5" />
+        </a>
+      </div>
 
       <motion.div
         ref={cardRef}
@@ -125,12 +133,11 @@ export const TwitterHoverCard = ({
         variants={{
           hidden: {
             opacity: 0,
-            y: 6,
-            scale: 0.98,
-            filter: "blur(2px)",
+            y: 12,
+            scale: 0.95,
+            filter: "blur(4px)",
             pointerEvents: "none",
             transformOrigin: "bottom center",
-            transition: { duration: 0.15, ease: "easeIn" },
           },
           visible: {
             opacity: 1,
@@ -139,89 +146,60 @@ export const TwitterHoverCard = ({
             filter: "blur(0px)",
             pointerEvents: "auto",
             transformOrigin: "bottom center",
-            transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
           },
         }}
-        className="absolute bottom-full right-0 z-50 mb-4 w-80 overflow-hidden rounded-2xl border border-border bg-surface p-4 shadow-xl backdrop-blur-md"
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
+        }}
+        className="absolute bottom-full left-1/2 -translate-x-1/2 z-50 mb-3 w-72 rounded-2xl border border-border bg-surface p-4 shadow-xl backdrop-blur-md"
       >
-        <div className="mb-2 flex items-start justify-between">
+        <div className="flex items-center gap-3 mb-3">
           {profile.avatarUrl && profile.avatarUrl.length > 0 ? (
             <img
               src={profile.avatarUrl}
               alt={`${profile.name}'s Avatar`}
-              className="relative z-10 h-14 w-14 rounded-full border-2 border-surface object-cover"
+              className="h-10 w-10 rounded-full border border-border object-cover"
             />
           ) : (
-            <div className="relative z-10 h-14 w-14 rounded-full border-2 border-surface bg-surface-light flex items-center justify-center text-text-secondary">
-              <svg viewBox="0 0 24 24" className="h-6 w-6 fill-current">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
+            <div className="h-10 w-10 rounded-full border border-border bg-surface-light flex items-center justify-center text-text-secondary">
+              <TwitterIcon className="h-5 w-5" />
             </div>
           )}
-          <div className="mt-1 text-text-secondary">
-            <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
+          <div className="flex flex-col text-left min-w-0">
+            <span className="text-sm font-semibold text-text-primary truncate">
+              {profile.name}
+            </span>
+            <a
+              href={profileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-text-secondary hover:text-text-primary transition-colors"
+            >
+              @{username}
+            </a>
           </div>
+          <TwitterIcon className="w-4 h-4 text-text-secondary ml-auto shrink-0" />
         </div>
 
-        <div className="flex flex-col text-left">
-          <span className="text-base font-semibold text-text-primary">{profile.name}</span>
-          <a
-            href={profileUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-          >
-            @{username}
-          </a>
-        </div>
+        <p className="text-xs text-text-secondary line-clamp-2 mb-3">
+          {profile.bio}
+        </p>
 
-        <p className="mt-2 text-left text-sm leading-relaxed text-text-primary">{profile.bio}</p>
-
-        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-xs text-text-secondary">
-          {profile.location && (
-            <div className="flex items-center gap-1.5">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              <span>{profile.location}</span>
-            </div>
-          )}
-          {profile.website && (
-            <div className="flex items-center gap-1.5">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-              </svg>
-              <a href={profile.website.url} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
-                {profile.website.display_url}
-              </a>
-            </div>
-          )}
-          {profile.joinedDate && (
-            <div className="flex items-center gap-1.5">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-                <line x1="16" x2="16" y1="2" y2="6" />
-                <line x1="8" x2="8" y1="2" y2="6" />
-                <line x1="3" x2="21" y1="10" y2="10" />
-              </svg>
-              <span>{profile.joinedDate}</span>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-2 flex gap-4 text-xs text-text-secondary">
+        <div className="flex gap-3 text-xs text-text-secondary">
           <div className="flex gap-1">
-            <span className="font-bold text-text-primary">{formatCount(profile.following)}</span>
+            <span className="font-semibold text-text-primary">{formatCount(profile.following)}</span>
             <span>Following</span>
           </div>
           <div className="flex gap-1">
-            <span className="font-bold text-text-primary">{formatCount(profile.followers)}</span>
+            <span className="font-semibold text-text-primary">{formatCount(profile.followers)}</span>
             <span>Followers</span>
           </div>
+          {profile.location && (
+            <span className="ml-auto">{profile.location}</span>
+          )}
         </div>
       </motion.div>
     </div>

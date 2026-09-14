@@ -1,19 +1,19 @@
 import Link from "next/link";
 import { ArrowRight, ExternalLink, Github } from "lucide-react";
 import projectsData from "@/data/projects.json";
+import { Breadcrumb } from "@/components/layout/Breadcrumb";
 
 const featuredProjects = projectsData.filter((p) => p.featured);
 
 export default function FeaturedProjects() {
   return (
-    <section className="w-full">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <p className="section-label">Work</p>
-          <h2 className="font-display font-bold text-3xl md:text-4xl tracking-tight text-text-primary">
-            Featured Projects
-          </h2>
-        </div>
+    <section id="work" className="py-12">
+      <Breadcrumb section="WORK" subsection="PROJECTS" />
+      
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="font-display font-bold text-2xl md:text-3xl tracking-tight text-text-primary">
+          Selected Work
+        </h2>
         <Link
           href="/projects"
           className="text-sm text-text-secondary hover:text-accent transition-colors flex items-center gap-1"
@@ -29,7 +29,7 @@ export default function FeaturedProjects() {
             href={project.caseStudy || `/projects/${project.slug}`}
             className="group block"
           >
-            <div className="h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-150 flex flex-col">
+            <div className="h-full p-5 rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-200 hover:scale-150 flex flex-col">
               <div className="flex-1">
                 <h3 className="font-display font-semibold text-lg text-text-primary group-hover:text-accent transition-colors mb-2">
                   {project.projectName}

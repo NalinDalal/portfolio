@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Linkedin } from "lucide-react";
@@ -13,6 +13,7 @@ interface LinkedinHoverCardProps {
   headline?: string;
   connections?: number | string;
   location?: string;
+  variant?: "icon" | "card";
   className?: string;
 }
 
@@ -30,11 +31,26 @@ export const LinkedinHoverCard = ({
   headline = "Software Engineer",
   connections = "500+",
   location = "San Francisco, CA",
+  variant = "icon",
   className,
 }: LinkedinHoverCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const profileUrl = `https://linkedin.com/in/${username}`;
+  const [fetchedAvatar, setFetchedAvatar] = useState<string | null>(null);
+  const profileUrl = `https://www.linkedin.com/in/${username}`;
 
+  useEffect(() => {
+    if (!avatarUrl) {
+      fetch(`https://unavatar.io/linkedin/${username}`)
+        .then((res) => {
+          if (res.ok) return res.url;
+          throw new Error();
+        })
+        .then((url) => setFetchedAvatar(url))
+        .catch(() => {});
+    }
+  }, [username, avatarUrl]);
+
+  const linkRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
@@ -55,8 +71,10 @@ export const LinkedinHoverCard = ({
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const nx = ((e.clientX - rect.left - rect.width / 2) / (rect.width / 2)) * 20;
-    const ny = ((e.clientY - rect.top - rect.height / 2) / (rect.height / 2)) * 20;
+    const nx =
+      ((e.clientX - rect.left - rect.width / 2) / (rect.width / 2)) * 20;
+    const ny =
+      ((e.clientY - rect.top - rect.height / 2) / (rect.height / 2)) * 20;
     x.set(nx);
     y.set(ny);
   };
@@ -76,19 +94,25 @@ export const LinkedinHoverCard = ({
 
   return (
     <div
-      className={cn("relative", className)}
+      className={cn(
+        "relative",
+        variant === "card" && "flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent rounded-lg transition-all duration-200",
+        className,
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
-      <a
-        href={profileUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-text-secondary hover:text-accent transition-colors"
-        aria-label="LinkedIn"
-      >
-        <Linkedin className="w-5 h-5" />
-      </a>
+      <div ref={linkRef} className="cursor-pointer">
+        <a
+          href={profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-text-secondary hover:text-accent transition-colors"
+          aria-label="LinkedIn"
+        >
+          <Linkedin className="w-5 h-5" />
+        </a>
+      </div>
 
       <motion.div
         ref={cardRef}
@@ -99,12 +123,11 @@ export const LinkedinHoverCard = ({
         variants={{
           hidden: {
             opacity: 0,
-            y: 6,
-            scale: 0.98,
-            filter: "blur(2px)",
+            y: 12,
+            scale: 0.95,
+            filter: "blur(4px)",
             pointerEvents: "none",
             transformOrigin: "bottom center",
-            transition: { duration: 0.15, ease: "easeIn" },
           },
           visible: {
             opacity: 1,
@@ -113,37 +136,42 @@ export const LinkedinHoverCard = ({
             filter: "blur(0px)",
             pointerEvents: "auto",
             transformOrigin: "bottom center",
-            transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
           },
         }}
-        className="absolute bottom-full right-0 z-50 mb-4 w-80 overflow-hidden rounded-2xl border border-border bg-surface p-4 shadow-xl backdrop-blur-md"
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
+        }}
+        className="absolute bottom-full left-1/2 -translate-x-1/2 z-50 mb-3 w-72 rounded-2xl border border-border bg-surface p-4 shadow-xl backdrop-blur-md"
       >
-        <div className="relative -mx-4 -mt-4 h-20 overflow-hidden rounded-t-2xl bg-surface-light">
-          {bannerUrl && (
-            <img src={bannerUrl} alt="Banner" className="h-full w-full object-cover" />
+        <div className="flex items-center gap-3 mb-3">
+          {(avatarUrl && avatarUrl.length > 0) || fetchedAvatar ? (
+            <img
+              src={fetchedAvatar || avatarUrl}
+              alt={name}
+              className="h-10 w-10 rounded-full border border-border object-cover"
+            />
+          ) : (
+            <div className="h-10 w-10 rounded-full border border-border bg-surface-light flex items-center justify-center text-text-secondary">
+              <Linkedin className="h-5 w-5" />
+            </div>
           )}
+          <div className="flex flex-col text-left min-w-0">
+            <span className="text-sm font-semibold text-text-primary truncate">
+              {name}
+            </span>
+            <span className="text-xs text-text-secondary truncate">
+              {headline}
+            </span>
+          </div>
+          <LinkedinIcon className="w-4 h-4 text-[#0A66C2] ml-auto shrink-0" />
         </div>
 
-        <div className="relative flex justify-between">
-          <div className="-mt-10 h-20 w-20 rounded-full border-4 border-surface bg-surface">
-            {avatarUrl && avatarUrl.length > 0 ? (
-              <img src={avatarUrl} alt={name} className="h-full w-full rounded-full object-cover" />
-            ) : (
-              <div className="h-full w-full rounded-full bg-surface-light flex items-center justify-center text-text-secondary">
-                <Linkedin className="h-8 w-8" />
-              </div>
-            )}
-          </div>
-          <div className="mt-2 text-[#0A66C2]">
-            <LinkedinIcon className="h-6 w-6" />
-          </div>
-        </div>
-
-        <div className="mt-2 text-left">
-          <h3 className="text-lg font-semibold text-text-primary leading-tight">{name}</h3>
-          <p className="mt-1 line-clamp-2 text-sm text-text-secondary">{headline}</p>
-          <p className="mt-1 text-xs text-text-secondary">{location}</p>
-          <p className="mt-2 text-xs font-semibold text-text-primary">{connections} connections</p>
+        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-text-secondary">
+          {location && <span>{location}</span>}
+          <span className="font-semibold text-text-primary">{connections} connections</span>
         </div>
       </motion.div>
     </div>

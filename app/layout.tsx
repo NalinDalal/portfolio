@@ -2,7 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
-import Navbar from "@/components/Navbar";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { MobileHeader } from "@/components/layout/MobileHeader";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
@@ -107,9 +108,12 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} antialiased font-body bg-bg-primary text-text-primary`}
       >
-        <Navbar />
-        <main className="min-h-screen max-w-7xl mx-auto px-6 py-8">
-          {children}
+        <Sidebar />
+        <MobileHeader />
+        <main className="md:ml-16 min-h-screen pt-14 md:pt-0">
+          <div className="max-w-4xl mx-auto px-6 py-12">
+            {children}
+          </div>
         </main>
 
         {/* Microsoft Clarity */}

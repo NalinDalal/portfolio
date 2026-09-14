@@ -17,13 +17,16 @@
   --color-accent: #e8a838;
   --color-accent-muted: #e8a83820;
   --color-teal: #38b2ac;
-  --color-teal-muted: #38b2ac20;
-  --color-border: #2a2a2e;
-  --color-border-hover: #3a3a40;
+  --color-teal-muted: #38b2ac15;
+  --color-border: #232326;
+  --color-border-hover: #333338;
   --color-text-primary: #ededef;
   --color-text-secondary: #6b6b76;
   --color-bg-primary: #0a0a0b;
   --color-bg-elevated: #111113;
+  --color-state-active: #38b2ac;
+  --color-state-hover: #38b2ac15;
+  --color-hero-glow: #38b2ac;
 
   @keyframes shimmer {
     from { background-position: 0 0; }

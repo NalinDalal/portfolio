@@ -1,9 +1,8 @@
 "use client";
 
-import { Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import GithubHoverCard from "@/components/GithubHoverCard";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -50,9 +49,17 @@ export default function Navbar() {
           </div>
 
           <div className="flex gap-4">
-            <GithubHoverCard username="nalindalal" />
             <a
-              href="https://linkedin.com/in/nalin-dalal-815617271"
+              href="https://github.com/nalindalal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-secondary hover:text-accent transition-colors"
+              aria-label="GitHub"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/nalin-dalal"
               target="_blank"
               rel="noopener noreferrer"
               className="text-text-secondary hover:text-accent transition-colors"

@@ -11,6 +11,7 @@ interface GithubHoverCardProps {
   avatarUrl?: string;
   year?: number | string;
   themeScheme?: "monochrome" | "green" | "blue" | "purple";
+  variant?: "icon" | "card";
   className?: string;
 }
 
@@ -63,6 +64,7 @@ export const GithubHoverCard = ({
   avatarUrl,
   year = 2026,
   themeScheme = "green",
+  variant = "icon",
   className,
 }: GithubHoverCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -179,7 +181,11 @@ export const GithubHoverCard = ({
 
   return (
     <div
-      className={cn("relative", className)}
+      className={cn(
+        "relative",
+        variant === "card" && "flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent rounded-lg transition-all duration-200",
+        className,
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
@@ -204,12 +210,11 @@ export const GithubHoverCard = ({
         variants={{
           hidden: {
             opacity: 0,
-            y: 6,
-            scale: 0.98,
-            filter: "blur(2px)",
+            y: 12,
+            scale: 0.95,
+            filter: "blur(4px)",
             pointerEvents: "none",
             transformOrigin: "bottom center",
-            transition: { duration: 0.15, ease: "easeIn" },
           },
           visible: {
             opacity: 1,
@@ -218,30 +223,36 @@ export const GithubHoverCard = ({
             filter: "blur(0px)",
             pointerEvents: "auto",
             transformOrigin: "bottom center",
-            transition: { duration: 0.22, ease: [0.16, 1, 0.3, 1] },
           },
         }}
-        className="absolute top-full right-0 z-50 mt-3 w-80 rounded-2xl border border-border bg-surface p-6 shadow-xl backdrop-blur-md"
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 25,
+          mass: 0.8,
+        }}
+        className="absolute bottom-full left-1/2 -translate-x-1/2 z-50 mb-3 w-72 rounded-2xl border border-border bg-surface p-4 shadow-xl backdrop-blur-md"
       >
-        <div className="mb-4 flex items-center gap-4">
+        <div className="flex items-center gap-3 mb-3">
           <img
             src={profile.avatarUrl}
             alt={`${profile.name}'s Avatar`}
-            className="h-12 w-12 rounded-full border border-border object-cover"
+            className="h-10 w-10 rounded-full border border-border object-cover"
           />
-          <div className="flex flex-col text-left">
-            <span className="text-base font-semibold text-text-primary">
+          <div className="flex flex-col text-left min-w-0">
+            <span className="text-sm font-semibold text-text-primary truncate">
               {profile.name}
             </span>
             <a
               href={profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-text-secondary hover:text-text-primary transition-colors"
+              className="text-xs text-text-secondary hover:text-text-primary transition-colors"
             >
               @{username}
             </a>
           </div>
+          <Github className="w-4 h-4 text-text-secondary ml-auto shrink-0" />
         </div>
 
         <div className="mx-auto grid w-max grid-flow-col grid-rows-7 gap-1 select-none">
@@ -253,7 +264,7 @@ export const GithubHoverCard = ({
               <div key={day.date || index} className="group/cell relative">
                 <div
                   style={{ backgroundColor: color }}
-                  className="h-3 w-3 cursor-pointer rounded-[2.5px] transition-all duration-300 hover:z-10 hover:scale-125"
+                  className="h-2.5 w-2.5 cursor-pointer rounded-[2px] transition-all duration-300 hover:z-10 hover:scale-125"
                 />
                 {mounted && day.date && (
                   <div className="pointer-events-none absolute bottom-full left-1/2 z-[60] mb-2 hidden -translate-x-1/2 rounded bg-bg-primary/95 px-2 py-1 text-[10px] font-semibold whitespace-nowrap text-text-primary shadow-md group-hover/cell:block border border-border">
@@ -265,7 +276,7 @@ export const GithubHoverCard = ({
           })}
         </div>
 
-        <span className="mt-3 block text-left font-mono text-xs text-text-secondary">
+        <span className="mt-2 block text-left font-mono text-xs text-text-secondary">
           {mounted
             ? `${calculatedTotalCommits.toLocaleString()} contributions in ${year}`
             : "... contributions"}
