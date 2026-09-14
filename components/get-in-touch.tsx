@@ -29,7 +29,9 @@ function GetInTouch() {
       </div>
 
       <div className="flex flex-wrap justify-center gap-4">
-        <GithubHoverCard username="nalindalal" />
+        <div className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200">
+          <GithubHoverCard username="nalindalal" />
+        </div>
         <Link
           href="mailto:nalin@nerdev.in"
           className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200"
@@ -38,8 +40,12 @@ function GetInTouch() {
           <Mail className="w-5 h-5" />
           <span className="text-sm font-medium">Email</span>
         </Link>
-        <LinkedinHoverCard username="nalin-dalal-815617271" />
-        <TwitterHoverCard username="nalin82929" />
+        <div className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200">
+          <LinkedinHoverCard username="nalin-dalal" />
+        </div>
+        <div className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200">
+          <TwitterHoverCard username="nalin82929" />
+        </div>
       </div>
 
       <div className="mt-12 text-center text-sm text-text-secondary px-4">
