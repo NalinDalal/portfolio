@@ -1,15 +1,11 @@
 import React from "react";
-import { Github, Mail, Linkedin, Twitter } from "lucide-react";
+import { Mail } from "lucide-react";
 import Link from "next/link";
+import GithubHoverCard from "@/components/GithubHoverCard";
+import TwitterHoverCard from "@/components/TwitterHoverCard";
+import LinkedinHoverCard from "@/components/LinkedinHoverCard";
 
 function GetInTouch() {
-  const socialLinks = [
-    { icon: <Github className="w-5 h-5" />, href: "https://github.com/nalindalal", label: "GitHub" },
-    { icon: <Mail className="w-5 h-5" />, href: "mailto:nalin@nerdev.in", label: "Email" },
-    { icon: <Linkedin className="w-5 h-5" />, href: "https://www.linkedin.com/in/nalin-dalal-815617271", label: "LinkedIn" },
-    { icon: <Twitter className="w-5 h-5" />, href: "https://twitter.com/nalin82929", label: "Twitter" },
-  ];
-
   return (
     <footer className="py-16">
       <div className="text-center mb-10">
@@ -33,19 +29,17 @@ function GetInTouch() {
       </div>
 
       <div className="flex flex-wrap justify-center gap-4">
-        {socialLinks.map((link, index) => (
-          <Link
-            key={index}
-            href={link.href}
-            className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200"
-            aria-label={link.label}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {link.icon}
-            <span className="text-sm font-medium">{link.label}</span>
-          </Link>
-        ))}
+        <GithubHoverCard username="nalindalal" />
+        <Link
+          href="mailto:nalin@nerdev.in"
+          className="flex items-center gap-2 px-4 py-2.5 text-text-secondary hover:text-accent border border-border hover:border-accent/30 rounded-lg transition-all duration-200"
+          aria-label="Email"
+        >
+          <Mail className="w-5 h-5" />
+          <span className="text-sm font-medium">Email</span>
+        </Link>
+        <LinkedinHoverCard username="nalin-dalal-815617271" />
+        <TwitterHoverCard username="nalin82929" />
       </div>
 
       <div className="mt-12 text-center text-sm text-text-secondary px-4">
