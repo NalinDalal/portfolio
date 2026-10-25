@@ -22,6 +22,7 @@ GitHub-derived TypeScript types (`types/github.ts`) use camelCase fields (`htmlU
 3. **Keep the frontmatter schemas stable** — blog posts use `title` + `date` (required), `tags` + `description` (optional); that's what `utils/get-blog-posts.ts` validates with zod. Case studies use `title` + `date` (`tags`/`description` optional). Nothing reads extra frontmatter like `version`/`author` — don't add it.
 4. **Code identifiers are camelCase** — including keys mapped from GitHub API responses (`htmlUrl`, `mergedAt`). snake_case keys exist only inside the raw `data/*.json` API dumps, because that's what GitHub sends.
 5. **Content facts come from the user, not from inference** — any factual claim about the author's work (roles, features, metrics, project descriptions, achievements) must be supplied or confirmed by the user before it's written. Read the repo README and data files for grounding, but never invent, infer, or extrapolate facts. If a claim can't be traced to the user, a README, or a live site, ask first.
+6. **Never delete `public/driftlock-logo.png`** — it looks unused because nothing in the repo imports or references it, but it is a *hosted* asset: external email clients (signatures, templates) load it over the public URL. Deleting it, "cleaning up unused assets", or moving/renaming it silently breaks those emails. Treat any file in `public/` that no code references the same way — ask before removing it.
 
 ## How and where it's working
 
