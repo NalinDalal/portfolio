@@ -21,7 +21,7 @@ export const blogSchema = z.object({
 });
 
 /**
- * Get all blog posts from blogs/*-pr/ directories
+ * Get every blog post from blogs/<topic>/<subslug>.md files.
  */
 export function getAllBlogPosts(): BlogPost[] {
   try {
@@ -38,28 +38,28 @@ export function getAllBlogPosts(): BlogPost[] {
       const folderPath = path.join(blogsDir, folder);
       const files = fs
         .readdirSync(folderPath)
-        .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+        .filter((file) => file.endsWith(".md") || file.endsWith(".mdx"));
 
-      if (files.length === 0) continue;
-      const mainFile = files[0];
-      const filePath = path.join(folderPath, mainFile);
-      const fileContent = fs.readFileSync(filePath, "utf8");
+      for (const file of files) {
+        const filePath = path.join(folderPath, file);
+        const fileContent = fs.readFileSync(filePath, "utf8");
 
-      const { data, content } = matter(fileContent);
-      const parsed = blogSchema.safeParse(data);
-      if (!parsed.success) continue;
+        const { data, content } = matter(fileContent);
+        const parsed = blogSchema.safeParse(data);
+        if (!parsed.success) continue;
 
-      const fileName = path.parse(mainFile).name;
-      const wordCount = content.split(/\s+/).length;
-      const readingTime = Math.ceil(wordCount / 200);
+        const fileName = path.parse(file).name;
+        const wordCount = content.split(/\s+/).length;
+        const readingTime = Math.ceil(wordCount / 200);
 
-      posts.push({
-        ...parsed.data,
-        slug: folder,
-        file: fileName,
-        description: parsed.data.description || "Read more about this topic...",
-        readingTime,
-      });
+        posts.push({
+          ...parsed.data,
+          slug: folder,
+          file: fileName,
+          description: parsed.data.description || "Read more about this topic...",
+          readingTime,
+        });
+      }
     }
 
     return posts.sort(

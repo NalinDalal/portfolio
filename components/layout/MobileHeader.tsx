@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Github, Linkedin, Mail, FileText, Menu, X } from "lucide-react";
 
@@ -24,9 +24,20 @@ export function MobileHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setIsOpen(false);
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   return (
     <>
-      <header className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 bg-bg-primary/90 backdrop-blur-md border-b border-border z-50">
+      <header className="md:hidden fixed top-0 left-0 right-0 h-14 flex items-center justify-between px-4 bg-bg-primary border-b border-border z-50">
         <Link
           href="/"
           className="font-display font-bold text-lg text-text-primary hover:text-accent transition-colors duration-200"
@@ -67,7 +78,7 @@ export function MobileHeader() {
 
       {/* Mobile menu overlay */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 top-14 bg-bg-primary/95 backdrop-blur-md z-40">
+        <div className="md:hidden fixed inset-0 top-14 bg-bg-primary z-40">
           <nav className="flex flex-col items-center justify-center h-full gap-8">
             {navItems.map((item) => (
               <Link
@@ -89,7 +100,8 @@ export function MobileHeader() {
                   href={link.href}
                   target={link.href.startsWith("http") ? "_blank" : undefined}
                   rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="text-text-secondary hover:text-teal transition-colors duration-200"
+                  className="text-text-secondary hover:text-accent transition-colors duration-150"
+                  aria-label={link.label}
                   title={link.label}
                 >
                   <link.icon className="w-5 h-5" />

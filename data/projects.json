@@ -28,7 +28,7 @@
   {
     "slug": "modheshwari",
     "projectName": "Modheshwari",
-    "description": "Self-initiated community management platform I built to solve real coordination problems — multi-service architecture with role-based workflows, event-driven notifications, realtime chat, and full DevOps pipeline.",
+    "description": "Self-initiated community management platform I built to solve real coordination problems: multi-service architecture with role-based workflows, event-driven notifications, realtime chat, and full DevOps pipeline.",
     "summary": "Multi-service community platform with event-driven architecture",
     "liveLink": "https://modheshwari.nerdev.in/",
     "githubLink": "https://github.com/nerdev-co/modheshwari",

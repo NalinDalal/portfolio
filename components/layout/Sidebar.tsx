@@ -17,25 +17,25 @@ const socialLinks = [
         href: "https://github.com/nalindalal",
         label: "GitHub",
         icon: Github,
-        hoverColor: "hover:text-white",
+        hoverColor: "hover:text-accent",
     },
     {
         href: "https://linkedin.com/in/nalin-dalal",
         label: "LinkedIn",
         icon: Linkedin,
-        hoverColor: "hover:text-[#0A66C2]",
+        hoverColor: "hover:text-accent",
     },
     {
         href: "https://x.com/nalin82929",
         label: "Twitter",
         icon: Twitter,
-        hoverColor: "hover:text-white",
+        hoverColor: "hover:text-accent",
     },
     {
         href: "mailto:nalin@nerdev.in",
         label: "Email",
         icon: Mail,
-        hoverColor: "hover:text-text-primary",
+        hoverColor: "hover:text-accent",
     },
 ];
 
@@ -64,7 +64,7 @@ export function Sidebar() {
                             key={item.id}
                             href={item.href}
                             className={cn(
-                                "relative text-xs font-medium transition-all duration-200 hover:scale-125",
+                                "relative text-xs font-medium transition-colors duration-150",
                                 isActive
                                     ? "text-text-primary"
                                     : "text-text-secondary hover:text-text-primary",
@@ -73,7 +73,7 @@ export function Sidebar() {
                         >
                             {item.label}
                             {isActive && (
-                                <span className="bg-teal absolute top-1/2 -left-3 h-1.5 w-1.5 -translate-y-1/2 rounded-full" />
+                                <span className="bg-accent absolute top-1/2 -left-3 h-1.5 w-1.5 -translate-y-1/2 rounded-full" />
                             )}
                         </Link>
                     );
@@ -98,7 +98,7 @@ export function Sidebar() {
                                 : undefined
                         }
                         className={cn(
-                            "text-text-secondary transition-all duration-200 hover:scale-125",
+                            "text-text-secondary transition-colors duration-150",
                             link.hoverColor,
                         )}
                         title={link.label}
